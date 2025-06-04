@@ -1,32 +1,49 @@
 body {
-  background-color: #f4f1eb;
-  font-family: 'Courier New', monospace;
-  color: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   margin: 0;
-}
-
-.container {
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: 'Plunct Plact', sans-serif;
   text-align: center;
 }
 
+.container {
+  padding: 50px 20px;
+}
+
 .emblem {
-  width: 150px;
+  width: 200px;
+  height: auto;
   margin-bottom: 20px;
 }
 
 .logo {
-  font-size: 48px;
-  letter-spacing: 2px;
-  font-weight: normal;
-  font-style: italic;
+  font-size: 60px;
+  margin: 10px 0;
 }
 
 .tagline {
-  font-size: 18px;
-  margin-top: 10px;
-  color: #444;
+  font-size: 20px;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+.socials a {
+  color: #1da1f2;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 16px;
+}
+
+.socials a:hover {
+  text-decoration: underline;
+}
+
+.video-container {
+  margin-top: 40px;
+}
+
+iframe {
+  max-width: 100%;
+  border-radius: 12px;
 }
