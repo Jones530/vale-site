@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>vaLe</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plunct+Plact&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    @font-face {
+      font-family: 'Plunct';
+      src: url('fonts/Plunct.otf') format('opentype');
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <img src="images/vale-logo.jpeg" alt="vaLe emblem" class="emblem">
-    <h1 class="logo">vaLe</h1>
-    <p class="tagline">Have A Good Day</p>
-    <div class="socials">
-      <a href="https://www.instagram.com/vale.tones/" target="_blank">Instagram</a> |
-      <a href="https://tiktok.com/@vale.sound" target="_blank">TikTok</a> |
-      <a href="https://youtube.com/@yourchannel" target="_blank">YouTube</a>
-    </div>    
-    <div class="video-container">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/your_video_id" frameborder="0" allowfullscreen></iframe>
-    </div>    
+    <img src="images/vale-logo.jpg" alt="vale logo" class="logo" />
+    <h1>vaLe</h1>
+    <p>have a good day:]</p>
+
+    <video controls class="promo">
+      <source src="promo.mp4" type="video/mp4" />
+      Your browser doesn’t support the video tag.
+    </video>
+
+    <div class="links">
+      <a href="https://instagram.com/vale.tones" target="_blank">Instagram</a>
+      <a href="https://tiktok.com/vale.sound" target="_blank">TikTok</a>
+    </div>
   </div>
 </body>
 </html>
