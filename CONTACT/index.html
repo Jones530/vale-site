@@ -83,46 +83,50 @@
     /* mobile nav animation */
     #mobileNav { transition: max-height 280ms ease, opacity 220ms ease; }
 
-    /* ---------- Contact hero (black / yellow / white only) ---------- */
-    .contact-hero {
-      height: 160px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position: relative;
-      overflow: hidden;
-      /* black base with a yellow diagonal accent stripe */
-      background:
-        linear-gradient(120deg,
-          #000 0% 42%,
-          #facc15 42% 48%,
-          #000 48% 100%);
-      transition: height 220ms ease, padding 220ms ease;
-    }
-    /* when header is scrolled the hero shrinks in sync */
-    header.scrolled + .contact-hero {
-      height: 110px;
-    }
 
-    .contact-hero::after {
-      content: "";
-      position: absolute;
-      inset:0;
-      /* subtle white overlay at very low opacity to allow white stroke to pop */
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
-      pointer-events:none;
-    }
+    /* ---------- Contact hero (black & white only) ---------- */
+.contact-hero {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: #000; /* pure black background */
+  transition: height 220ms ease, padding 220ms ease;
+}
 
-    .hero-title {
-      font-size: clamp(48px, 8vw, 96px);
-      letter-spacing: 4px;
-      color: #facc15; /* yellow fill */
-      -webkit-text-stroke: 2px #ffffff; /* white stroke to match your style */
-      font-weight: 900;
-      transition: transform 220ms ease, font-size 220ms ease;
-      transform-origin: center;
-      text-transform: uppercase;
-    }
+/* keep the hero shrinking in sync with the header */
+header.scrolled + .contact-hero {
+  height: 110px;
+}
+
+.contact-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* very subtle overlay only (still black/white) — optional, remove if you want 100% flat black */
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+  pointer-events: none;
+}
+
+.hero-title {
+  font-size: clamp(48px, 8vw, 96px);
+  letter-spacing: 4px;
+  color: #ffffff;               /* white text */
+  font-weight: 900;
+  transition: transform 220ms ease, font-size 220ms ease;
+  transform-origin: center;
+  text-transform: uppercase;
+  /* subtle lift so white text reads crisply on the static tv gif */
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+}
+
+/* keep the same shrink transform when header scrolled (in-line with header behavior) */
+header.scrolled + .contact-hero .hero-title {
+  transform: scale(0.76);
+}
+
     /* shrink title when header is scrolled (in-line movement) */
     header.scrolled + .contact-hero .hero-title {
       transform: scale(0.76);
