@@ -27,16 +27,13 @@
     body {
       font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: #fff;
-      /* <-- UPDATE THIS PATH if your gif is somewhere else -->
-         Try '/images/tv-static.gif' OR 'images/tv-static.gif' depending on your server setup. */
+  
       background-image: url('images/tv-static.gif');
-      background-repeat: repeat;    /* good for small noise GIFs */
+      background-repeat: repeat;    
       background-position: center;
       background-size: auto;
       background-color: black;
     }
-
-    /* optional overlay to keep text readable over noisy gif */
     .site-overlay::before {
       content: "";
       position: fixed;
@@ -88,7 +85,7 @@
       </div>
     </main>
 
-    <!-- rest of your sections / footer -->
+
     <footer class="py-12">
       <div class="container mx-auto px-6">
         <div class="flex flex-col md:flex-row justify-between items-center">
