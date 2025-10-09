@@ -1,1 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>vaLe — Contact</title>
+  <link rel="icon" type="image/png" href="/images/vale-logo-removebg-preview.png">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Feather icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+  <style>
+    @font-face {
+      font-family: 'Plunct';
+      src: url('/fonts/Plunct.woff2') format('woff2'),
+           url('/fonts/Plunct.woff') format('woff'),
+           url('/fonts/Plunct.otf') format('opentype');
+      font-display: swap;
+    }
+    html,body { height:100%; margin:0; }
+    body {
+      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #fff;
+      background-image: url('/images/tv-static4.gif');
+      background-repeat: repeat;
+      background-position: center;
+      background-size: auto;
+      background-color: black;
+    }
+    .site-overlay::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .site-content { position: relative; z-index: 10; }
+
+    /* hero banner */
+    .contact-hero {
+      height: 160px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(120deg, #2a7ef0 0%, #083a8b 50%, #07307a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-hero::after {
+      content: "";
+      position: absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.25));
+      pointer-events:none;
+    }
+    .hero-title {
+      font-size: clamp(48px, 8vw, 96px);
+      letter-spacing: 4px;
+      color: #eaf225; /* neon yellow */
+      -webkit-text-stroke: 1px #eaf225;
+      font-weight: 800;
+    }
+
+    /* form style — transparent, bottom border only */
+    .input-line {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.8);
+      padding: 10px 6px;
+      color: #fff;
+      outline: none;
+      width: 100%;
+    }
+    .input-line::placeholder { color: rgba(255,255,255,0.6); }
+    .textarea-line {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px;
+      color:#fff;
+      outline: none;
+      resize:vertical;
+      min-height:140px;
+      width:100%;
+    }
+
+    /* submit button */
+    .btn-yellow {
+      background: #facc15;
+      color: black;
+      font-weight:700;
+      padding: 14px 26px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      transition: transform .14s ease, filter .14s ease;
+    }
+    .btn-yellow:hover { transform: translateY(-3px); filter:brightness(0.98); }
+
+    /* fixed social pill right */
+    .social-pill {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fff;
+      color:#000;
+      border-radius: 40px;
+      padding: 14px 10px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      z-index: 60;
+      border: 3px solid #000;
+    }
+    .social-pill a {
+      display:block;
+      width:34px;
+      height:34px;
+      line-height:34px;
+      text-align:center;
+      text-decoration:none;
+      color:#000;
+      font-weight:700;
+      border-radius: 8px;
+      background:transparent;
+      font-size:14px;
+    }
+    /* small screen fallback */
+    @media (max-width: 768px) {
+      .social-pill { right: 8px; padding:10px 8px; gap:10px; }
+      .hero-title { font-size: clamp(36px,10vw,64px); }
+      .contact-hero { height: 120px; }
+    }
+  </style>
+</head>
+<body class="site-overlay">
+  <div class="site-content">
+    <!-- --- Header (same structure as home) --- -->
+    <header id="siteHeader" class="fixed w-full z-50">
+      <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <img id="valeLogo" src="/images/vale-logo-removebg-preview.png" alt="vaLe logo" style="height:56px;">
+          <a href="/HOME/" class="font-plunct text-xl font-bold leading-none" id="brandText">vaLe.</a>
+        </div>
+
+        <div class="hidden md:flex space-x-8 items-center">
+          <a href="/HOME/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">HOME</a>
+          <a href="/MUSIC/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">MUSIC</a>
+          <a href="/SHOP/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">SHOP</a>
+          <a href="/CONTACT/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">CONTACT</a>
+        </div>
+
+        <div class="md:hidden">
+          <button id="menuBtn" aria-controls="mobileNav" aria-expanded="false" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" title="Open menu">
+            <i data-feather="menu"></i>
+          </button>
+        </div>
+      </nav>
+
+      <div id="mobileNav" class="md:hidden container mx-auto px-6 overflow-hidden hidden">
+        <div class="flex flex-col bg-black/80 py-4 rounded-b-lg space-y-2">
+          <a href="/HOME/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">HOME</a>
+          <a href="/MUSIC/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">MUSIC</a>
+          <a href="/SHOP/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">SHOP</a>
+          <a href="/CONTACT/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">CONTACT</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- --- Hero banner --- -->
+    <section class="contact-hero mt-20">
+      <h1 class="hero-title">CONTACT</h1>
+    </section>
+
+    <!-- --- Main content & form --- -->
+    <main class="container mx-auto px-6 py-12">
+      <div class="max-w-4xl mx-auto text-center mb-10">
+        <p class="opacity-90">We want to hear from you! You can send us a message for any comments or inquiries using the contact form below.</p>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <form id="contactForm" class="space-y-8" autocomplete="off">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <label class="block text-sm mb-2">First Name*</label>
+              <input name="firstName" class="input-line" placeholder="First name" required>
+            </div>
+            <div>
+              <label class="block text-sm mb-2">Last Name*</label>
+              <input name="lastName" class="input-line" placeholder="Last name" required>
+            </div>
+            <div>
+              <label class="block text-sm mb-2">Email*</label>
+              <input type="email" name="email" class="input-line" placeholder="you@example.com" required>
+            </div>
+            <div>
+              <label class="block text-sm mb-2">Company</label>
+              <input name="company" class="input-line" placeholder="Company (optional)">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm mb-2">Subject</label>
+            <input name="subject" class="input-line" placeholder="Subject">
+          </div>
+
+          <div>
+            <label class="block text-sm mb-2">Message</label>
+            <textarea name="message" class="textarea-line" placeholder="Write your message here..." required></textarea>
+          </div>
+
+          <div class="flex justify-center">
+            <button type="submit" class="btn-yellow">Send Message</button>
+          </div>
+
+          <div id="formStatus" class="text-center text-sm mt-2" aria-live="polite"></div>
+        </form>
+      </div>
+    </main>
+
+    <!-- --- Footer (same as home) --- -->
+    <footer class="py-12">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-6 md:mb-0">
+            <div class="flex items-center space-x-2">
+              <span class="font-plunct text-xl font-bold">:] vaLe.</span>
+            </div>
+            <p class="text-white-400 mt-2">© 2025 All Rights Reserved</p>
+          </div>
+          <div class="flex space-x-6">
+            <a href="https://instagram.com/vale.tones" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i data-feather="instagram" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i data-feather="twitter" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><i data-feather="music" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Youtube"><i data-feather="youtube" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- --- Vertical social pill (right) --- -->
+  <div class="social-pill" aria-hidden="false">
+    <!-- replace these <a> contents with inline SVGs if you prefer icon art; these are initials placeholders -->
+    <a href="https://instagram.com/vale.tones" target="_blank" rel="noopener noreferrer" title="Instagram">IG</a>
+    <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter">TW</a>
+    <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" title="TikTok">TT</a>
+    <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook">FB</a>
+    <a href="https://www.twitch.tv/" target="_blank" rel="noopener noreferrer" title="Twitch">TC</a>
+    <a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" title="Spotify">SP</a>
+  </div>
+
+  <script>
+    feather.replace();
+
+    // Mobile menu logic (same as home)
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    menuBtn?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', String(!expanded));
+      if(!expanded) { mobileNav.classList.remove('hidden'); mobileNav.style.maxHeight = '400px'; mobileNav.style.opacity = '1'; }
+      else { mobileNav.style.maxHeight = '0'; mobileNav.style.opacity = '0'; setTimeout(()=>mobileNav.classList.add('hidden'), 280); }
+      feather.replace();
+    });
+
+    // ------------ Form handling (Formspree) --------------
+    // Replace the URL below with your Formspree form endpoint.
+    // Example endpoint: "https://formspree.io/f/abcdxyz" (you get it from formspree.io)
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+    const form = document.getElementById('contactForm');
+    const statusDiv = document.getElementById('formStatus');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusDiv.textContent = 'Sending…';
+      // Collect form data
+      const fd = new FormData(form);
+
+      // If you haven't set up Formspree, the placeholder above will 404.
+      // To test quickly without Formspree, you can temporarily:
+      //  - Replace FORMSPREE_ENDPOINT with a valid endpoint, or
+      //  - Use a mailto: fallback (not recommended for production).
+      try {
+        const res = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: fd
+        });
+
+        if (res.ok) {
+          statusDiv.style.color = '#9ee89a';
+          statusDiv.textContent = 'Thanks! Your message has been sent.';
+          form.reset();
+        } else {
+          const data = await res.json().catch(()=>null);
+          console.warn('Formspree error response', data);
+          statusDiv.style.color = '#f7b2b2';
+          statusDiv.textContent = 'There was an error sending your message. Please try again or email directly.';
+        }
+      } catch (err) {
+        console.error(err);
+        statusDiv.style.color = '#f7b2b2';
+        statusDiv.textContent = 'Network error. Try again or email directly.';
+      }
+    });
+  </script>
+</body>
+</html>
 
