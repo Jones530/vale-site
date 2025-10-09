@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>vaLe - Official</title>
+  <link rel="icon" type="image/png" href="images/vale-logo-removebg-preview.png">
+
+  <!-- Tailwind CDN (one include) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Feather icons (one include) -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+  <style>
+    @font-face {
+      font-family: 'Plunct';
+      src: url('/fonts/Plunct.woff2') format('woff2'),
+           url('/fonts/Plunct.woff') format('woff'),
+           url('/fonts/Plunct.otf') format('opentype');
+      font-display: swap;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #fff;
+      background-image: url('images/tv-static4.gif');
+      background-repeat: repeat;
+      background-position: center;
+      background-size: auto;
+      background-color: black;
+    }
+    .site-overlay::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .site-content { position: relative; z-index: 10; }
+
+    .text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+    .hover-scale { transition: transform 0.3s ease; }
+    .hover-scale:hover { transform: scale(1.05); }
+    .font-plunct { font-family: 'Plunct', sans-serif; }
+
+    /* Logo sizing & transitions:
+       - default uses clamp() to be responsive to viewport width
+       - JS toggles inline height when shrinking to match text height
+    */
+    #valeLogo {
+      height: clamp(48px, 8vw, 120px); /* responsive base size */
+      width: auto;
+      transition: height 220ms ease, transform 220ms ease;
+      display: block;
+    }
+
+    /* header background blur and compact layout when scrolled (optional visual) */
+    header.scrolled nav {
+      backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.35);
+    }
+
+    .cloud-mask-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: 'Plunct', sans-serif;
+  color: black;
+  background-color: #facc15; /* yellow tone — same as your theme */
+  width: clamp(160px, 25vw, 260px);
+  height: clamp(80px, 12vw, 120px);
+  -webkit-mask-image: url('images/vale-logo-removebg-preview.png');
+  mask-image: url('images/vale-logo-removebg-preview.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  border: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.cloud-mask-btn:hover {
+  transform: scale(1.05);
+  background-color: #fbbf24; /* slightly deeper yellow on hover */
+}
+
+    /* mobile nav animation */
+    #mobileNav {
+      transition: max-height 280ms ease, opacity 220ms ease;
+    }
+  </style>
+</head>
+<body class="site-overlay">
+  <div class="site-content">
+    <header id="siteHeader" class="fixed w-full z-50">
+      <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Left: logo + brand text -->
+        <div class="flex items-center space-x-3">
+          <!-- Logo image with id so JS can control size -->
+          <img id="valeLogo" src="images/vale-logo-removebg-preview.png" alt="vaLe logo" />
+          <a href="/" class="font-plunct text-xl font-bold leading-none" id="brandText">vaLe.</a>
+        </div>
+
+        <!-- Desktop nav -->
+        <div class="hidden md:flex space-x-8 items-center">
+          <a href="/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">HOME</a>
+          <a href="music.html" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">MUSIC</a>
+          <a href="shop.html" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">SHOP</a>
+          <a href="contact.html" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">CONTACT</a>
+        </div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="menuBtn" aria-controls="mobileNav" aria-expanded="false" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" title="Open menu">
+            <i data-feather="menu"></i>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile nav (hidden by default) -->
+      <div id="mobileNav" class="md:hidden container mx-auto px-6 overflow-hidden hidden">
+        <div class="flex flex-col bg-black/80 py-4 rounded-b-lg space-y-2">
+          <a href="/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">HOME</a>
+          <a href="/MUSIC" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">MUSIC</a>
+          <a href="/SHOP" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">SHOP</a>
+          <a href="/CONTACT" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">CONTACT</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="min-h-screen flex items-center">
+      <div class="container mx-auto px-6 py-24">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="font-plunct text-5xl md:text-7xl font-bold mb-6 text-yellow-400">
+            <span class="text-outline">aL vaLe</span>.
+          </h1>
+          <p class="text-xl md:text-2xl mb-12 opacity-90">have a good day :]</p>
+          <div class="flex flex-col md:flex-row justify-center gap-4">
+            <a href="music.html" class="cloud-mask-btn">LATEST RELEASE</a>
+            <a href="shop.html" class="cloud-mask-btn">SHOP</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-12">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-6 md:mb-0">
+            <div class="flex items-center space-x-2">
+              <span class="font-plunct text-xl font-bold">:] vaLe.</span>
+            </div>
+            <p class="text-white-400 mt-2">© 2025 All Rights Reserved</p>
+          </div>
+          <div class="flex space-x-6">
+            <!-- icons -->
+            <a href="https://instagram.com/vale.tones" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <i data-feather="instagram" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i>
+            </a>
+            <a href="https://open.spotify.com/artist/5dQMITMypQMYoXxIU2NSmY?si=weiFPRCqQ2yiph_DnjAzwg" target="_blank" rel="noopener noreferrer" aria-label="Spotify">
+              <i data-feather="headphones" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i>
+            </a>
+            <a href="https://music.apple.com/us/artist/kognac/1651538178" target="_blank" rel="noopener noreferrer" aria-label="Apple">
+              <i data-feather="music" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i>
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
+              <i data-feather="youtube" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Replace feather icons initially
+    feather.replace();
+
+    // Elements
+    const logo = document.getElementById('valeLogo');
+    const brandText = document.getElementById('brandText');
+    const header = document.getElementById('siteHeader');
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    // Keep track of natural size (read from computed style on load)
+    let naturalLogoHeight = null;
+
+    function recordNaturalHeight() {
+      // remove inline height to allow CSS clamp to determine natural height
+      logo.style.height = '';
+      const rect = logo.getBoundingClientRect();
+      naturalLogoHeight = rect.height || 64;
+      // ensure inline height matches computed baseline for predictable transitions
+      logo.style.height = naturalLogoHeight + 'px';
+    }
+
+    // Shrink logo to match brand text height (so it visually aligns with "vaLe.")
+    function shrinkLogoToText() {
+      const targetHeight = brandText.getBoundingClientRect().height;
+      // set a minimum so it doesn't collapse too small on tiny devices
+      const minHeight = Math.min(28, targetHeight);
+      logo.style.height = Math.max(targetHeight, minHeight) + 'px';
+      logo.style.transform = 'translateY(0)';
+    }
+
+    function restoreLogo() {
+      if (naturalLogoHeight) {
+        logo.style.height = naturalLogoHeight + 'px';
+        logo.style.transform = '';
+      }
+    }
+
+    // Scroll behavior: when scrolling down a bit, shrink header and logo
+    let scrollThreshold = 60; // px - adjust if you want earlier/later trigger
+    function onScroll() {
+      if (window.scrollY > scrollThreshold) {
+        if (!header.classList.contains('scrolled')) {
+          header.classList.add('scrolled');
+          shrinkLogoToText();
+        }
+      } else {
+        if (header.classList.contains('scrolled')) {
+          header.classList.remove('scrolled');
+          restoreLogo();
+        }
+      }
+    }
+
+    // Mobile menu toggle
+    function toggleMobileMenu(forceState) {
+      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      const willExpand = typeof forceState === 'boolean' ? forceState : !expanded;
+      menuBtn.setAttribute('aria-expanded', String(!!willExpand));
+      if (willExpand) {
+        mobileNav.classList.remove('hidden');
+        // small visual: set max-height to allow transition (arbitrary large enough)
+        mobileNav.style.maxHeight = '400px';
+        mobileNav.style.opacity = '1';
+      } else {
+        mobileNav.style.maxHeight = '0';
+        mobileNav.style.opacity = '0';
+        // hide after transition
+        setTimeout(() => mobileNav.classList.add('hidden'), 280);
+      }
+      // re-run feather replacement in case icons changed
+      feather.replace();
+    }
+
+    // Close menu on outside click (mobile)
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth >= 768) return; // only mobile
+      if (!menuBtn.contains(e.target) && !mobileNav.contains(e.target) && menuBtn.getAttribute('aria-expanded') === 'true') {
+        toggleMobileMenu(false);
+      }
+    });
+
+    // Update sizes on resize
+    let resizeTimer = null;
+    function onResize() {
+      // recalc natural height (clamp() will change with viewport)
+      recordNaturalHeight();
+
+      // if header already scrolled, keep logo shrunk to text height
+      if (header.classList.contains('scrolled')) {
+        shrinkLogoToText();
+      } else {
+        restoreLogo();
+      }
+
+      // debounce any heavy actions
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        // fine adjustments, nothing heavy
+      }, 120);
+    }
+
+    // Bind events
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
+
+    // menu button
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
+
+    // Initialize on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // ensure icons are in place
+      feather.replace();
+
+      // initial measurement and setup
+      recordNaturalHeight();
+
+      // on load, if page is already scrolled (e.g., anchor), adjust
+      onScroll();
+    });
+  </script>
+</body>
+</html>
