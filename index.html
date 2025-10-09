@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vaLe - Official</title>
-    <link rel="icon" type="image/x-icon" href="https://static.photos/music/200x200/42">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>vaLe - Official</title>
+  <link rel="icon" type="image/x-icon" href="https://static.photos/music/200x200/42">
+
+  <!-- Tailwind CDN (one include) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Feather icons (one include) -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
   <style>
     @font-face {
@@ -20,20 +19,24 @@
            url('/fonts/Plunct.woff') format('woff'),
            url('/fonts/Plunct.otf') format('opentype');
       font-display: swap;
-      font-style: normal;
       font-weight: 400;
+      font-style: normal;
     }
 
     html, body { height: 100%; margin: 0; }
     body {
-      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: #fff;
-      background-image: url('/images/tv-static.gif'); 
-      background-repeat: repeat;    
+      /* <-- UPDATE THIS PATH if your gif is somewhere else -->
+         Try '/images/tv-static.gif' OR 'images/tv-static.gif' depending on your server setup. */
+      background-image: url('/images/tv-static.gif');
+      background-repeat: repeat;    /* good for small noise GIFs */
       background-position: center;
-      background-size: auto;       
-      background-color: black;     
+      background-size: auto;
+      background-color: black;
     }
+
+    /* optional overlay to keep text readable over noisy gif */
     .site-overlay::before {
       content: "";
       position: fixed;
@@ -43,196 +46,70 @@
       z-index: 0;
     }
     .site-content { position: relative; z-index: 10; }
+
+    .text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+    .hover-scale { transition: transform 0.3s ease; }
+    .hover-scale:hover { transform: scale(1.05); }
+    .font-plunct { font-family: 'Plunct', sans-serif; }
   </style>
 </head>
 <body class="site-overlay">
-    <style>
-        @font-face {  
-            font-family: 'Plunct';
-            src: url('fonts/Plunct.woff2') format('woff2');
-        }
-
-        .font-plunct{ font-family: 'Plunct', sans-serif; }
-        .text-outline {
-            -webkit-text-stroke: 1px white;
-            color: transparent;
-        }
-        .hover-scale {
-            transition: transform 0.3s ease;
-        }
-        .hover-scale:hover {
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body class="bg-black text-white font-plunct" id="vanta-bg">
+  <div class="site-content">
     <header class="fixed w-full z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <img src="images/vale-logo-removebg-preview.png" alt="vaLe logo" class="text-yellow-400">
-                <span class="font-plunct text-xl font-bold">vaLe.</span>
-            </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#" class="hover:text-yellow-400 transition-colors">HOME</a>
-                <a href="#" class="hover:text-yellow-400 transition-colors">MUSIC</a>
-                <a href="#" class="hover:text-yellow-400 transition-colors">SHOP</a>
-                <a href="#" class="hover:text-yellow-400 transition-colors">CONTACT</a>
-            </div>
-            <button class="md:hidden">
-                <i data-feather="menu"></i>
-            </button>
-        </nav>
+      <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <img src="images/vale-logo-removebg-preview.png" alt="vaLe logo">
+          <span class="font-plunct text-xl font-bold">vaLe.</span>
+        </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#" class="hover:text-yellow-400 transition-colors">HOME</a>
+          <a href="#" class="hover:text-yellow-400 transition-colors">MUSIC</a>
+          <a href="#" class="hover:text-yellow-400 transition-colors">SHOP</a>
+          <a href="#" class="hover:text-yellow-400 transition-colors">CONTACT</a>
+        </div>
+        <button class="md:hidden">
+          <i data-feather="menu"></i>
+        </button>
+      </nav>
     </header>
 
     <main class="min-h-screen flex items-center">
-        <div class="container mx-auto px-6 py-24">
-            <div class="max-w-3xl mx-auto text-center">
-                <h1 class="font-plunct text-5xl md:text-7xl font-bold mb-6 text-yellow-400">
-                    <span class="text-outline">vaLe</span> .
-                </h1>
-                <p class="text-xl md:text-2xl mb-12 opacity-90">
-                    whats the word?
-                </p>
-                <div class="flex flex-col md:flex-row justify-center gap-4">
-                    <a href="#" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-4 px-8 rounded-full transition-all hover-scale">
-                        LATEST RELEASE
-                    </a>
-                    <a href="#" class="border-2 border-yellow-400 hover:bg-yellow-400 hover:bg-opacity-10 text-yellow-400 font-bold py-4 px-8 rounded-full transition-all hover-scale">
-                        SOCIALS
-                    </a>
-                </div>
-            </div>
+      <div class="container mx-auto px-6 py-24">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="font-plunct text-5xl md:text-7xl font-bold mb-6 text-yellow-400">
+            <span class="text-outline">vaLe</span>.
+          </h1>
+          <p class="text-xl md:text-2xl mb-12 opacity-90">whats the word?</p>
+          <div class="flex flex-col md:flex-row justify-center gap-4">
+            <a href="#" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-4 px-8 rounded-full transition-all hover-scale">LATEST RELEASE</a>
+            <a href="#" class="border-2 border-yellow-400 hover:bg-yellow-400 hover:bg-opacity-10 text-yellow-400 font-bold py-4 px-8 rounded-full transition-all hover-scale">SOCIALS</a>
+          </div>
         </div>
+      </div>
     </main>
 
-    <section class="py-20 bg-gradient-to-b from-black to-yellow-900">
-        <div class="container mx-auto px-6">
-            <h2 class="font-plunct text-3xl md:text-4xl text-center mb-16 text-yellow-400">
-                <span class="text-outline">LATEST</span> DROPS
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-BLACK-800 rounded-xl overflow-hidden hover-scale transition-transform">
-                <img src="images/vale.JPG" alt="Album Cover" class="w-full h-64 object-cover">
-<div class="p-6">
-                        <h3 class="font-bold text-xl mb-2">HILLSANDvaLeS</h3>
-                        <p class="text-BLACK-400 mb-4">EP • TBD</p>
-                        <button class="bg-yellow-400 text-black py-2 px-4 rounded-full w-full font-bold">
-                            STREAM NOW
-                        </button>
-                    </div>
-                </div>      
+    <!-- rest of your sections / footer -->
+    <footer class="py-12">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-6 md:mb-0">
+            <div class="flex items-center space-x-2">
+              <i data-feather="smile" class="text-yellow-400"></i>
+              <span class="font-plunct text-xl font-bold">vaLe</span>
             </div>
+            <p class="text-white-400 mt-2">© 2025 All Rights Reserved</p>
+          </div>
+          <div class="flex space-x-6">
+            <!-- icons -->
+            <a href="#" target="_blank"><i data-feather="instagram" class="text-yellow-400"></i></a>
+            <a href="#" target="_blank"><i data-feather="spotify" class="text-yellow-400"></i></a>
+            <a href="#" target="_blank"><i data-feather="music" class="text-yellow-400"></i></a>
+          </div>
         </div>
-    </section>
-
-    <section class="py-20 bg-black">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-12 md:mb-0">
-                    <img src="images/IMG_0105.jpg" alt="vale" class="rounded-xl shadow-2xl hover-scale transition-transform">
-   </div>
-                <div class="md:w-1/2 md:pl-16">
-                    <h2 class="font-plunct text-3xl md:text-4xl mb-6 text-yellow-400">
-                        <span class="text-outline">ABOUT</span> vaLe.
-                    </h2>
-                    <p class="text-lg mb-6 opacity-90">
-                        Emerging from Detroit with a unique sound that blends soul, RnB, Hip-Hop, and Alternative RnB, vaLe. is redefining Detroit hip-hop.
-                    </p>
-                    <p class="text-lg mb-6 opacity-90">
-                        With his signature sounds and infectious hooks, he's quickly becoming one of the most exciting voices in the game.
-                    </p>
-                    <a href="#" class="inline-flex items-center text-yellow-400 font-bold">
-                        READ FULL BIO
-                        <i data-feather="arrow-right" class="ml-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 bg-gradient-to-b from-black to-black-900">
-        <div class="container mx-auto px-6">
-            <h2 class="font-plunct text-3xl md:text-4xl text-center mb-16 text-yellow-400">
-                <span class="text-outline">UPCOMING</span> SHOWS
-            </h2>
-            <div class="max-w-3xl mx-auto">
-                <div class="bg-black-800 rounded-xl p-6 mb-6 hover-scale transition-transform">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
-                        <div class="mb-4 md:mb-0">
-                            <h3 class="font-bold text-xl">TBD</h3>
-                            <p class="text-red-400">TBD</p>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <p class="font-bold">TICKETS FROM $35</p>
-                            <button class="bg-yellow-400 text-black py-2 px-6 rounded-full font-bold">
-                                COMING SOON
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <div class="text-center mt-12">
-                    <a href="#" class="inline-flex items-center text-yellow-400 font-bold text-lg">
-                        VIEW ALL SHOW DATES
-                        <i data-feather="chevron-down" class="ml-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-images/1394846-67Ya9LTRKo-high_0012.jpg py-12">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <div class="flex items-center space-x-2">
-                        <i data-feather="smile" class="text-yellow-400"></i>
-                        <span class="font-plunct text-xl font-bold">vaLe</span>
-                    </div>
-                    <p class="text-white-400 mt-2">© 2025 All Rights Reserved</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="https://instagram.com/vale.tones" target="_blank">
-                       <i data-feather="instagram" class="text-yellow-400 hover:text-yellow-300 transition-colors"></i>
-                   </a>
-                  <a href="https://open.spotify.com/artist/5dQMITMypQMYoXxIU2NSmY?si=weiFPRCqQ2yiph_DnjAzwg" target="_blank">
-        <i data-feather="spotify" class="text-yellow-400 hover:text-yellow-300 transition-colors"></i>
-    </a>
-    <a href="https://music.apple.com/us/artist/kognac/1651538178" target="_blank">
-        <i data-feather="music" class="text-yellow-400 hover:text-yellow-300 transition-colors"></i>
-    </a>
-    <a href="#" target="_blank">
-        <i data-feather="twitter" class="text-yellow-400 hover:text-yellow-300 transition-colors"></i>
-    </a>
-    <a href="#" target="_blank">
-        <i data-feather="youtube" class="text-yellow-400 hover:text-yellow-300 transition-colors"></i>
-    </a>
-</div>
-
-                </div>
-            </div>
-        </div>
+      </div>
     </footer>
+  </div>
 
-    <script>
-        VANTA.WAVES({
-            el: "#vanta-bg",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0xca9c00,
-            shininess: 50.00,
-            waveHeight: 15.00,
-            waveSpeed: 0.95,
-            zoom: 0.85
-        });
-    </script>
-    <script>
-        feather.replace();
-    </script>
+  <script> feather.replace(); </script>
 </body>
 </html>
