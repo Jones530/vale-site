@@ -22,7 +22,7 @@
 
     html, body { height: 100%; margin: 0; }
     body {
-      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       color: #fff;
       background-image: url('/images/tv-static4.gif');
       background-repeat: repeat;
@@ -40,12 +40,9 @@
     }
     .site-content { position: relative; z-index: 10; }
 
-    .text-outline { -webkit-text-stroke: 1px white; color: transparent; }
-    .hover-scale { transition: transform 0.3s ease; }
-    .hover-scale:hover { transform: scale(1.05); }
     .font-plunct { font-family: 'Plunct', sans-serif; }
 
-    /* Logo sizing & transitions (same as home) */
+    /* Logo sizing & transitions (match home) */
     #valeLogo {
       height: clamp(48px, 8vw, 120px);
       width: auto;
@@ -53,7 +50,7 @@
       display: block;
     }
 
-    /* header background blur and compact layout when scrolled (optional visual) */
+    /* header background blur when scrolled */
     header.scrolled nav {
       backdrop-filter: blur(4px);
       background: rgba(0,0,0,0.35);
@@ -81,61 +78,57 @@
       border: none;
       transition: transform 0.3s ease, background-color 0.3s ease;
     }
-    .cloud-mask-btn:hover {
-      transform: scale(1.05);
-      background-color: #fbbf24;
-    }
+    .cloud-mask-btn:hover { transform: scale(1.05); background-color: #fbbf24; }
 
     /* mobile nav animation */
-    #mobileNav {
-      transition: max-height 280ms ease, opacity 220ms ease;
-    }
+    #mobileNav { transition: max-height 280ms ease, opacity 220ms ease; }
 
-    /* ---------- HERO: black / yellow / white only ---------- */
+    /* ---------- Contact hero (black / yellow / white only) ---------- */
     .contact-hero {
       height: 160px;
       display:flex;
       align-items:center;
       justify-content:center;
-      background: black;
       position: relative;
       overflow: hidden;
+      /* black base with a yellow diagonal accent stripe */
+      background:
+        linear-gradient(120deg,
+          #000 0% 42%,
+          #facc15 42% 48%,
+          #000 48% 100%);
+      transition: height 220ms ease, padding 220ms ease;
     }
-    /* slanted yellow block on the right for visual interest (still only b/w/y) */
-    .contact-hero::before {
-      content: "";
-      position: absolute;
-      right: -10%;
-      top: -20%;
-      width: 70%;
-      height: 140%;
-      transform: rotate(-18deg);
-      background: #facc15;
-      opacity: 1;
-      z-index: 1;
-      box-shadow: 0 0 40px rgba(250,202,21,0.08);
-      border-left: 8px solid rgba(255,255,255,0.02);
+    /* when header is scrolled the hero shrinks in sync */
+    header.scrolled + .contact-hero {
+      height: 110px;
     }
+
     .contact-hero::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.3));
-      z-index: 2;
-      pointer-events: none;
+      inset:0;
+      /* subtle white overlay at very low opacity to allow white stroke to pop */
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      pointer-events:none;
     }
+
     .hero-title {
-      position: relative;
-      z-index: 3;
       font-size: clamp(48px, 8vw, 96px);
       letter-spacing: 4px;
       color: #facc15; /* yellow fill */
-      -webkit-text-stroke: 2px #ffffff; /* white stroke */
+      -webkit-text-stroke: 2px #ffffff; /* white stroke to match your style */
       font-weight: 900;
+      transition: transform 220ms ease, font-size 220ms ease;
+      transform-origin: center;
       text-transform: uppercase;
     }
+    /* shrink title when header is scrolled (in-line movement) */
+    header.scrolled + .contact-hero .hero-title {
+      transform: scale(0.76);
+    }
 
-    /* form style — transparent, bottom border only */
+    /* form styles (transparent with bottom border) */
     .input-line {
       background: transparent;
       border: none;
@@ -157,7 +150,6 @@
       width:100%;
     }
 
-    /* submit button */
     .btn-yellow {
       background: #facc15;
       color: black;
@@ -201,16 +193,18 @@
       background:transparent;
       font-size:14px;
     }
+
     @media (max-width: 768px) {
       .social-pill { right: 8px; padding:10px 8px; gap:10px; }
       .hero-title { font-size: clamp(36px,10vw,64px); }
       .contact-hero { height: 120px; }
+      header.scrolled + .contact-hero { height: 90px; }
     }
   </style>
 </head>
 <body class="site-overlay">
   <div class="site-content">
-    <!-- Header (identical structure to home) -->
+    <!-- Header (same structure + JS-compatible IDs as home) -->
     <header id="siteHeader" class="fixed w-full z-50">
       <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3">
@@ -232,7 +226,6 @@
         </div>
       </nav>
 
-      <!-- Mobile nav -->
       <div id="mobileNav" class="md:hidden container mx-auto px-6 overflow-hidden hidden">
         <div class="flex flex-col bg-black/80 py-4 rounded-b-lg space-y-2">
           <a href="/HOME/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">HOME</a>
@@ -243,7 +236,7 @@
       </div>
     </header>
 
-    <!-- Hero -->
+    <!-- Contact hero (immediately after header so header.scrolled + .contact-hero works) -->
     <section class="contact-hero mt-20">
       <h1 class="hero-title">CONTACT</h1>
     </section>
@@ -294,7 +287,7 @@
       </div>
     </main>
 
-    <!-- Footer (same as home) -->
+    <!-- Footer (same look as home) -->
     <footer class="py-12">
       <div class="container mx-auto px-6">
         <div class="flex flex-col md:flex-row justify-between items-center">
@@ -315,7 +308,7 @@
     </footer>
   </div>
 
-  <!-- Vertical social pill -->
+  <!-- Vertical social pill (right) -->
   <div class="social-pill" aria-hidden="false">
     <a href="https://instagram.com/vale.tones" target="_blank" rel="noopener noreferrer" title="Instagram">IG</a>
     <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter">TW</a>
@@ -326,10 +319,10 @@
   </div>
 
   <script>
-    // ensure feather icons show
+    // icons
     feather.replace();
 
-    // ---------------- Header & nav behavior (copied from home) ----------------
+    // ---------- Header + logo resize logic (same as home) ----------
     const logo = document.getElementById('valeLogo');
     const brandText = document.getElementById('brandText');
     const header = document.getElementById('siteHeader');
@@ -339,6 +332,7 @@
     let naturalLogoHeight = null;
 
     function recordNaturalHeight() {
+      if (!logo) return;
       logo.style.height = '';
       const rect = logo.getBoundingClientRect();
       naturalLogoHeight = rect.height || 64;
@@ -346,6 +340,7 @@
     }
 
     function shrinkLogoToText() {
+      if (!logo || !brandText) return;
       const targetHeight = brandText.getBoundingClientRect().height;
       const minHeight = Math.min(28, targetHeight);
       logo.style.height = Math.max(targetHeight, minHeight) + 'px';
@@ -353,10 +348,9 @@
     }
 
     function restoreLogo() {
-      if (naturalLogoHeight) {
-        logo.style.height = naturalLogoHeight + 'px';
-        logo.style.transform = '';
-      }
+      if (!logo || !naturalLogoHeight) return;
+      logo.style.height = naturalLogoHeight + 'px';
+      logo.style.transform = '';
     }
 
     let scrollThreshold = 60;
@@ -374,6 +368,7 @@
       }
     }
 
+    // mobile menu toggle (keeps same behavior)
     function toggleMobileMenu(forceState) {
       const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
       const willExpand = typeof forceState === 'boolean' ? forceState : !expanded;
@@ -390,6 +385,7 @@
       feather.replace();
     }
 
+    // close menu on outside click (mobile)
     document.addEventListener('click', (e) => {
       if (window.innerWidth >= 768) return;
       if (!menuBtn.contains(e.target) && !mobileNav.contains(e.target) && menuBtn.getAttribute('aria-expanded') === 'true') {
@@ -403,16 +399,9 @@
       if (header.classList.contains('scrolled')) shrinkLogoToText();
       else restoreLogo();
     });
-    window.addEventListener('orientationchange', () => {
-      recordNaturalHeight();
-      if (header.classList.contains('scrolled')) shrinkLogoToText();
-      else restoreLogo();
-    });
+    window.addEventListener('orientationchange', () => { recordNaturalHeight(); });
 
-    menuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleMobileMenu();
-    });
+    menuBtn?.addEventListener('click', (e) => { e.stopPropagation(); toggleMobileMenu(); });
 
     document.addEventListener('DOMContentLoaded', () => {
       feather.replace();
@@ -420,8 +409,10 @@
       onScroll();
     });
 
-    // ---------------- Formspree submit (keeps your endpoint) ----------------
+    // ------------ Form handling (Formspree) --------------
+    // Replace this endpoint with your Formspree endpoint if needed
     const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzzjjdbv';
+
     const form = document.getElementById('contactForm');
     const statusDiv = document.getElementById('formStatus');
 
@@ -429,12 +420,14 @@
       e.preventDefault();
       statusDiv.textContent = 'Sending…';
       const fd = new FormData(form);
+
       try {
         const res = await fetch(FORMSPREE_ENDPOINT, {
           method: 'POST',
           headers: { 'Accept': 'application/json' },
           body: fd
         });
+
         if (res.ok) {
           statusDiv.style.color = '#9ee89a';
           statusDiv.textContent = 'Thanks! Your message has been sent.';
