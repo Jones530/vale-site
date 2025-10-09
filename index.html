@@ -64,6 +64,111 @@
       backdrop-filter: blur(4px);
       background: rgba(0,0,0,0.35);
     }
+/* ---------- Cloud-shaped buttons (responsive) ---------- */
+:root{
+  --vale-yellow: #D97706; /* Tailwind yellow-600 */
+}
+
+/* base cloud */
+.cloud {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-weight: 700;
+  line-height: 1;
+  padding: clamp(0.5rem, 1.4vw, 1rem) clamp(0.9rem, 3.0vw, 2rem);
+  width: clamp(160px, 34vw, 340px);     /* responsive width */
+  height: clamp(48px, 9vw, 84px);       /* responsive height */
+  border-radius: 999px;                 /* fallback pill shape */
+  overflow: visible;                    /* puffs intentionally overflow */
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* main filled cloud */
+.cloud.primary {
+  background: var(--vale-yellow);
+  color: #000;
+  border: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+}
+
+/* outlined cloud variant */
+.cloud.outline {
+  background: transparent;
+  color: var(--vale-yellow);
+  border: 2px solid var(--vale-yellow);
+  box-shadow: none;
+}
+
+/* decorative 'puffs' to make it look like a cloud */
+.cloud::before,
+.cloud::after,
+.cloud > .puff {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+  pointer-events: none;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+/* left puff */
+.cloud::before {
+  width: 40%;
+  height: 70%;
+  left: -12%;
+  top: 16%;
+}
+
+/* right puff */
+.cloud::after {
+  width: 30%;
+  height: 50%;
+  right: -8%;
+  top: 22%;
+}
+
+/* top puff (smaller) */
+.cloud > .puff {
+  width: 34%;
+  height: 44%;
+  left: 12%;
+  top: -22%;
+}
+
+/* Make outline puffs visible as borders instead of filled blobs */
+.cloud.outline::before,
+.cloud.outline::after,
+.cloud.outline > .puff {
+  background: transparent;
+  box-sizing: border-box;
+  border: 2px solid var(--vale-yellow);
+}
+
+/* hover states */
+.cloud:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 28px rgba(0,0,0,0.32); }
+.cloud.outline:hover { transform: translateY(-4px) scale(1.02); }
+
+/* label inside cloud */
+.cloud .label {
+  position: relative;
+  z-index: 2;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* small screens: reduce padding and width so it fits */
+@media (max-width: 420px) {
+  .cloud { width: clamp(140px, 64vw, 240px); padding: 0.45rem 0.8rem; }
+  .cloud::before { left: -16%; }
+  .cloud > .puff { left: 8%; top: -24%; }
+}
 
     /* mobile nav animation */
     #mobileNav {
@@ -115,10 +220,16 @@
           <h1 class="font-plunct text-5xl md:text-7xl font-bold mb-6 text-yellow-400">
             <span class="text-outline">vaLe</span>.
           </h1>
-          <p class="text-xl md:text-2xl mb-12 opacity-90">whats the word?</p>
+          <p class="text-xl md:text-2xl mb-12 opacity-90">have a good day :]</p>
           <div class="flex flex-col md:flex-row justify-center gap-4">
-            <a href="/latest-release" class="bg-yellow-600 hover:bg-yellow-600 text-black font-bold py-4 px-8 rounded-full transition-all hover-scale">LATEST RELEASE</a>
-            <a href="/shop" class="border-2 border-yellow-600 hover:bg-yellow-600 hover:bg-opacity-10 text-yellow-400 font-bold py-4 px-8 rounded-full transition-all hover-scale">SHOP</a>
+            <a href="/latest-release" class="cloud primary" role="button" aria-label="Latest release">
+              <span class="puff" aria-hidden="true"></span>
+              <span class="label">LATEST RELEASE</span>
+           </a>
+            <a href="/shop" class="cloud outline" role="button" aria-label="Shop">
+              <span class="puff" aria-hidden="true"></span>
+              <span class="label">SHOP</span>
+           </a>>
           </div>
         </div>
       </div>
