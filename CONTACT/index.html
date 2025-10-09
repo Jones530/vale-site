@@ -132,6 +132,28 @@ header.scrolled + .contact-hero .hero-title {
       transform: scale(0.76);
     }
 
+/* form panel: black background while static remains visible around it */
+.form-panel {
+  background: rgba(0,0,0,0.78); /* mostly black but slightly translucent so static peeks through at edges */
+  border: 1px solid rgba(255,255,255,0.04); /* subtle light border for contrast */
+  padding: clamp(20px, 3.5vw, 36px);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+  backdrop-filter: none; /* don't blur the static behind the panel */
+}
+
+/* keep the inputs looking crisp on the panel */
+.form-panel .input-line,
+.form-panel .textarea-line {
+  background: transparent;
+  color: #fff;
+}
+
+/* narrow screens: slightly reduce padding */
+@media (max-width: 640px) {
+  .form-panel { padding: 18px; border-radius: 10px; }
+}
+
     /* form styles (transparent with bottom border) */
     .input-line {
       background: transparent;
@@ -219,44 +241,47 @@ header.scrolled + .contact-hero .hero-title {
         <p class="opacity-90">I want to hear from you! You can send me a message for any comments or inquiries using the contact form below.</p>
       </div>
 
-      <div class="max-w-4xl mx-auto">
-        <form id="contactForm" class="space-y-8" autocomplete="off">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <label class="block text-sm mb-2">First Name*</label>
-              <input name="firstName" class="input-line" placeholder="First name" required>
-            </div>
-            <div>
-              <label class="block text-sm mb-2">Last Name*</label>
-              <input name="lastName" class="input-line" placeholder="Last name" required>
-            </div>
-            <div>
-              <label class="block text-sm mb-2">Email*</label>
-              <input type="email" name="email" class="input-line" placeholder="you@example.com" required>
-            </div>
-            <div>
-              <label class="block text-sm mb-2">Company</label>
-              <input name="company" class="input-line" placeholder="Company (optional)">
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm mb-2">Subject</label>
-            <input name="subject" class="input-line" placeholder="Subject">
-          </div>
-
-          <div>
-            <label class="block text-sm mb-2">Message</label>
-            <textarea name="message" class="textarea-line" placeholder="Write your message here..." required></textarea>
-          </div>
-
-          <div class="flex justify-center">
-            <button type="submit" class="btn-yellow">Send Message</button>
-          </div>
-
-          <div id="formStatus" class="text-center text-sm mt-2" aria-live="polite"></div>
-        </form>
+<div class="max-w-4xl mx-auto">
+  <div class="form-panel">
+    <form id="contactForm" class="space-y-8" autocomplete="off">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label class="block text-sm mb-2">First Name*</label>
+          <input name="firstName" class="input-line" placeholder="First name" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-2">Last Name*</label>
+          <input name="lastName" class="input-line" placeholder="Last name" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-2">Email*</label>
+          <input type="email" name="email" class="input-line" placeholder="you@example.com" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-2">Company</label>
+          <input name="company" class="input-line" placeholder="Company (optional)">
+        </div>
       </div>
+
+      <div>
+        <label class="block text-sm mb-2">Subject</label>
+        <input name="subject" class="input-line" placeholder="Subject">
+      </div>
+
+      <div>
+        <label class="block text-sm mb-2">Message</label>
+        <textarea name="message" class="textarea-line" placeholder="Write your message here..." required></textarea>
+      </div>
+
+      <div class="flex justify-center">
+        <button type="submit" class="btn-yellow">Send Message</button>
+      </div>
+
+      <div id="formStatus" class="text-center text-sm mt-2" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
     </main>
 
     <!-- Footer (same look as home) -->
