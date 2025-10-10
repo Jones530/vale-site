@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vaLe — Background Preview</title>
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link rel="stylesheet" href="/styles/main.css" /> <!-- optional if you want existing styles -->
+  <style>
+    /* ----- BASIC RESET ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+    }
+
+    /* ----- BACKGROUND GIF ----- */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("/images/techdiff.gif") center center / cover no-repeat;
+      z-index: -1;
+      opacity: 1; /* adjust if you want to fade the gif */
+    }
+
+    /* ----- HEADER LAYOUT ----- */
+    header {
+      width: 100%;
+      padding: 1.2rem 2.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    header nav a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: opacity 0.25s ease;
+    }
+
+    header nav a:hover {
+      opacity: 0.7;
+    }
+
+    /* ----- CTA BUTTON STYLE ----- */
+    .cta-btn {
+      padding: 0.6rem 1.3rem;
+      border: 1px solid #fff;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .cta-btn:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    /* ----- PLACEHOLDER CENTER TEXT (OPTIONAL) ----- */
+    .center-content {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <img src="/images/vale_logo.png" alt="vaLe logo" height="36" />
+      vaLe
+    </div>
+    <nav>
+      <a href="#">Music</a>
+      <a href="#">Videos</a>
+      <a href="#">Shop</a>
+      <button class="cta-btn">Contact</button>
+    </nav>
+  </header>
+
+  <div class="center-content">
+    <span>vaLe</span>
+  </div>
+</body>
+</html>
 
