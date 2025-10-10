@@ -1,1 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>vaLe — Contact</title>
+  <link rel="icon" type="image/png" href="/images/vale-logo-removebg-preview.png">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Feather icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+  <style>
+    @font-face {
+      font-family: 'Plunct';
+      src: url('/fonts/Plunct.woff2') format('woff2'),
+           url('/fonts/Plunct.woff') format('woff'),
+           url('/fonts/Plunct.otf') format('opentype');
+      font-display: swap;
+    }
+
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #fff;
+      background-image: url('/images/tv-static4.gif');
+      background-repeat: repeat;
+      background-position: center;
+      background-size: auto;
+      background-color: black;
+    }
+    .site-overlay::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .site-content { position: relative; z-index: 10; }
+
+    .font-plunct { font-family: 'Plunct', sans-serif; }
+
+    /* Logo sizing & transitions (match home) */
+    #valeLogo {
+      height: clamp(48px, 8vw, 120px);
+      width: auto;
+      transition: height 220ms ease, transform 220ms ease;
+      display: block;
+    }
+
+    /* header background on scroll — disabled blur/background so no blur bar appears */
+    header.scrolled nav {
+      backdrop-filter: none;
+      background: transparent;
+    }
+
+    .cloud-mask-btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-family: 'Plunct', sans-serif;
+      color: black;
+      background-color: #facc15;
+      width: clamp(160px, 25vw, 260px);
+      height: clamp(80px, 12vw, 120px);
+      -webkit-mask-image: url('/images/vale-logo-removebg-preview.png');
+      mask-image: url('/images/vale-logo-removebg-preview.png');
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      border: none;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .cloud-mask-btn:hover { transform: scale(1.05); background-color: #fbbf24; }
+
+    /* mobile nav animation */
+    #mobileNav { transition: max-height 280ms ease, opacity 220ms ease; }
+
+
+    /* ---------- Album hero (replaces contact hero) ---------- */
+.album-hero {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 18px 0 60px;
+  z-index: 5;
+}
+
+.album-hero-inner {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+/* three tall panels centered horizontally */
+.album-panels {
+  display: inline-flex;
+  gap: 18px;
+  justify-content: center;
+  align-items: stretch;
+  margin: 0 auto 18px;
+}
+
+/* panel images — tall, cropped center, slight border */
+.album-panel-img {
+  width: clamp(140px, 16vw, 260px);
+  height: clamp(360px, 48vw, 520px);
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+  display: block;
+}
+
+/* the big album image that sits where the "title" used to be */
+.album-title-wrap {
+  margin-top: -26px; /* pull up under the panels to match screenshot overlap */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.album-title-img {
+  width: clamp(420px, 45vw, 720px);
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+  filter: none;
+  margin: 8px 0;
+  opacity: 0.98;
+}
+
+/* Listen Now CTA masked with your logo */
+.listen-cta-wrap {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listen-cta {
+  --btn-w: clamp(220px, 26vw, 360px);
+  --btn-h: clamp(52px, 8vw, 86px);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-w);
+  height: var(--btn-h);
+
+  /* Use your logo as a mask so the button takes logo shape */
+  background: linear-gradient(180deg, #facc15, #f4b400);
+  color: #000;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform .18s ease, filter .18s ease;
+
+  -webkit-mask-image: url('/images/vale-logo-removebg-preview.png');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('/images/vale-logo-removebg-preview.png');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+/* Fallback look if mask fails (keeps rounded rectangle) */
+.listen-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* accessible label inside masked button: keep visible for some masks */
+.listen-cta span {
+  position: relative;
+  z-index: 2;
+  padding: 0 12px;
+  mix-blend-mode: multiply;
+}
+
+/* hover */
+.listen-cta:hover { transform: translateY(-3px); filter: brightness(.98); }
+
+/* Responsive tweaks */
+@media (max-width: 880px) {
+  .album-panel-img { height: clamp(300px, 44vw, 420px); }
+  .album-title-img { width: clamp(320px, 60vw, 520px); max-height: 180px; }
+  .listen-cta { --btn-w: clamp(180px, 44vw, 280px); --btn-h: clamp(46px, 9vw, 70px); }
+}
+
+@media (max-width: 520px) {
+  .album-panels { gap: 10px; }
+  .album-panel-img { width: clamp(110px, 30vw, 140px); height: clamp(220px, 40vw, 300px); }
+  .album-title-img { max-height: 140px; }
+}
+
+/* ---------- Contact form & panel styles (unchanged) ---------- */
+    /* form panel: black background while static remains visible around it */
+    .form-panel {
+      background: rgba(0,0,0,0.78); /* mostly black but slightly translucent so static peeks through at edges */
+      border: 1px solid rgba(255,255,255,0.04); /* subtle light border for contrast */
+      padding: clamp(20px, 3.5vw, 36px);
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+      backdrop-filter: none; /* don't blur the static behind the panel */
+    }
+
+    /* keep the inputs looking crisp on the panel */
+    .form-panel .input-line,
+    .form-panel .textarea-line {
+      background: transparent;
+      color: #fff;
+    }
+
+    /* form styles (transparent with bottom border) */
+    .input-line {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.8);
+      padding: 10px 6px;
+      color: #fff;
+      outline: none;
+      width: 100%;
+    }
+    .input-line::placeholder { color: rgba(255,255,255,0.6); }
+    .textarea-line {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px;
+      color:#fff;
+      outline: none;
+      resize:vertical;
+      min-height:140px;
+      width:100%;
+    }
+
+    .btn-yellow {
+      background: #facc15;
+      color: black;
+      font-weight:700;
+      padding: 14px 26px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      transition: transform .14s ease, filter .14s ease;
+    }
+    .btn-yellow:hover { transform: translateY(-3px); filter:brightness(0.98); }
+
+
+    @media (max-width: 768px) {
+      .social-pill { right: 8px; padding:10px 8px; gap:10px; }
+      .hero-title { font-size: clamp(36px,10vw,64px); }
+      .contact-hero { height: 120px; }
+      header.scrolled + .contact-hero { height: 90px; }
+    }
+  </style>
+</head>
+<body class="site-overlay">
+  <div class="site-content">
+    <!-- Header (same structure + JS-compatible IDs as home) -->
+    <header id="siteHeader" class="fixed w-full z-50">
+      <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <img id="valeLogo" src="/images/vale-logo-removebg-preview.png" alt="vaLe logo" />
+          <a href="/HOME/" class="font-plunct text-xl font-bold leading-none" id="brandText">vaLe.</a>
+        </div>
+
+        <div class="hidden md:flex space-x-8 items-center">
+          <a href="/HOME/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">HOME</a>
+          <a href="/MUSIC/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">MUSIC</a>
+          <a href="/SHOP/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">SHOP</a>
+          <a href="/ABOUT/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">ABOUT</a>
+          <a href="/CONTACT/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">CONTACT</a>
+        </div>
+
+        <div class="md:hidden">
+          <button id="menuBtn" aria-controls="mobileNav" aria-expanded="false" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" title="Open menu">
+            <i data-feather="menu"></i>
+          </button>
+        </div>
+      </nav>
+
+      <div id="mobileNav" class="md:hidden container mx-auto px-6 overflow-hidden hidden">
+        <div class="flex flex-col bg-black/80 py-4 rounded-b-lg space-y-2">
+          <a href="/HOME/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">HOME</a>
+          <a href="/MUSIC/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">MUSIC</a>
+          <a href="/SHOP/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">SHOP</a>
+          <a href="/ABOUT/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">ABOUT</a>
+          <a href="/CONTACT/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">CONTACT</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Album hero (replacing the old contact hero) -->
+    <section class="album-hero mt-20">
+      <div class="album-hero-inner">
+        <!-- 3 vertical panels: replace these images with your album art -->
+        <div class="album-panels" aria-hidden="true">
+          <img src="/images/album-left.jpg" alt="Album left" class="album-panel-img">
+          <img src="/images/album-center.jpg" alt="Album center" class="album-panel-img">
+          <img src="/images/album-right.jpg" alt="Album right" class="album-panel-img">
+        </div>
+
+        <!-- Big album cover where the title used to be -->
+        <div class="album-title-wrap">
+          <img src="/images/album-cover-large.jpg" alt="Album cover large" class="album-title-img">
+        </div>
+
+        <!-- Masked Listen Now button shaped with your logo -->
+        <div class="listen-cta-wrap">
+          <button class="listen-cta" id="listenNowBtn" aria-label="Listen now">
+            <span>LISTEN NOW</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main content & form -->
+    <main class="container mx-auto px-6 py-12">
+    <p class="opacity-90 text-center text-[2em] md:text-[2.2em] leading-tight mb-8">
+      I want to hear from you! You can send me a message for any comments or inquiries using the contact form below.
+    </p>
+
+<div class="max-w-4xl mx-auto">
+  <div class="form-panel">
+    <form id="contactForm" class="space-y-8" autocomplete="off">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label class="block text-sm mb-2">First Name*</label>
+          <input name="firstName" class="input-line" placeholder="First name" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-2">Last Name*</label>
+          <input name="lastName" class="input-line" placeholder="Last name" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-2">Email*</label>
+          <input type="email" name="email" class="input-line" placeholder="you@example.com" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-2">Company</label>
+          <input name="company" class="input-line" placeholder="Company (optional)">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm mb-2">Subject</label>
+        <input name="subject" class="input-line" placeholder="Subject">
+      </div>
+
+      <div>
+        <label class="block text-sm mb-2">Message</label>
+        <textarea name="message" class="textarea-line" placeholder="Write your message here..." required></textarea>
+      </div>
+
+      <div class="flex justify-center">
+        <button type="submit" class="btn-yellow">Send Message</button>
+      </div>
+
+      <div id="formStatus" class="text-center text-sm mt-2" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+    </main>
+
+    <!-- Footer (same look as home) -->
+    <footer class="py-12">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-6 md:mb-0">
+            <div class="flex items-center space-x-2">
+              <span class="font-plunct text-xl font-bold">:] vaLe.</span>
+            </div>
+            <p class="text-white-400 mt-2">© 2025 All Rights Reserved</p>
+          </div>
+          <div class="flex space-x-6">
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i data-feather="twitter" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="https://instagram.com/vale.tones" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i data-feather="instagram" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="https://open.spotify.com/artist/5dQMITMypQMYoXxIU2NSmY?si=weiFPRCqQ2yiph_DnjAzwg" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><i data-feather="headphones" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="https://music.apple.com/us/artist/kognac/1651538178" target="_blank" rel="noopener noreferrer" aria-label="Apple"> <i data-feather="music" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Youtube"> <i data-feather="youtube" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // icons
+    feather.replace();
+
+    // ---------- Header + logo resize logic (same as home) ----------
+    const logo = document.getElementById('valeLogo');
+    const brandText = document.getElementById('brandText');
+    const header = document.getElementById('siteHeader');
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    let naturalLogoHeight = null;
+
+    function recordNaturalHeight() {
+      if (!logo) return;
+      logo.style.height = '';
+      const rect = logo.getBoundingClientRect();
+      naturalLogoHeight = rect.height || 64;
+      logo.style.height = naturalLogoHeight + 'px';
+    }
+
+    function shrinkLogoToText() {
+      if (!logo || !brandText) return;
+      const targetHeight = brandText.getBoundingClientRect().height;
+      const minHeight = Math.min(28, targetHeight);
+      logo.style.height = Math.max(targetHeight, minHeight) + 'px';
+      logo.style.transform = 'translateY(0)';
+    }
+
+    function restoreLogo() {
+      if (!logo || !naturalLogoHeight) return;
+      logo.style.height = naturalLogoHeight + 'px';
+      logo.style.transform = '';
+    }
+
+    let scrollThreshold = 60;
+    function onScroll() {
+      if (window.scrollY > scrollThreshold) {
+        if (!header.classList.contains('scrolled')) {
+          header.classList.add('scrolled');
+          shrinkLogoToText();
+        }
+      } else {
+        if (header.classList.contains('scrolled')) {
+          header.classList.remove('scrolled');
+          restoreLogo();
+        }
+      }
+    }
+
+    // mobile menu toggle (keeps same behavior)
+    function toggleMobileMenu(forceState) {
+      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      const willExpand = typeof forceState === 'boolean' ? forceState : !expanded;
+      menuBtn.setAttribute('aria-expanded', String(!!willExpand));
+      if (willExpand) {
+        mobileNav.classList.remove('hidden');
+        mobileNav.style.maxHeight = '400px';
+        mobileNav.style.opacity = '1';
+      } else {
+        mobileNav.style.maxHeight = '0';
+        mobileNav.style.opacity = '0';
+        setTimeout(() => mobileNav.classList.add('hidden'), 280);
+      }
+      feather.replace();
+    }
+
+    // close menu on outside click (mobile)
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth >= 768) return;
+      if (!menuBtn.contains(e.target) && !mobileNav.contains(e.target) && menuBtn.getAttribute('aria-expanded') === 'true') {
+        toggleMobileMenu(false);
+      }
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      recordNaturalHeight();
+      if (header.classList.contains('scrolled')) shrinkLogoToText();
+      else restoreLogo();
+    });
+    window.addEventListener('orientationchange', () => { recordNaturalHeight(); });
+
+    menuBtn?.addEventListener('click', (e) => { e.stopPropagation(); toggleMobileMenu(); });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      feather.replace();
+      recordNaturalHeight();
+      onScroll();
+    });
+
+    // Optional: hook the Listen Now button
+    document.getElementById('listenNowBtn')?.addEventListener('click', () => {
+      // Example: open streaming page /music or external link
+      window.location.href = '/MUSIC/';
+    });
+  </script>
+</body>
+</html>
 
