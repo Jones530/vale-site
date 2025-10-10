@@ -89,39 +89,44 @@
       top: 18px;
       right: 18px;
     }
-    /* big album cover (single) */
+
+    /* ---------- Album cover adjustments (full cover visible) ---------- */
     .album-hero {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 24px 12px 72px;
+      padding: 24px 12px 32px;
       z-index: 5;
+      flex-direction: column;
     }
+
     .album-cover-wrap {
-      width: min(1220px, 94%);
+      width: min(920px, 94%); /* container width */
       margin: 0 auto;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
     }
+
+    /* Make the cover show fully: keep aspect ratio, contain inside the container */
     .album-cover {
       width: 100%;
-      height: clamp(460px, 64vh, 820px); /* large cover occupying combined area */
-      object-fit: cover;
+      max-width: 820px;          /* won't grow past this */
+      height: auto;             /* preserve ratio */
+      max-height: 72vh;         /* make sure it fits within viewport */
+      object-fit: contain;      /* show whole image */
       object-position: center;
       display: block;
       box-shadow: 0 18px 50px rgba(0,0,0,0.6);
       border-radius: 4px;
       border: 1px solid rgba(255,255,255,0.04);
+      background: rgba(0,0,0,0.05); /* subtle fallback */
     }
 
-    /* Listen Now CTA masked with your logo — sits over the album cover */
+    /* Listen Now button BELOW the cover, centered */
     .listen-cta-wrap {
-      position: absolute;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-top: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -163,13 +168,15 @@
     .listen-cta span { position: relative; z-index: 2; padding: 0 12px; mix-blend-mode: multiply; }
     .listen-cta:hover { transform: translateY(-3px); filter: brightness(.98); }
 
-    /* small screens: reduce cover height and CTA placement */
+    /* mobile / small screen tweaks */
     @media (max-width: 820px) {
-      .album-cover { height: clamp(320px, 56vh, 560px); }
-      .listen-cta { --btn-w: clamp(160px, 36vw, 300px); --btn-h: clamp(44px, 9vw, 76px); bottom: 18px; }
+      .album-cover-wrap { width: 94%; }
+      .album-cover { max-width: 640px; max-height: 60vh; }
+      .listen-cta { --btn-w: clamp(160px, 36vw, 300px); --btn-h: clamp(44px, 9vw, 76px); }
     }
-
-    /* keep the form-panel styles removed — nothing needed */
+    @media (max-width: 480px) {
+      .album-cover { max-width: 92%; max-height: 55vh; }
+    }
 
     /* footer styles unchanged but ensure high z-index so it displays */
     footer { position: relative; z-index: 5; }
@@ -182,7 +189,6 @@
       <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3">
           <img id="valeLogo" src="/images/vale-logo-removebg-preview.png" alt="vaLe logo" />
-          <!-- keep brand text if you want, optional -->
           <a href="/HOME/" class="font-plunct text-xl font-bold leading-none" id="brandText">vaLe.</a>
         </div>
 
@@ -229,18 +235,18 @@
       </div>
     </header>
 
-    <!-- Album hero: single big cover that occupies the combined area -->
+    <!-- Album hero: single big cover but small enough to be fully visible -->
     <section class="album-hero mt-20">
       <div class="album-cover-wrap">
-        <!-- Replace this with your full high-res cover that should cover the combined area -->
+        <!-- Replace with your high-res cover (will be fully visible) -->
         <img src="/images/vale.JPG" alt="vaLe album cover" class="album-cover">
+      </div>
 
-        <!-- Masked Listen Now button sitting over the cover -->
-        <div class="listen-cta-wrap">
-          <button class="listen-cta" id="listenNowBtn" aria-label="Listen now">
-            <span>LISTEN NOW</span>
-          </button>
-        </div>
+      <!-- Listen Now button is BELOW the cover -->
+      <div class="listen-cta-wrap">
+        <button class="listen-cta" id="listenNowBtn" aria-label="Listen now">
+          <span>LISTEN NOW</span>
+        </button>
       </div>
     </section>
 
