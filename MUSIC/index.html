@@ -52,6 +52,35 @@
 
     header.scrolled nav { backdrop-filter: none; background: transparent; }
 
+    /* --- Adjusted header/nav height & alignment (raised like example) --- */
+#siteHeader nav {
+  padding-top: 0.75rem;  /* tighter top space */
+  padding-bottom: 0.75rem;
+  align-items: center;
+  height: 64px;          /* controls total header height */
+  transition: all 0.2s ease-in-out;
+}
+
+#valeLogo {
+  height: clamp(42px, 6vw, 70px);  /* slightly smaller by default */
+  width: auto;
+  transition: height 220ms ease, transform 220ms ease;
+}
+
+#brandText {
+  margin-top: 2px; /* vertical alignment fine-tune */
+  font-size: clamp(1rem, 2vw, 1.3rem);
+}
+
+#menuBtn svg {
+  width: 24px;
+  height: 24px;
+}
+
+header.fixed {
+  top: 8px; /* raises entire header slightly */
+}
+
     /* always-show hamburger - hide desktop nav links */
     .desktop-links { display: none; }
 
