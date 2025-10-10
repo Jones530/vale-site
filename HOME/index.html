@@ -27,25 +27,13 @@
   position: fixed;
   inset: 0;
   z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-  background-color: red; /* DEBUG LINE */
-}
-
-.background-overlay::before {
-  content: "";
-  display: block;
-  width: 33%;  /* one-third width of the screen */
-  height: auto;
   background-image: url('/images/pinkhead.png');
-  background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center;
+  background-size: 33%; /* one third of the original */
   opacity: 0.35;
+  pointer-events: none;
 }
-
 
 
     html, body { height: 100%; margin: 0; }
