@@ -23,16 +23,16 @@
       font-style: normal;
     }
     
-    .background-overlay {
+  .background-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1; /* ABOVE the static background, BELOW your site content */
-  background-image: url('/images/pinkhead.png');
-  background-size: cover; /* or 'contain' depending on your image */
+  z-index: 2;
+  background-image: url('images/pinkhead.png');
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.3; /* adjust transparency */
-  pointer-events: none; /* prevents blocking clicks on your buttons */
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 
@@ -112,8 +112,8 @@
     }
   </style>
 </head>
-<body class="site-overlay">
- <div class="background-overlay"></div>
+<body class="site-overlay relative z-0">
+  <div class="background-overlay"></div>
   <div class="site-content">
     <header id="siteHeader" class="fixed w-full z-50">
       <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
