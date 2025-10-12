@@ -32,8 +32,8 @@
       --black: #000;
       --white: #fff;
 
-      /* overlay opacity: tweak between 0.25 (lighter) and 0.65 (darker) */
-      --overlay-opacity: 0.45;
+      /* overlay opacity: increased per request (more opaque) */
+      --overlay-opacity: 0.65;
 
       --header-height: 2.5in;
       --brand-base-height: 1in;
@@ -41,8 +41,11 @@
       --brand-height: calc(var(--brand-base-height) + 3pt);
     }
 
-    /* ---------- layout + background GIF ---------- */
+    /* make the base font 3pt larger across the page */
+    /* 1rem will now be (browser default + 3pt). This increases most inherited text sizes. */
+    html { font-size: calc(100% + 3pt); }
 
+    /* ---------- layout + background GIF ---------- */
     html,body{
       height:100%;
       margin:0;
@@ -168,9 +171,11 @@
     header.site-header.scrolled .header-bottom { transform: translateY(-120%); opacity:0; pointer-events:none; }
 
     .merch-types { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    /* bump merch-types font-size by 3pt as well */
     .merch-types button {
       background:transparent; border:none; padding:6px 8px; font-family:'Plunct',sans-serif;
-      font-size:13px; cursor:pointer; color:#fff;
+      font-size: calc(13px + 3pt); /* increased by 3pt */
+      cursor:pointer; color:#fff;
       text-shadow: 0 1px 3px rgba(0,0,0,0.6);
       position: relative;
       z-index: 92;
@@ -208,7 +213,8 @@
       z-index: 52;
     }
 
-    .product-info { padding:12px 6px; font-size:13px; color:#fff; background: transparent; position: relative; z-index: 51; }
+    /* increase product-info font-size by 3pt */
+    .product-info { padding:12px 6px; font-size: calc(13px + 3pt); color:#fff; background: transparent; position: relative; z-index: 51; }
     .product-title { text-transform:uppercase; font-weight:600; letter-spacing:0.6px; margin-bottom:6px; color:#fff; text-shadow: 0 1px 3px rgba(0,0,0,0.65); }
     .product-desc { color: rgba(255,255,255,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.55); }
     .product-price { font-weight:800; color:#fff; text-shadow: 0 1px 3px rgba(0,0,0,0.65); }
@@ -218,7 +224,8 @@
 
     .snipcart-add-item { background: var(--yellow); color: #000; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:700; box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
 
-    footer { padding:30px 12px; text-align:center; color:#fff; font-size:14px; position: relative; z-index: 50; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+    /* increase footer text by 3pt as well */
+    footer { padding:30px 12px; text-align:center; color:#fff; font-size: calc(14px + 3pt); position: relative; z-index: 50; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
     /* mobile menu overlay must remain above overlay */
     #mobileMenu { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; z-index:120; }
