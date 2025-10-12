@@ -3,21 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Grin & Glisten — aL vaLe Merch (styled)</title>
+  <title>aL vaLe — Official Merch</title>
   <link rel="icon" type="image/png" href="/images/vale-logo-removebg-preview.png">
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind & Feather -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Feather icons -->
   <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
-  <!-- Snipcart (cart functionality) -->
+  <!-- Snipcart (optional) -->
   <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.css" />
   <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>
 
   <style>
-    /* Plunct font (same as your aL vaLe site). Keep local files in /fonts/ */
+    /* Font + base */
     @font-face {
       font-family: 'Plunct';
       src: url('/fonts/Plunct.woff2') format('woff2'),
@@ -28,78 +26,97 @@
       font-style: normal;
     }
 
-    :root{
-      --gold:#D4AF37; --black:#000; --white:#fff; --veer-deep:#B30000;
-    }
+    :root { --gold:#D4AF37; --black:#000; --white:#fff; --accent:#facc15; }
 
-    html, body { height:100%; margin:0; background: #000; font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:#fff; }
-
+    html, body { height:100%; margin:0; }
     body {
+      font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #fff;
       background-image: url('/images/tv-static4.gif');
       background-repeat: repeat;
       background-position: center;
       background-size: auto;
+      background-color: #000;
+    }
+    .site-overlay::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .site-content { position: relative; z-index: 10; }
+
+    .plunct { font-family: 'Plunct', sans-serif; }
+    .monument { font-family: 'Plunct', sans-serif; font-weight:700; } /* simplified */
+
+    /* Logo sizing */
+    #valeLogo {
+      height: clamp(48px, 8vw, 120px);
+      width: auto;
+      transition: height 220ms ease, transform 220ms ease;
+      display:block;
     }
 
-    .site-overlay::before{
-      content:""; position:fixed; inset:0; background:rgba(0,0,0,0.45); pointer-events:none; z-index:0;
-    }
-    .site-content{ position:relative; z-index:10; }
-
-    /* Header / logo (aL vaLe) */
-    #valeLogo { height: clamp(48px, 8vw, 120px); width:auto; transition: height 220ms ease, transform 220ms ease; display:block; }
     header.scrolled nav { backdrop-filter: blur(4px); background: rgba(0,0,0,0.35); }
 
-    /* Small utility */
-    .text-outline { -webkit-text-stroke: 1px white; color: transparent; }
-    .hover-scale { transition: transform 0.3s ease; } .hover-scale:hover { transform: scale(1.05); }
-    .font-plunct{ font-family:'Plunct', sans-serif; }
+    /* Hero / main layout */
+    .shop-hero {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding-top:6.5rem;
+      padding-bottom:5rem;
+      color:#fff;
+    }
+    .shop-hero .overlay { position:absolute; inset:0; background:rgba(0,0,0,0.35); pointer-events:none; }
 
-    /* curated grid / panels (inspired by Grin & Glisten styling, but dark theme) */
-    .filter-panel{ position:sticky; top:96px; max-height:calc(100vh - 110px); overflow:auto; padding-right:8px; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid rgba(255,255,255,0.03); }
+    /* Layout pieces */
+    .filter-panel{ position:sticky; top:96px; max-height:calc(100vh - 110px); overflow:auto; padding-right:8px; background:rgba(255,255,255,0.02); border-radius:10px; }
     .curated-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:1rem; }
     @media (max-width:1024px){ .curated-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width:640px){ .curated-grid { grid-template-columns: 1fr; } }
 
-    .product-card{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); border-radius:10px; overflow:hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.6); transition: transform .18s ease; }
+    .product-card{ background:#fff; color:#000; border-radius:10px; overflow:hidden; border:1px solid rgba(0,0,0,0.06); box-shadow:0 8px 30px rgba(0,0,0,0.25); transition:transform .18s ease; }
     .product-card:hover { transform: translateY(-6px); }
 
-    .badge-gold{ background:var(--gold); color:#000; font-weight:900; padding:4px 8px; border-radius:6px; font-size:11px; }
+    .subtype-link { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; background:rgba(255,255,255,0.95); color:#000; text-decoration:none; border:1px solid rgba(0,0,0,0.06); }
+    .subtype-badge { background:rgba(0,0,0,0.06); padding:2px 8px; border-radius:9999px; font-size:12px; color:#000; }
 
-    .subtype-link { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03); color:#fff; text-decoration:none; }
-    .subtype-badge { background:rgba(255,255,255,0.04); padding:2px 8px; border-radius:9999px; font-size:12px; color:#fff; }
+    .share-btn { margin-left:8px; background:transparent; border:none; cursor:pointer; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border-radius:6px; }
 
-    .share-btn { margin-left:8px; background:transparent; border:none; cursor:pointer; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border-radius:6px; color:var(--gold); }
-    .share-toast { position:fixed; bottom:18px; right:18px; background:#111; color:#fff; padding:8px 12px; border-radius:8px; font-size:13px; opacity:0.96; z-index:99999; }
+    .search-input { display:block; width:100%; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); color:#fff; }
 
-    /* small responsive tweaks */
-    @media (max-width:768px){
-      .filter-panel { position:static; max-height:none; }
-      .curated-grid { grid-template-columns: 1fr; }
-    }
+    /* small helpers */
+    .badge-gold { background:var(--gold); color:#000; padding:6px 8px; border-radius:6px; font-weight:700; font-size:12px; display:inline-block; }
+    .heart-btn{ background:white; border-radius:9999px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(0,0,0,0.06); cursor:pointer; }
+    .heart-active{ background:var(--gold); color:#000 !important; }
 
-    /* mobile nav transition helpers */
-    #mobileNav { transition: max-height 280ms ease, opacity 220ms ease; overflow:hidden; }
+    .share-toast { position:fixed; bottom:18px; right:18px; background:#111; color:#fff; padding:8px 12px; border-radius:8px; font-size:13px; opacity:0.95; z-index:99999; }
+
+    /* mobile nav */
+    #mobileNav { transition: max-height 280ms ease, opacity 220ms ease; }
   </style>
 </head>
 <body class="site-overlay">
   <div class="site-content">
-    <!-- Header adapted from aL vaLe (branding changed to Grin & Glisten where appropriate) -->
+    <!-- HEADER: aL vaLe style -->
     <header id="siteHeader" class="fixed w-full z-50">
       <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3">
-          <img id="valeLogo" src="/images/vale-logo-removebg-preview.png" alt="vaLe / Grin & Glisten logo" />
-          <a href="/" class="font-plunct text-xl font-bold leading-none" id="brandText">Grin & Glisten</a>
+          <img id="valeLogo" src="/images/vale-logo-removebg-preview.png" alt="vaLe logo" />
+          <a href="/HOME/" class="plunct text-xl font-bold leading-none" id="brandText">vaLe.</a>
         </div>
 
         <div class="hidden md:flex space-x-8 items-center">
-          <a href="/Home/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">HOME</a>
-          <a href="/AllProducts/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">SHOP</a>
-          <a href="/HowToOrder/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">HOW TO ORDER</a>
-          <a href="/Gallery/" class="hover:text-yellow-400 transition-colors uppercase tracking-wider">GALLERY</a>
+          <a href="/HOME/" class="uppercase tracking-wider hover:text-yellow-400 transition-colors">HOME</a>
+          <a href="/MUSIC/" class="uppercase tracking-wider hover:text-yellow-400 transition-colors">MUSIC</a>
+          <a href="/SHOP/" class="uppercase tracking-wider hover:text-yellow-400 transition-colors">SHOP</a>
+          <a href="/CONTACT/" class="uppercase tracking-wider hover:text-yellow-400 transition-colors">CONTACT</a>
         </div>
 
-        <!-- mobile menu button -->
         <div class="md:hidden">
           <button id="menuBtn" aria-controls="mobileNav" aria-expanded="false" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" title="Open menu">
             <i data-feather="menu"></i>
@@ -108,221 +125,147 @@
       </nav>
 
       <!-- mobile nav -->
-      <div id="mobileNav" class="md:hidden container mx-auto px-6 hidden">
+      <div id="mobileNav" class="md:hidden container mx-auto px-6 overflow-hidden hidden">
         <div class="flex flex-col bg-black/80 py-4 rounded-b-lg space-y-2">
-          <a href="/Home/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">HOME</a>
-          <a href="/AllProducts/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">SHOP</a>
-          <a href="/HowToOrder/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">HOW TO ORDER</a>
-          <a href="/Gallery/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">GALLERY</a>
+          <a href="/HOME/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">HOME</a>
+          <a href="/MUSIC/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">MUSIC</a>
+          <a href="/SHOP/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">SHOP</a>
+          <a href="/CONTACT/" class="block px-4 py-2 uppercase tracking-wider hover:text-yellow-400">CONTACT</a>
         </div>
       </div>
     </header>
 
-    <!-- HERO (small banner area; echoes the merch page copy) -->
-    <main class="min-h-screen flex items-start pt-36">
-      <div class="container mx-auto px-6 py-8">
-        <div class="max-w-4xl mx-auto text-center mb-8">
-          <h1 class="font-plunct text-5xl md:text-6xl font-bold mb-3 text-yellow-400"><span class="text-outline">aL vaLe</span> — merch</h1>
-          <p class="text-lg md:text-xl opacity-90">Official merch drops & limited vibe pieces from Grin & Glisten.</p>
+    <!-- HERO: merch landing -->
+    <section id="categoryHero" class="shop-hero text-white" style="background-image:url('/images/avale-banner.gif'); margin-top:64px;">
+      <div class="overlay" aria-hidden="true"></div>
+      <div class="container mx-auto px-6 hero-inner py-12">
+        <div class="shop-banner max-w-4xl mx-auto text-center">
+          <h1 id="categoryTitle" class="plunct text-5xl md:text-6xl mb-4" style="font-weight:800;">aL vaLe — Merch</h1>
+          <p id="categoryTagline" class="mt-2 text-lg opacity-90 plunct">Official merch & limited drops.</p>
+          <div class="mt-6">
+            <a id="viewAllBtn" class="plunct bg-white text-black px-4 py-2 rounded-md inline-block" href="/SHOP/?category=aLvaLemerCh">View all merch</a>
+          </div>
         </div>
+      </div>
+    </section>
 
+    <!-- CONTENT -->
+    <section class="py-12">
+      <div class="container mx-auto px-6">
         <div class="flex flex-col md:flex-row gap-8">
-          <!-- Sidebar: filters / subtypes -->
+          <!-- LEFT: filter panel -->
           <aside class="md:w-1/4">
-            <div class="filter-panel p-6 monument">
+            <div id="filterPanel" class="filter-panel p-6 rounded-lg plunct">
               <h3 class="font-medium text-lg mb-4">Explore</h3>
 
               <div class="space-y-3">
-                <a id="linkViewAll" href="/AllProducts/?category=aLvaLemerCh" class="block py-2 px-3 border rounded-md text-sm">View all aL vaLe merch</a>
+                <a id="linkViewAll" href="/SHOP/?category=aLvaLemerCh" class="block py-2 px-3 border rounded-md text-sm plunct">View all aL vaLe merch</a>
 
                 <div class="mt-4">
-                  <h4 class="font-medium mb-2">By style</h4>
+                  <h4 class="plunct font-medium mb-2">By style</h4>
                   <div id="subtypeLinks" class="space-y-2"></div>
                 </div>
 
                 <div class="mt-6">
-                  <h4 class="font-medium mb-2">Quick info</h4>
-                  <p class="text-sm">Small-batch merch, signed drops, and limited edition prints. Free shipping over $150.</p>
+                  <h4 class="plunct font-medium mb-2">Quick info</h4>
+                  <p class="text-sm plunct">Small-batch merch, signed drops, limited prints. Free shipping over $150.</p>
+                </div>
+
+                <div class="mt-6">
+                  <h4 class="plunct font-medium mb-2">Search</h4>
+                  <input id="panelSearch" class="search-input" placeholder="Search merch..." aria-label="Search merch">
+                </div>
+
+                <div class="mt-6" id="activeFiltersWrap" style="display:none;">
+                  <h4 class="plunct font-medium mb-2">Active filter</h4>
+                  <div id="activeFilterPill"></div>
+                  <button id="clearFilterBtn" class="mt-3 plunct px-3 py-2 bg-white text-black rounded">Clear filter</button>
                 </div>
               </div>
             </div>
           </aside>
 
-          <!-- Main: curated grid -->
-          <main class="md:w-3/4">
+          <!-- MAIN: curated grid -->
+          <main class="md:w-3/4 plunct">
             <div class="flex justify-between items-center mb-6">
               <div>
-                <h2 class="text-2xl font-bold" id="featuredTitle">Featured aL vaLe Merch</h2>
-                <p class="text-sm text-gray-300 mt-1" id="featuredSubtitle">Limited drops & bestsellers.</p>
+                <h2 id="featuredTitle" class="text-2xl font-bold">Featured aL vaLe Merch</h2>
+                <p id="featuredSubtitle" class="text-sm text-gray-300 mt-1">Limited drops & bestsellers.</p>
               </div>
               <div>
-                <a id="viewAllTop" class="bg-white text-black px-4 py-2 rounded-md inline-block" href="/AllProducts/?category=aLvaLemerCh">View all merch</a>
+                <a id="viewAllTop" class="plunct bg-white text-black px-4 py-2 rounded-md inline-block" href="/SHOP/?category=aLvaLemerCh">View all merch</a>
               </div>
             </div>
 
             <div id="curatedGrid" class="curated-grid"></div>
 
             <div class="mt-8 text-center">
-              <a id="viewAllBottom" class="bg-white text-black px-4 py-2 rounded-md inline-block" href="/AllProducts/?category=aLvaLemerCh">See every aL vaLe item</a>
+              <a id="viewAllBottom" class="plunct bg-white text-black px-4 py-2 rounded-md inline-block" href="/SHOP/?category=aLvaLemerCh">See every aL vaLe item</a>
             </div>
           </main>
         </div>
       </div>
-    </main>
+    </section>
 
-    <!-- Footer (simple, consistent with aL vaLe look) -->
+    <!-- FOOTER -->
     <footer class="py-12">
       <div class="container mx-auto px-6">
         <div class="flex flex-col md:flex-row justify-between items-center">
           <div class="mb-6 md:mb-0">
             <div class="flex items-center space-x-2">
-              <span class="font-plunct text-xl font-bold">Grin & Glisten</span>
+              <span class="plunct text-xl font-bold">:] vaLe.</span>
             </div>
-            <p class="text-gray-400 mt-2">© 2025 Grin & Glisten — aL vaLe merch</p>
+            <p class="text-white-400 mt-2">© 2025 vaLe. All rights reserved.</p>
           </div>
-
           <div class="flex space-x-6">
             <a href="#" aria-label="Twitter"><i data-feather="twitter" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
-            <a href="https://instagram.com/vale.tones" aria-label="Instagram" target="_blank" rel="noreferrer"><i data-feather="instagram" class="text-yellow-400"></i></a>
-            <a href="#" aria-label="Spotify"><i data-feather="headphones" class="text-yellow-400"></i></a>
-            <a href="#" aria-label="YouTube"><i data-feather="youtube" class="text-yellow-400"></i></a>
+            <a href="https://instagram.com/vale.tones" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i data-feather="instagram" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="#" aria-label="Spotify"><i data-feather="headphones" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="#" aria-label="Apple"><i data-feather="music" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
+            <a href="#" aria-label="Youtube"><i data-feather="youtube" class="text-yellow-400 hover:text-yellow-400 transition-colors"></i></a>
           </div>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- Snipcart root (replace YOUR_SNIPCART_API_KEY) -->
+  <!-- Snipcart root (replace API key) -->
   <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_API_KEY"></div>
 
-  <!-- Scripts: combine aL vaLe header interactions + Grin & Glisten product UX -->
+  <!-- JS: behavior & product rendering -->
   <script>
-    // === ICONS ===
     feather.replace();
 
-    // === Header / mobile nav behavior (from aL vaLe) ===
-    const logo = document.getElementById('valeLogo');
-    const brandText = document.getElementById('brandText');
-    const header = document.getElementById('siteHeader');
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileNav = document.getElementById('mobileNav');
-
-    let naturalLogoHeight = null;
-    function recordNaturalHeight(){
-      logo.style.height = '';
-      const rect = logo.getBoundingClientRect();
-      naturalLogoHeight = rect.height || 64;
-      logo.style.height = naturalLogoHeight + 'px';
-    }
-    function shrinkLogoToText(){
-      const targetHeight = brandText.getBoundingClientRect().height || 28;
-      logo.style.height = Math.max(targetHeight, 28) + 'px';
-    }
-    function restoreLogo(){
-      if(naturalLogoHeight) logo.style.height = naturalLogoHeight + 'px';
-    }
-    let scrollThreshold = 60;
-    function onScroll(){
-      if(window.scrollY > scrollThreshold){
-        if(!header.classList.contains('scrolled')){
-          header.classList.add('scrolled');
-          shrinkLogoToText();
-        }
-      } else {
-        if(header.classList.contains('scrolled')){
-          header.classList.remove('scrolled');
-          restoreLogo();
-        }
-      }
-    }
-    function toggleMobileMenu(forceState){
-      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
-      const willExpand = typeof forceState === 'boolean' ? forceState : !expanded;
-      menuBtn.setAttribute('aria-expanded', String(!!willExpand));
-      if(willExpand){
-        mobileNav.classList.remove('hidden');
-        mobileNav.style.maxHeight = '400px';
-        mobileNav.style.opacity = '1';
-      } else {
-        mobileNav.style.maxHeight = '0';
-        mobileNav.style.opacity = '0';
-        setTimeout(()=> mobileNav.classList.add('hidden'), 280);
-      }
-      feather.replace();
-    }
-    document.addEventListener('click', (e)=>{
-      if(window.innerWidth >= 768) return;
-      if(!menuBtn.contains(e.target) && !mobileNav.contains(e.target) && menuBtn.getAttribute('aria-expanded') === 'true'){
-        toggleMobileMenu(false);
-      }
-    });
-    window.addEventListener('scroll', onScroll, { passive:true });
-    window.addEventListener('resize', ()=> {
-      recordNaturalHeight();
-      if(header.classList.contains('scrolled')) shrinkLogoToText(); else restoreLogo();
-    });
-    menuBtn?.addEventListener('click', (e)=> { e.stopPropagation(); toggleMobileMenu(); });
-
-    document.addEventListener('DOMContentLoaded', ()=> {
-      feather.replace();
-      recordNaturalHeight();
-      onScroll();
-      buildDemoProducts();           // demo products (replace with canonical data in prod)
-      initCategoryHeroAndLinks();
-      renderCuratedProducts();
-      initHeaderSearch();
-      initMobileSearch();
-    });
-
-    /* ------------------------------
-       Product demo + data structures
-       (this mirrors Grin & Glisten product UX)
-       Replace buildDemoProducts with your canonical product dataset in production
-    ------------------------------ */
-
+    /* ---------------------------
+       Page config (aL vaLe merch)
+    --------------------------- */
     const CATEGORY_NAME = 'aL vaLe';
     const CATEGORY_SLUG = 'aLvaLemerCh';
     const CATEGORY_TAGLINE = 'Official merch & limited drops from aL vaLe.';
     const BANNER_URL = '/images/avale-banner.gif';
-    const CURATED_IDS = []; // set ints to pick curated, otherwise auto picks featured
+    const CURATED_IDS = []; // optional curated ids
 
-    // SUBTYPES for merch (display names)
+    // SUBTYPES — canonical display names for merch category
     const SUBTYPES = ['Merch'];
 
-    const subtypesMap = {
-      'Earrings': ['Hoops','Studs','Dangles'],
-      'Nail Jewelry': ['Full-Cover Press-Ons','Accent Tips','Resin-Embedded Nails'],
-      'Grillz': ['Full-Cover Sets','Half-Cover / Open-Face','Top Sets','Bottom Sets','Single-Tooth / Cap','Resin-Embedded Specials'],
-      'aL vaLe': ['Merch'],
-      'Veerwear': ['Apparel']
-    };
-
-    function techniqueFromSubtype(sub){
-      if(!sub) return '';
-      const s = sub.toLowerCase();
-      if(s.includes('full-cover') || s.includes('full cover')) return 'Full-Cover';
-      if(s.includes('resin')) return 'Resin-Embedded';
-      if(s.includes('accent') || s.includes('single')) return 'Accent';
-      if(s.includes('3d') || s.includes('sculpt')) return '3D Sculpt';
-      return '';
-    }
-
-    // Canonical mapping: display -> slug (used for style=slug in AllProducts links)
+    /* ---------------------------
+       canonical mapping & helpers
+    --------------------------- */
     const displayToSlug = {
-      'Merch':'merch',
-      'Apparel':'apparel',
-      'Full-Cover Sets':'full-cover-sets',
-      'Half-Cover / Open-Face':'half-cover-open-face',
-      'Top Sets':'top-sets',
-      'Bottom Sets':'bottom-sets',
-      'Single-Tooth / Cap':'single-tooth-cap',
-      'Resin-Embedded Specials':'resin-embedded-specials',
-      'Hoops':'hoops',
-      'Studs':'studs',
-      'Dangles':'dangles',
-      'Full-Cover Press-Ons':'full-cover-press-ons',
-      'Accent Tips':'accent-tips',
-      'Resin-Embedded Nails':'resin-embedded-nails'
+      'Merch': 'merch',
+      'Full-Cover Press-Ons': 'full-cover-press-ons',
+      'Accent Tips': 'accent-tips',
+      'Resin-Embedded Nails': 'resin-embedded-nails',
+      // other mappings included for re-use
+      'Full-Cover Sets': 'full-cover-sets',
+      'Half-Cover / Open-Face': 'half-cover-open-face',
+      'Top Sets': 'top-sets',
+      'Bottom Sets': 'bottom-sets',
+      'Single-Tooth / Cap': 'single-tooth-cap',
+      'Resin-Embedded Specials': 'resin-embedded-specials',
+      'Hoops': 'hoops',
+      'Studs': 'studs',
+      'Dangles': 'dangles'
     };
 
     function normalizeSlugInput(raw){
@@ -340,124 +283,155 @@
       return normalizeSlugInput(display);
     }
 
-    // Demo product generator — keep small values for merch price ranges
-    const categories = ['Grillz','Earrings','Nail Jewelry','aL vaLe','Veerwear','Accessories'];
-    const materials = ['Cotton','Poly Blend','Vinyl','Print','Resin'];
+    /* ---------------------------
+       demo product generator (replace with real dataset)
+    --------------------------- */
+    const categories = ['aL vaLe','Grillz','Earrings','Nail Jewelry','Veerwear','Accessories'];
+    const materials = ['Cotton','Poly Blend','Vinyl','Resin'];
     const products = [];
-    const TOTAL_ITEMS = 60;
+    const TOTAL_ITEMS = 36;
     function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+    function techniqueFromSubtype(sub) {
+      if(!sub) return '';
+      const s=sub.toLowerCase();
+      if(s.includes('resin')) return 'Resin-Embedded';
+      if(s.includes('full-cover')) return 'Full-Cover';
+      if(s.includes('accent')) return 'Accent';
+      return '';
+    }
 
     function buildDemoProducts(){
       products.length = 0;
       for(let i=1;i<=TOTAL_ITEMS;i++){
         const cat = categories[i % categories.length];
         const mat = materials[i % materials.length];
-        const price = (cat === 'aL vaLe' || cat === 'Veerwear') ? rand(18,120) : rand(20,300);
-        const sold = rand(0,2000);
-        const featured = i % 7 === 0;
+        const price = rand(20,120);
+        const sold = rand(0,800);
+        const featured = i % 5 === 0;
         const date = new Date(Date.now() - rand(0,365)*24*3600*1000).toISOString();
-        const pool = subtypesMap[cat] || ['General'];
+
+        // pick subtype pool
+        const pool = (cat === 'aL vaLe') ? (SUBTYPES.length ? SUBTYPES : ['Merch']) : (['General']);
         const subtype = pool[rand(0, pool.length-1)];
-        const technique = techniqueFromSubtype(subtype) || (Math.random() < 0.12 ? '3D Sculpt' : '');
+        const technique = techniqueFromSubtype(subtype);
         products.push({
-          id:i,
-          title:`${subtype} ${cat} ${i}`,
-          description:`${mat} · ${cat} · ${subtype}`,
-          image:`/images/placeholder-${(i%10)+1}.jpg`,
+          id: i,
+          title: `${subtype} ${i}`,
+          description: `${mat} · ${cat} · ${subtype}`,
+          image: `/images/placeholder-${(i%10)+1}.jpg`,
           price,
-          category:cat,
-          material:mat,
+          category: cat,
+          material: mat,
           subtype,
           technique,
-          soldCount:sold,
+          soldCount: sold,
           featured,
           date
         });
       }
     }
 
-    // Favorites (localStorage)
+    /* ---------------------------
+       favorites helpers
+    --------------------------- */
     function readFavorites(){
       try{ return new Set(JSON.parse(localStorage.getItem('sb_favorites') || '[]')); } catch(e){ return new Set(); }
     }
     function writeFavorites(set){
-      try { localStorage.setItem('sb_favorites', JSON.stringify(Array.from(set))); } catch(e) { console.warn('Could not write favorites', e); }
+      try{ localStorage.setItem('sb_favorites', JSON.stringify(Array.from(set))); } catch(e){ console.warn('Could not persist favorites', e); }
     }
 
-    function escapeHtml(s){
+    function escapeHtml(s) {
       if(!s) return '';
-      return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+      return String(s).replace(/[&<>"']/g, function (m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
     }
     function escapeAttr(s){ return escapeHtml(String(s)); }
 
-    // === Category-specific functions (render subtype links + curated grid) ===
+    /* ---------------------------
+       UI: init hero, subtype links, curated grid
+    --------------------------- */
     function initCategoryHeroAndLinks(){
-      // hero & links
-      const viewAllHref = `/AllProducts/?category=${encodeURIComponent(CATEGORY_SLUG)}`;
-      document.querySelectorAll('[href="/AllProducts/?category=CATEGORY_SLUG"]').forEach(a => a.href = viewAllHref);
+      const hero = document.getElementById('categoryHero');
+      if(hero && typeof BANNER_URL === 'string') hero.style.backgroundImage = `url('${BANNER_URL}')`;
+
+      const title = document.getElementById('categoryTitle'); if(title) title.textContent = CATEGORY_NAME;
+      const tagline = document.getElementById('categoryTagline'); if(tagline) tagline.textContent = CATEGORY_TAGLINE;
+
+      const viewAllHref = `/SHOP/?category=${encodeURIComponent(CATEGORY_SLUG)}`;
+      document.querySelectorAll('[href="/SHOP/?category=aLvaLemerCh"]').forEach(a => a.href = viewAllHref);
       document.getElementById('viewAllBtn')?.setAttribute('href', viewAllHref);
       document.getElementById('viewAllTop')?.setAttribute('href', viewAllHref);
       document.getElementById('viewAllBottom')?.setAttribute('href', viewAllHref);
       document.getElementById('linkViewAll')?.setAttribute('href', viewAllHref);
 
-      // subtype links container
+      // subtypes list
       const container = document.getElementById('subtypeLinks');
       if(!container) return;
       container.innerHTML = '';
 
-      const subtypeList = (Array.isArray(SUBTYPES) && SUBTYPES.length) ? SUBTYPES.slice() : (subtypesMap[CATEGORY_NAME] || []);
+      const subtypeList = (Array.isArray(SUBTYPES) && SUBTYPES.length) ? SUBTYPES.slice() : ['Merch'];
 
       subtypeList.forEach(name => {
-        const count = products.filter(p => p.category === CATEGORY_NAME && p.subtype === name).length;
+        const count = products.filter(p => p.category === 'aL vaLe' && p.subtype === name).length;
         const slug = slugForDisplay(name);
-        const href = `/AllProducts/?category=${encodeURIComponent(CATEGORY_SLUG)}&style=${encodeURIComponent(slug)}`;
+        const href = `/SHOP/?category=${encodeURIComponent(CATEGORY_SLUG)}&style=${encodeURIComponent(slug)}`;
 
-        // Outer flex wrapper (link + share)
+        // outer wrapper
         const outer = document.createElement('div');
         outer.className = 'flex items-center justify-between gap-2';
 
-        // Main pill link: clicking either navigates to the AllProducts filtered URL
+        // clickable pill (left click = inline filter, modifier/middle click = open new tab)
         const a = document.createElement('a');
         a.className = 'subtype-link flex-1';
         a.href = href;
-        a.setAttribute('title', `Open ${name}`);
+        a.setAttribute('data-style-slug', slug);
+        a.setAttribute('data-style-display', name);
+        a.title = `Filter: ${name}`;
         a.innerHTML = `<span>${escapeHtml(name)}</span><span class="subtype-badge">${count}</span>`;
 
-        // Share button (copy link or open new tab)
+        // share button next to it (copies deep-link)
         const shareBtn = document.createElement('button');
         shareBtn.className = 'share-btn';
         shareBtn.type = 'button';
-        shareBtn.title = 'Copy direct link';
-        shareBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 7h4v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7h4"></path><path d="M8 7V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"></path></svg>`;
+        shareBtn.title = 'Copy direct link / Open';
+        shareBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 7h4v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7h4"/><path d="M8 7V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/></svg>`;
 
-        // Share action: copy to clipboard; fallback open new tab
+        // click handlers
+        a.addEventListener('click', (ev) => {
+          // middle-click or with modifier -> allow default (open new tab)
+          if(ev.button === 1 || ev.ctrlKey || ev.metaKey || ev.shiftKey) {
+            return;
+          }
+          ev.preventDefault();
+          // apply inline filter (open filter panel & show filtered results)
+          const slug = a.getAttribute('data-style-slug');
+          const display = a.getAttribute('data-style-display');
+          applyFilterInline(slug, display);
+        });
+
         shareBtn.addEventListener('click', async (ev) => {
           ev.preventDefault();
-          const url = window.location.origin + href;
+          const fullUrl = window.location.origin + href;
           try {
-            if(navigator.clipboard && navigator.clipboard.writeText){
-              await navigator.clipboard.writeText(url);
+            if(navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(fullUrl);
               showShareToast('Link copied to clipboard');
             } else {
-              // textarea fallback
               const ta = document.createElement('textarea');
-              ta.value = url; ta.style.position = 'fixed'; ta.style.left = '-9999px';
-              document.body.appendChild(ta); ta.select();
-              document.execCommand('copy'); ta.remove();
+              ta.value = fullUrl; ta.style.position='fixed'; ta.style.left='-9999px';
+              document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
               showShareToast('Link copied to clipboard');
             }
-          } catch(err){
-            console.warn('Clipboard failed; opening in new tab', err);
-            window.open(url, '_blank');
+          } catch (err) {
+            window.open(fullUrl, '_blank');
           }
         });
 
-        // Middle-click opens link in new tab as well
         shareBtn.addEventListener('auxclick', (ev) => {
           if(ev.button === 1){
-            ev.preventDefault();
-            const url = window.location.origin + href;
-            window.open(url, '_blank');
+            const fullUrl = window.location.origin + href;
+            window.open(fullUrl, '_blank');
           }
         });
 
@@ -486,64 +460,112 @@
       }, 1400);
     }
 
-    function findProductById(id){
-      if(typeof products !== 'undefined' && Array.isArray(products)){
-        return products.find(p => Number(p.id) === Number(id));
-      }
-      if(window.PRODUCTS && typeof window.PRODUCTS === 'object'){
-        return window.PRODUCTS[id] || Object.values(window.PRODUCTS).find(x => x.id == id);
-      }
-      return null;
+    /* ---------------------------
+       Inline filter application + history handling
+       - applyFilterInline(slug, display)
+       - clearFilterInline()
+    --------------------------- */
+    let activeFilter = null;
+
+    function applyFilterInline(slug, display){
+      activeFilter = { slug, display };
+      // push state so URL is shareable
+      const params = new URLSearchParams(window.location.search);
+      params.set('category', CATEGORY_SLUG);
+      params.set('style', slug);
+      const newUrl = window.location.pathname + '?' + params.toString();
+      history.pushState({category:CATEGORY_SLUG, style:slug}, '', newUrl);
+
+      // update UI: show active filter pill and filter grid
+      document.getElementById('activeFiltersWrap').style.display = 'block';
+      const pill = document.getElementById('activeFilterPill');
+      pill.innerHTML = `<div class="subtype-link">${escapeHtml(display)} <button id="removePill" class="ml-3 plunct text-xs">✕</button></div>`;
+      document.getElementById('removePill')?.addEventListener('click', clearFilterInline);
+      // filter the curated grid
+      renderCuratedProducts();
+      // scroll to grid
+      document.getElementById('curatedGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Render curated products (mirrors Grin & Glisten curated layout; Snipcart-ready)
+    function clearFilterInline(){
+      activeFilter = null;
+      // clean url
+      const params = new URLSearchParams(window.location.search);
+      params.delete('style');
+      const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      history.pushState({}, '', newUrl);
+      document.getElementById('activeFiltersWrap').style.display = 'none';
+      document.getElementById('activeFilterPill').innerHTML = '';
+      renderCuratedProducts();
+    }
+
+    // support back/forward navigation
+    window.addEventListener('popstate', (ev) => {
+      const params = new URLSearchParams(window.location.search);
+      const style = params.get('style');
+      if(style) {
+        // find display name from map (reverse lookup), fallback to normalized display
+        let display = Object.keys(displayToSlug).find(k => displayToSlug[k] === style) || style.replace(/-/g,' ');
+        applyFilterInline(style, display);
+      } else {
+        clearFilterInline();
+      }
+    });
+
+    /* ---------------------------
+       Render curated grid
+    --------------------------- */
     function renderCuratedProducts(){
       const grid = document.getElementById('curatedGrid');
       if(!grid) return;
       grid.innerHTML = '';
 
+      // Resolve CURATED_IDS if present; otherwise pick featured aL vaLe items
       let productObjs = (Array.isArray(CURATED_IDS) && CURATED_IDS.length)
-        ? CURATED_IDS.map(id => findProductById(id)).filter(Boolean)
+        ? CURATED_IDS.map(id => products.find(p => Number(p.id) === Number(id))).filter(Boolean)
         : [];
 
       if(productObjs.length === 0){
-        // fallback: featured items from this category
-        productObjs = products.filter(p => p.category === CATEGORY_NAME).sort((a,b) => (b.featured?1:0) - (a.featured?1:0)).slice(0,6);
+        productObjs = products.filter(p => p.category === 'aL vaLe').sort((a,b) => (b.featured?1:0) - (a.featured?1:0)).slice(0,9);
+      }
+
+      // if active filter, further restrict
+      if(activeFilter && activeFilter.slug){
+        productObjs = productObjs.filter(p => slugForDisplay(p.subtype) === activeFilter.slug);
       }
 
       if(productObjs.length === 0){
-        grid.innerHTML = '<div class="p-6 bg-white/3 rounded-lg text-center">No curated items configured. Edit <code>CURATED_IDS</code> or ensure your product dataset is loaded.</div>';
+        grid.innerHTML = '<div class="p-6 bg-white rounded-lg text-center text-black">No items match this filter.</div>';
         return;
       }
 
       const favSet = readFavorites();
 
       for(const p of productObjs){
-        const fontClass = (p.category === 'Veerwear') ? 'veerwear' : (p.category === 'aL vaLe' ? 'font-plunct' : 'font-plunct');
         const heartActive = favSet.has(Number(p.id));
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
           <div class="relative overflow-hidden h-64">
             <img src="${escapeAttr(p.image || '/images/placeholder-1.jpg')}" alt="${escapeAttr(p.title || '')}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-            ${p.featured ? `<div class="absolute top-3 left-3 badge-gold">BESTSELLER</div>` : ''}
-            <button class="absolute top-3 right-3 heart-btn ${heartActive ? 'heart-active' : ''}" data-id="${escapeAttr(p.id)}" title="Save to favorites" style="background:rgba(255,255,255,0.06); border-radius:9999px; width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+            <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.35), rgba(0,0,0,0));"></div>
+            ${p.featured ? `<div style="position:absolute;left:8px;top:8px;" class="badge-gold">BESTSELLER</div>` : ''}
+            <button class="absolute top-3 right-3 heart-btn ${heartActive ? 'heart-active' : ''}" data-id="${escapeAttr(p.id)}" title="Save to favorites" aria-label="Save to favorites">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="${heartActive ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
           </div>
           <div class="p-4">
-            <h3 class="font-medium mb-1 ${fontClass}" style="color:var(--white);">${escapeHtml(p.title || '')}</h3>
-            <p class="${fontClass} text-gray-300 text-sm mb-2" style="color:var(--white);">${escapeHtml(p.description || '')}</p>
+            <h3 class="font-medium mb-1 plunct" style="color:var(--black);">${escapeHtml(p.title || '')}</h3>
+            <p class="text-sm mb-2 plunct" style="color:var(--black);">${escapeHtml(p.description || '')}</p>
             <div class="flex justify-between items-center">
-              <span class="${fontClass} font-bold" style="color:var(--white);">$${(Number(p.price)||0).toLocaleString()}</span>
-              <button class="snipcart-add-item inline-flex items-center px-3 py-2 rounded text-sm border border-transparent bg-yellow-400 hover:bg-yellow-500"
+              <span class="font-bold plunct" style="color:var(--black);">$${(Number(p.price)||0).toLocaleString()}</span>
+              <button class="snipcart-add-item inline-flex items-center px-3 py-2 rounded text-sm border border-transparent plunct"
                 data-item-id="${escapeAttr(p.id)}"
                 data-item-name="${escapeAttr(p.title || '')}"
                 data-item-price="${escapeAttr(p.price||0)}"
-                data-item-url="/AllProducts/"
+                data-item-url="/SHOP/"
                 data-item-description="${escapeAttr(p.description||'')}"
-                data-item-image="${escapeAttr(p.image||'')}">
+                data-item-image="${escapeAttr(p.image||'')}" style="background:var(--accent); color:#000;">
                 Add to cart
               </button>
             </div>
@@ -566,18 +588,115 @@
       feather.replace();
     }
 
-    /* --------------------------
-       Simple header search behavior (kept minimal)
-       (From earlier site: when user submits, route to search.html?q=)
-    -------------------------- */
-    function initHeaderSearch(){
-      // This demo page doesn't render a desktop search input by default;
-      // if you add an input with ID headerSearchInput, include logic here.
-    }
+    /* ---------------------------
+       small UI: search in panel filters, clear filter button, etc.
+    --------------------------- */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      try {
+        buildDemoProducts();
+        initCategoryHeroAndLinks();
 
-    // Mobile search (if you include mobileSearchForm)
-    function initMobileSearch(){ /* no-op unless you add the forms */ }
+        // if URL contains style param on load, apply that filter
+        const params = new URLSearchParams(window.location.search);
+        const styleParam = params.get('style');
+        if(styleParam){
+          // resolve display (reverse map) or humanize slug
+          const display = Object.keys(displayToSlug).find(k => displayToSlug[k] === styleParam) || styleParam.replace(/-/g,' ');
+          applyFilterInline(styleParam, display);
+        }
 
+        renderCuratedProducts();
+
+        // wire UI: clear filter
+        document.getElementById('clearFilterBtn').addEventListener('click', (ev) => {
+          clearFilterInline();
+        });
+
+        // simple panel search: filters curated grid by title/description locally
+        document.getElementById('panelSearch').addEventListener('input', (ev) => {
+          const q = (ev.target.value || '').trim().toLowerCase();
+          if(!q) {
+            renderCuratedProducts();
+            return;
+          }
+          const grid = document.getElementById('curatedGrid');
+          grid.innerHTML = '';
+          const matches = products.filter(p => p.category === 'aL vaLe' && (p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)));
+          if(matches.length === 0){ grid.innerHTML = '<div class="p-6 bg-white rounded-lg text-center text-black">No items found</div>'; return; }
+          const favSet = readFavorites();
+          for(const p of matches.slice(0,24)){
+            const heartActive = favSet.has(Number(p.id));
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+              <div class="relative overflow-hidden h-64">
+                <img src="${escapeAttr(p.image)}" alt="${escapeAttr(p.title)}" class="w-full h-full object-cover">
+                <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.35), rgba(0,0,0,0));"></div>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-1 plunct" style="color:var(--black);">${escapeHtml(p.title)}</h3>
+                <p class="text-sm mb-2 plunct" style="color:var(--black);">${escapeHtml(p.description)}</p>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold plunct" style="color:var(--black);">$${(Number(p.price)||0).toLocaleString()}</span>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          }
+          feather.replace();
+        });
+
+        // header mobile menu
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        menuBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+          const willExpand = !expanded;
+          menuBtn.setAttribute('aria-expanded', String(!!willExpand));
+          if(willExpand){
+            mobileNav.classList.remove('hidden');
+            mobileNav.style.maxHeight = '400px';
+            mobileNav.style.opacity = '1';
+          } else {
+            mobileNav.style.maxHeight = '0';
+            mobileNav.style.opacity = '0';
+            setTimeout(()=> mobileNav.classList.add('hidden'), 280);
+          }
+          feather.replace();
+        });
+
+        // logo height behavior
+        const logo = document.getElementById('valeLogo');
+        const brandText = document.getElementById('brandText');
+        let naturalLogoHeight = null;
+        function recordNaturalHeight(){ logo.style.height=''; const rect = logo.getBoundingClientRect(); naturalLogoHeight = rect.height || 64; logo.style.height = naturalLogoHeight + 'px'; }
+        function shrinkLogoToText(){ const targetHeight = brandText.getBoundingClientRect().height; const minHeight = Math.min(28, targetHeight); logo.style.height = Math.max(targetHeight, minHeight) + 'px'; logo.style.transform='translateY(0)'; }
+        function restoreLogo(){ if(naturalLogoHeight) logo.style.height = naturalLogoHeight + 'px'; logo.style.transform=''; }
+        let scrollThreshold = 60;
+        const header = document.getElementById('siteHeader');
+        function onScroll(){
+          if(window.scrollY > scrollThreshold){
+            if(!header.classList.contains('scrolled')){ header.classList.add('scrolled'); shrinkLogoToText(); }
+          } else {
+            if(header.classList.contains('scrolled')){ header.classList.remove('scrolled'); restoreLogo(); }
+          }
+        }
+        function onResize(){
+          recordNaturalHeight();
+          if(header.classList.contains('scrolled')) shrinkLogoToText(); else restoreLogo();
+        }
+        window.addEventListener('scroll', onScroll, { passive:true });
+        window.addEventListener('resize', onResize);
+        window.addEventListener('orientationchange', onResize);
+        // initial
+        recordNaturalHeight();
+        onScroll();
+
+      } catch (err) {
+        console.error('Init error:', err);
+      }
+    });
   </script>
 </body>
 </html>
