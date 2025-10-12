@@ -3,934 +3,533 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>aL vaLe — Shop</title>
+  <title>vaLe — Shop</title>
   <link rel="icon" type="image/png" href="/images/vale-logo-removebg-preview.png">
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <!-- Feather icons -->
   <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-
   <!-- Snipcart (cart) -->
   <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.css" />
   <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>
 
   <style>
-    /* ---------- local fonts & base ---------- */
+    /* fonts (adjust paths if needed) */
     @font-face {
       font-family: 'Plunct';
-      src: url('/fonts/Plunct.woff2') format('woff2'),
-           url('/fonts/Plunct.woff') format('woff'),
-           url('/fonts/Plunct.otf') format('opentype');
+      src: url('/fonts/Plunct.woff2') format('woff2');
       font-display: swap;
-      font-weight: 400;
-      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-FreeForPersonalUse/MonumentExtended-Regular.woff2') format('woff2');
+      font-display:swap;
     }
 
-    /* small utilities and theme variables */
-    :root { --gold:#D4AF37; --black:#000; --white:#fff; --accent:#facc15; }
-    html, body { height: 100%; margin: 0; font-family: 'Plunct', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #111; background: #fff; }
-    .plunct { font-family: 'Plunct', sans-serif; font-weight:700; }
-    .monument { font-weight:700; }
-    .bag-count{ font-family: "Plunct",sans-serif; font-weight:900; font-size:11px; line-height:1; }
-
-    /* Header / nav styling */
-    header, nav { background: #fff; }
-    .header-actions{ display:flex; align-items:center; justify-content:flex-end; gap:10px; width:auto; }
-    .search-wrap { position:relative; display:inline-flex; align-items:center; gap:8px; }
-    .search-input {
-      position: absolute;
-      right: 44px;
-      width: 0;
-      opacity: 0;
-      transition: width .22s cubic-bezier(.2,.9,.3,1), opacity .18s ease;
-      border:1px solid rgba(0,0,0,0.08);
-      padding:8px 10px;
-      border-radius:8px;
-      font-size:0.95rem;
-      outline:none;
-      background:#fff;
-      color:var(--black);
-      transform-origin: right center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
-      z-index: 60;
-      white-space:nowrap;
+    :root {
+      --yellow: #facc15;
+      --amber-600: #d4a017;
+      --black: #000;
+      --white: #fff;
     }
-    .search-wrap.open .search-input { width: 220px; opacity: 1; }
-    .search-btn { width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:transparent; border:none; cursor:pointer; padding:0; z-index: 65; }
 
-    /* Hero */
-    .shop-hero {
-      position: relative;
-      background-image: url('/images/avale-banner.gif');
-      background-size: cover;
-      background-position: center;
-      color:#fff;
-      padding-top:6rem;
-      padding-bottom:6rem;
-      min-height:36vh;
+    html,body { height:100%; margin:0; font-family: "Plunct", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:var(--black); background:#fff; }
+    /* Header placed 2 inches down from the top */
+    header.site-header {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 2in; /* user requested 2 inches from top */
+      z-index: 90;
+      display:block;
+      transition: background 280ms ease, backdrop-filter 240ms ease;
+      background: rgba(255,255,255,1);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+
+    /* Top row (remains visible on scroll) */
+    .header-top {
       display:flex;
-      align-items:center;
+      align-items:flex-start; /* top aligned */
+      justify-content:space-between;
+      gap:12px;
+      padding: 10px 24px 6px 24px; /* small bottom padding to separate bottom band */
     }
-    .shop-hero .overlay{ position:absolute; inset:0; background:rgba(0,0,0,0.32); pointer-events:none; }
 
-    /* Filter panel */
-    .filter-panel{ position:sticky; top:96px; max-height:calc(100vh - 110px); overflow:auto; padding-right:8px; }
-    .filter-panel .subtype-heading{ margin-top:8px; font-weight:700; color:var(--black); margin-bottom:4px; }
-    .filter-section + .filter-section { margin-top: 12px; }
-    .subtype-group { display:block; margin:6px 0; color:var(--black); }
+    .header-top .brand {
+      font-family: "Monument Extended","Plunct",sans-serif;
+      font-weight:900;
+      color:var(--black);
+      /* make vaLe text ~1in tall; keep accessible scaling */
+      font-size: 1in; /* roughly 96px; user requested 1 inch */
+      line-height: 1;
+      height: 1in;
+      display:flex;
+      align-items:flex-start; /* top aligned */
+      padding-top: 2px; /* slight border space from top */
+      cursor:default;
+      user-select: none;
+    }
 
-    .product-card{ border:1px solid rgba(0,0,0,0.06); box-shadow:0 6px 18px rgba(0,0,0,0.04); transition:transform .18s ease, box-shadow .18s ease; background:white; }
-    .product-card:hover{ transform:translateY(-6px); box-shadow:0 14px 30px rgba(0,0,0,0.06); }
+    .header-left, .header-right { display:flex; align-items:center; gap:12px; }
+    .hamburger-btn { border: none; background: transparent; padding:6px; cursor:pointer; width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; }
+    .icon-btn { width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; border-radius:6px; border:1px solid rgba(0,0,0,0.06); background:#fff; cursor:pointer; }
 
-    .badge-gold{ background:var(--gold); color:#000; font-weight:900; padding:4px 8px; border-radius:6px; font-size:11px; }
+    /* Bottom band (swipe-away on scroll) */
+    .header-bottom {
+      display:flex;
+      align-items:flex-end; /* bottom-aligned items */
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 24px 14px 24px;
+      transition: transform 320ms cubic-bezier(.2,.9,.3,1), opacity 240ms ease;
+      transform: translateY(0);
+      opacity: 1;
+    }
 
-    .subtype-link { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; background:#fff; border:1px solid rgba(0,0,0,0.04); }
-    .subtype-badge { background:rgba(0,0,0,0.06); padding:2px 8px; border-radius:9999px; font-size:12px; }
+    /* When header has .scrolled, make header translucent and hide bottom band */
+    header.site-header.scrolled {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+      border-bottom-color: rgba(0,0,0,0.03);
+      box-shadow: none;
+      transition: background 260ms ease, backdrop-filter 260ms ease;
+    }
 
-    .nav-btn { transition: all .12s ease; display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); background:transparent; cursor:pointer; }
-    .heart-btn{ background:rgba(255,255,255,0.85); border-radius:9999px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; }
-    .heart-active{ background:var(--gold); color:#000 !important; }
+    header.site-header.scrolled .header-bottom {
+      transform: translateY(-120%);
+      opacity: 0;
+      pointer-events: none;
+    }
 
-    .share-btn{ background:transparent; border:none; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; }
+    /* Merch type buttons (left in bottom band) */
+    .merch-types { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .merch-types button { background:transparent; border:none; padding:6px 8px; font-family:inherit; font-size:13px; cursor:pointer; color:rgba(0,0,0,0.85); }
+    .merch-types button.active { border-bottom:2px solid var(--black); font-weight:700; }
 
-    /* responsive grid */
-    .curated-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:1rem; }
-    @media (max-width:1024px){ .curated-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width:640px){ .curated-grid { grid-template-columns: 1fr; } }
+    /* Page number buttons to the right (bottom band) */
+    .header-pages { display:flex; gap:8px; align-items:center; }
+    .page-num { padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,0.08); background:#fff; cursor:pointer; font-weight:700; }
 
-    /* small utilities */
-    .applied-pill { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#fff; border:1px solid rgba(0,0,0,0.06); font-size:13px; }
-    .pill-close { background:transparent; border:none; font-size:16px; line-height:1; padding:2px 6px; cursor:pointer; }
-    .share-toast { position:fixed; bottom:18px; right:18px; background:#111; color:#fff; padding:8px 12px; border-radius:8px; font-size:13px; opacity:0.92; z-index:99999; }
+    /* Body top-centered logo */
+    .page-top-logo {
+      margin-top: calc(2in + 24px); /* ensure it's visually under header (header top at 2in) */
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding: 28px 0 12px 0;
+    }
+    .page-top-logo img { width: clamp(140px, 18vw, 220px); height:auto; display:block; }
 
-    /* small accessibility focus */
-    .menu-trigger:focus, .search-btn:focus, .nav-btn:focus, .pill-close:focus { outline: 2px solid rgba(250,204,21,0.25); outline-offset:2px; border-radius:6px; }
+    /* Product grid - Zara-like: tall, airy, 3 columns desktop */
+    main { max-width: 1200px; margin: 0 auto; padding: 18px; }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 38px;
+      align-items: start;
+    }
+    @media (max-width:1024px){ .products-grid { grid-template-columns: repeat(2,1fr); gap:24px; } }
+    @media (max-width:640px){ .products-grid { grid-template-columns: 1fr; gap:18px; } }
+
+    .product-card { background: #fff; border-radius:4px; overflow:hidden; border:1px solid rgba(0,0,0,0.03); box-shadow: none; }
+    .product-media { height: 520px; position:relative; overflow:hidden; }
+    @media (max-width:1024px){ .product-media { height:420px; } }
+    @media (max-width:640px){ .product-media { height:360px; } }
+
+    .product-media img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    .product-info { padding:12px 6px; font-size:13px; color:rgba(0,0,0,0.9); }
+    .product-title { text-transform:uppercase; font-weight:600; letter-spacing:0.6px; margin-bottom:6px; }
+    .product-price { font-weight:800; }
+
+    /* Small wishlist heart button */
+    .heart-btn { position:absolute; top:10px; right:10px; width:44px; height:44px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.9); border:1px solid rgba(0,0,0,0.06); cursor:pointer; }
+    .heart-active { background: var(--yellow); color: #000; border-color: rgba(0,0,0,0.06); }
+
+    /* Footer */
+    footer { padding:30px 12px; text-align:center; color:rgba(0,0,0,0.7); font-size:14px; }
+
+    /* Mobile nav overlay */
+    #mobileMenu { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; z-index:120; }
+    #mobileMenu .menu-inner { background:#fff; width:280px; height:100%; padding:18px; }
+    /* small util classes */
+    .hidden { display:none !important; }
   </style>
 </head>
-<body class="site-overlay site-content">
+<body>
 
-  <!-- HEADER / NAV (aL vaLe branding + search / favorites / cart) -->
-  <header id="siteHeader" class="fixed w-full z-50 bg-white shadow">
-    <nav class="container mx-auto px-6 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-4 min-w-0">
-        <!-- Mobile hamburger -->
-        <button id="mobileMenuBtn" aria-label="Open menu" class="md:hidden p-2">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
+  <!-- Snipcart root (insert your key) -->
+  <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_API_KEY"></div>
+
+  <!-- Header (2in from top) -->
+  <header class="site-header" id="siteHeader" aria-label="Site header">
+    <div class="header-top">
+      <div class="header-left" style="align-items:flex-start;">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
         </button>
-
-        <!-- logo + brand -->
-        <a href="/SHOP/" class="flex items-center gap-3">
-          <img id="valeLogo" src="/images/vale-logo-removebg-preview.png" alt="vaLe" class="w-10 h-10 object-contain">
-          <span class="plunct text-2xl" style="font-weight:800; color:var(--black);">aL vaLe</span>
-        </a>
-
-        <!-- desktop links -->
-        <div class="hidden md:flex space-x-6 ml-6">
-          <a href="/HOME/" class="monument hover:text-yellow-500">HOME</a>
-          <a href="/MUSIC/" class="monument hover:text-yellow-500">MUSIC</a>
-          <a href="/SHOP/" class="monument hover:text-yellow-500">SHOP</a>
-          <a href="/CONTACT/" class="monument hover:text-yellow-500">CONTACT</a>
-        </div>
+        <!-- brand sits left-center; large 1in height, top aligned -->
+        <div class="brand" id="brandText">vaLe</div>
       </div>
 
-      <!-- actions: search, favorites, cart -->
-      <div class="header-actions">
-        <div class="search-wrap" id="desktopSearchWrap" aria-hidden="false">
+      <div style="flex:1"></div>
+
+      <div class="header-right" style="align-items:flex-start;">
+        <!-- search (desktop expands on click) -->
+        <div class="search-wrap" id="desktopSearchWrap" style="position:relative;">
           <form id="headerSearchForm" class="search-form" role="search" action="/search.html" method="get">
-            <input id="headerSearchInput" name="q" type="search" class="search-input" placeholder="Search products..." aria-label="Search products">
-            <button id="headerSearchBtn" type="submit" class="search-btn" aria-label="Search">
-              <i data-feather="search" class="w-4 h-4"></i>
+            <input id="headerSearchInput" name="q" type="search" class="search-input" placeholder="Search products..." aria-label="Search products"
+                   style="position:absolute; right:56px; width:0; opacity:0; transition: width .22s ease, opacity .18s ease; border:1px solid rgba(0,0,0,0.06); padding:8px 10px; border-radius:8px; background:#fff;">
+            <button id="headerSearchBtn" type="submit" class="icon-btn" aria-label="Search">
+              <i data-feather="search"></i>
             </button>
           </form>
         </div>
 
-        <a href="/favorites.html" id="headerFavorites" class="text-black flex items-center justify-center" aria-label="Favorites" title="Favorites">
-          <i data-feather="heart" class="w-5 h-5"></i>
-        </a>
+        <button id="favoritesBtn" class="icon-btn" title="Favorites" aria-label="Favorites">
+          <i data-feather="heart"></i>
+        </button>
 
-        <a href="#" id="headerCartToggle" class="relative snipcart-checkout text-black nav-btn" aria-label="Cart" title="Cart">
-          <i data-feather="shopping-bag" class="w-5 h-5"></i>
-          <span class="absolute -top-2 -right-2 bg-amber-600 text-black text-xs rounded-full w-5 h-5 flex items-center justify-center bag-count">
-            <span class="snipcart-items-count">0</span>
-          </span>
-        </a>
+        <button id="headerCartToggle" class="icon-btn snipcart-checkout" aria-label="Cart">
+          <i data-feather="shopping-bag"></i>
+          <span style="position:absolute; right:-6px; top:-6px; background:var(--yellow); width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-weight:800; border-radius:9999px; font-size:12px;">0</span>
+        </button>
       </div>
-    </nav>
+    </div>
 
-    <!-- mobile nav -->
-    <div id="mobileNav" class="md:hidden" style="display:none;">
-      <div class="flex items-center justify-between mb-4 px-4 py-3 bg-black/80">
-        <div class="flex items-center gap-3">
-          <img src="/images/vale-logo-removebg-preview.png" alt="vaLe" class="w-8 h-8 object-contain">
-          <span class="plunct text-lg" style="color:var(--white);">aL vaLe</span>
-        </div>
-        <button id="mobileCloseBtn" class="p-2" title="Close menu"><i data-feather="x"></i></button>
+    <div class="header-bottom" id="headerBottom">
+      <div class="merch-types" id="merchTypes">
+        <!-- buttons injected by JS -->
       </div>
 
-      <div id="mobileSearchBar" class="px-4 py-3" aria-hidden="true">
-        <form id="mobileSearchForm" action="/search.html" method="get" role="search">
-          <input id="mobileSearchInput" name="q" type="search" placeholder="Search products..." aria-label="Search products" class="w-full p-2 rounded border">
-          <button type="submit" class="mt-2 w-full bg-amber-600 text-black px-3 py-2 rounded plunct">Search</button>
-        </form>
-      </div>
-
-      <div class="space-y-3 pl-4 pb-6">
-        <a href="/HOME/" class="block py-2 border-b">HOME</a>
-        <a href="/MUSIC/" class="block py-2 border-b">MUSIC</a>
-        <a href="/SHOP/" class="block py-2 border-b">SHOP</a>
-        <a href="/CONTACT/" class="block py-2 border-b">CONTACT</a>
-        <a href="/favorites.html" class="block py-2 border-b">Favorites</a>
+      <div class="header-pages" id="headerPages">
+        <!-- page number buttons injected by JS -->
       </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="shop-hero text-white mt-20">
-    <div class="overlay" aria-hidden="true"></div>
-    <div class="container mx-auto px-6 hero-inner">
-      <div class="shop-banner max-w-3xl">
-        <h1 class="plunct text-5xl md:text-6xl mb-4" style="font-weight:800;">aL vaLe Merch</h1>
-        <div class="flex items-center text-gray-200 text-sm plunct">
-          <a href="/HOME/" class="hover:text-white text-gray-200">Home</a>
-          <i data-feather="chevron-right" class="mx-2 w-4 h-4"></i>
-          <span>Shop</span>
-        </div>
-        <p class="mt-4 text-lg plunct opacity-90">Official merch, signed drops & limited runs.</p>
+  <!-- Mobile menu overlay -->
+  <div id="mobileMenu" aria-hidden="true">
+    <div class="menu-inner">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <strong style="font-size:20px">Menu</strong>
+        <button id="mobileClose" aria-label="Close menu" style="border:none;background:transparent;cursor:pointer;"><i data-feather="x"></i></button>
       </div>
+      <nav style="display:flex;flex-direction:column;gap:10px;">
+        <a href="/HOME/">HOME</a>
+        <a href="/MUSIC/">MUSIC</a>
+        <a href="/SHOP/">SHOP</a>
+        <a href="/CONTACT/">CONTACT</a>
+        <hr />
+        <a href="/AllProducts/">Errthing</a>
+        <a href="/Merch/">Merch</a>
+        <a href="/VEERWEAR/">Veerwear</a>
+        <a href="/NailJewelry/">Nail Jewelry</a>
+        <a href="/Grillz/">Grillz</a>
+        <a href="/Earrings/">Earrings</a>
+      </nav>
     </div>
-  </section>
+  </div>
 
-  <!-- CONTENT -->
-  <section class="py-12">
-    <div class="container mx-auto px-6">
-      <div class="flex flex-col md:flex-row gap-8">
-        <aside class="md:w-1/4">
-          <div class="bg-white p-6 rounded-lg filter-panel plunct">
-            <h3 class="font-medium text-lg mb-4" style="color:var(--black);">Filter</h3>
+  <!-- Page top logo (centered in body, not in header) -->
+  <div class="page-top-logo" role="banner">
+    <img src="/images/vale-logo-removebg-preview.png" alt="vaLe" id="pageLogo">
+  </div>
 
-            <!-- Category (focused for merch) -->
-            <div class="filter-section">
-              <button class="filter-toggle" data-target="category-body">
-                <span style="color:var(--black);">Category</span>
-                <i data-feather="chevron-down" class="chev"></i>
-              </button>
-              <div id="category-body" class="mt-3">
-                <div class="space-y-2">
-                  <div class="flex items-center">
-                    <input type="checkbox" id="cat-avale" value="aL vaLe" class="filter-cat mr-2">
-                    <label for="cat-avale" class="text-sm" style="color:var(--black);">aL vaLe (Official Merch)</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="cat-veerwear" value="Veerwear" class="filter-cat mr-2">
-                    <label for="cat-veerwear" class="text-sm" style="color:var(--black);">Veerwear</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="cat-accessories" value="Accessories" class="filter-cat mr-2">
-                    <label for="cat-accessories" class="text-sm" style="color:var(--black);">Accessories</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Subtype (merch-focused) -->
-            <div class="filter-section mt-4">
-              <button class="filter-toggle" data-target="subtype-body">
-                <span style="color:var(--black);">Product type</span>
-                <i data-feather="chevron-down" class="chev"></i>
-              </button>
-              <div id="subtype-body" class="mt-3">
-                <div class="subtype-heading">Merch</div>
-                <label class="subtype-group"><input type="checkbox" class="filter-subtype mr-2" value="Tees"> Tees</label>
-                <label class="subtype-group"><input type="checkbox" class="filter-subtype mr-2" value="Hoodies"> Hoodies</label>
-                <label class="subtype-group"><input type="checkbox" class="filter-subtype mr-2" value="Hats"> Hats</label>
-                <label class="subtype-group"><input type="checkbox" class="filter-subtype mr-2" value="Stickers"> Stickers</label>
-                <label class="subtype-group"><input type="checkbox" class="filter-subtype mr-2" value="Posters"> Posters</label>
-              </div>
-            </div>
-
-            <!-- Features / Technique -->
-            <div class="filter-section mt-4">
-              <button class="filter-toggle" data-target="feature-body">
-                <span style="color:var(--black);">Features</span>
-                <i data-feather="chevron-down" class="chev"></i>
-              </button>
-              <div id="feature-body" class="mt-3">
-                <div class="space-y-2">
-                  <div class="flex items-center">
-                    <input type="checkbox" id="feat-screen" value="Screenprint" class="filter-tech mr-2">
-                    <label for="feat-screen" class="text-sm" style="color:var(--black);">Screenprint</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="feat-embroider" value="Embroidered" class="filter-tech mr-2">
-                    <label for="feat-embroider" class="text-sm" style="color:var(--black);">Embroidered</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="feat-limited" value="Limited" class="filter-tech mr-2">
-                    <label for="feat-limited" class="text-sm" style="color:var(--black);">Limited Edition</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Materials tuned for merch -->
-            <div class="filter-section mt-4">
-              <button class="filter-toggle" data-target="material-body">
-                <span style="color:var(--black);">Material</span>
-                <i data-feather="chevron-down" class="chev"></i>
-              </button>
-              <div id="material-body" class="mt-3">
-                <div class="space-y-2">
-                  <div class="flex items-center">
-                    <input type="checkbox" id="mat-cotton" value="Cotton" class="filter-material mr-2">
-                    <label for="mat-cotton" class="text-sm" style="color:var(--black);">Cotton</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="mat-poly" value="Poly Blend" class="filter-material mr-2">
-                    <label for="mat-poly" class="text-sm" style="color:var(--black);">Poly Blend</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="mat-resin" value="Resin" class="filter-material mr-2">
-                    <label for="mat-resin" class="text-sm" style="color:var(--black);">Resin</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="mat-paper" value="Paper" class="filter-material mr-2">
-                    <label for="mat-paper" class="text-sm" style="color:var(--black);">Paper (Posters)</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Price ranges tailored to merch -->
-            <div class="filter-section mt-4">
-              <button class="filter-toggle" data-target="price-body">
-                <span style="color:var(--black);">Price Range</span>
-                <i data-feather="chevron-down" class="chev"></i>
-              </button>
-              <div id="price-body" class="mt-3">
-                <div class="space-y-2">
-                  <div class="flex items-center"><input type="radio" id="price-all" name="price" value="all" checked class="filter-price mr-2"><label for="price-all" class="text-sm">All Prices</label></div>
-                  <div class="flex items-center"><input type="radio" id="price-1" name="price" value="under25" class="filter-price mr-2"><label for="price-1" class="text-sm">Under $25</label></div>
-                  <div class="flex items-center"><input type="radio" id="price-2" name="price" value="25-50" class="filter-price mr-2"><label for="price-2" class="text-sm">$25 - $50</label></div>
-                  <div class="flex items-center"><input type="radio" id="price-3" name="price" value="50-150" class="filter-price mr-2"><label for="price-3" class="text-sm">$50 - $150</label></div>
-                  <div class="flex items-center"><input type="radio" id="price-4" name="price" value="over150" class="filter-price mr-2"><label for="price-4" class="text-sm">Over $150</label></div>
-                </div>
-              </div>
-            </div>
-
-            <button id="applyFiltersBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-black py-2 rounded-md plunct mt-4">Apply Filters</button>
-          </div>
-        </aside>
-
-        <main class="md:w-3/4 plunct">
-          <div class="flex justify-between items-center mb-6">
-            <div>
-              <span id="showingText" style="color:var(--black);">Showing 0 of 0 products</span>
-              <div id="appliedFiltersWrap" style="display:inline-block; margin-left:12px; vertical-align:middle;"></div>
-            </div>
-
-            <div class="flex items-baseline sort-row">
-              <span class="mr-2 text-gray-600 text-sm" style="color:var(--black);">Sort by:</span>
-              <div class="select-with-icon">
-                <i data-feather="chevron-down" class="w-4 h-4"></i>
-                <select id="sortSelect" class="text-black rounded-md text-sm">
-                  <option value="featured">Featured</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                  <option value="newest">Newest Arrivals</option>
-                  <option value="best-selling">Best Selling</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-          <div class="flex justify-center mt-12"><nav id="pagination" class="flex items-center space-x-2"></nav></div>
-        </main>
+  <!-- Main product area -->
+  <main>
+    <section aria-label="Products">
+      <div id="productsGridWrap">
+        <div class="products-grid" id="productsGrid"></div>
       </div>
-    </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer class="py-12">
-    <div class="container mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <h3 class="plunct text-xl mb-4" style="font-weight:900;">aL vaLe</h3>
-          <p class="mb-4">Official merchandise & limited drops. All designs and drops are authorized by aL vaLe.</p>
-        </div>
-        <div>
-          <h4 class="plunct font-medium mb-4">Shop</h4>
-          <ul class="space-y-2">
-            <li><a href="/SHOP/" class="text-sm">All Products</a></li>
-            <li><a href="/SHOP/?category=aLvaLemerCh" class="text-sm">aL vaLe Merch</a></li>
-            <li><a href="/SHOP/?category=Veerwear" class="text-sm">Veerwear</a></li>
-            <li><a href="/SHOP/?category=Accessories" class="text-sm">Accessories</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="plunct font-medium mb-4">Support</h4>
-          <ul class="space-y-2">
-            <li><a href="/HowToOrder/" class="text-sm">How to Order</a></li>
-            <li><a href="/contact/" class="text-sm">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="plunct font-medium mb-4">Legal</h4>
-          <ul class="space-y-2">
-            <li><a href="/TermsandConditions/" class="text-sm">Terms & Conditions</a></li>
-          </ul>
-        </div>
+      <!-- bottom pagination (mirror of header pages for accessibility) -->
+      <div style="display:flex;justify-content:center;margin-top:28px;">
+        <nav id="footerPages" class="flex gap-3" aria-label="Pagination"></nav>
       </div>
-      <div class="border-t mt-12 pt-8 text-center text-sm" style="border-color:#111;">
-        <p>© 2025 aL vaLe. All rights reserved.</p>
-      </div>
-    </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© 2025 vaLe. All rights reserved.</div>
   </footer>
 
-  <!-- Snipcart root (replace with your API key) -->
-  <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_API_KEY"></div>
-
-  <!-- Scripts (search, filters, products, favorites, cart) -->
   <script>
     feather.replace();
 
-    // Mobile nav toggle
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    const mobileNav = document.getElementById('mobileNav');
-    const mobileClose = document.getElementById('mobileCloseBtn');
-    mobileBtn?.addEventListener('click', ()=> {
-      mobileNav.style.display='block';
-      document.body.classList.remove('mobile-search-open');
-    });
-    mobileClose?.addEventListener('click', ()=> {
-      mobileNav.style.display='none';
-      const mIn = document.getElementById('mobileSearchInput');
-      if(mIn) mIn.value = '';
-      document.body.classList.remove('mobile-search-open');
-    });
-
-    // Filter collapse behavior (chevrons)
-    document.querySelectorAll('.filter-toggle').forEach(btn=>{
-      const target = document.getElementById(btn.getAttribute('data-target'));
-      const chev = btn.querySelector('.chev');
-      if(target) target.style.display='block';
-      if(chev) chev.classList.add('open');
-      btn.addEventListener('click', ()=>{
-        if(!target) return;
-        const none = getComputedStyle(target).display === 'none';
-        target.style.display = none ? 'block' : 'none';
-        chev?.classList.toggle('open', none);
-      });
-    });
-
-    /* --------------------------
-       Subtypes / materials for aL vaLe merch
-    -------------------------- */
+    // Demo product data generator (similar to previous logic)
+    const categories = ['Merch','Veerwear','Nail Jewelry','Grillz','Earrings','aL vaLe'];
+    const materials = ['Cotton','Poly Blend','Resin','Gold','Silver'];
     const subtypesMap = {
-      'aL vaLe': ['Tees','Hoodies','Hats','Stickers','Posters'],
-      'Veerwear': ['Apparel','Accessories'],
-      'Accessories': ['Pins','Keychains','Bags']
+      'Nail Jewelry': ['Full-Cover Press-Ons','Accent Tips','Resin-Embedded Nails'],
+      'Merch': ['Shirts','Hoodies','Posters'],
+      'Veerwear': ['Apparel'],
+      'Grillz': ['Full-Cover Sets','Top Sets'],
+      'Earrings': ['Hoops','Studs'],
+      'aL vaLe': ['Merch']
     };
 
-    const displayToSlug = {
-      'Tees':'tees','Hoodies':'hoodies','Hats':'hats','Stickers':'stickers','Posters':'posters',
-      'Apparel':'apparel','Accessories':'accessories','Pins':'pins','Keychains':'keychains','Bags':'bags'
-    };
-
-    const slugToDisplay = {};
-    Object.keys(displayToSlug).forEach(k => { slugToDisplay[displayToSlug[k]] = k; });
-
-    function techniqueFromSubtype(sub) {
-      if(!sub) return '';
-      const s = sub.toLowerCase();
-      if(s.includes('tee') || s.includes('hoodie')) return 'Apparel';
-      if(s.includes('sticker') || s.includes('poster')) return 'Print';
-      return '';
-    }
-
-    function normalizeSlugInput(raw){
-      if(!raw) return '';
-      let s = String(raw).trim().toLowerCase();
-      s = s.replace(/[%20\+_]+/g,'-');
-      s = s.replace(/[^\w-]+/g,'-');
-      s = s.replace(/-+/g,'-');
-      s = s.replace(/^-|-$/g,'');
-      return s;
-    }
-    function slugToLabel(rawSlug){
-      const norm = normalizeSlugInput(rawSlug);
-      if(!norm) return null;
-      if(slugToDisplay[norm]) return slugToDisplay[norm];
-      return null;
-    }
-
-    /* --------------------------
-       Product generator (demo) - tuned for merch price ranges
-    -------------------------- */
-    const categories = ['aL vaLe','Veerwear','Accessories'];
-    const materials = ['Cotton','Poly Blend','Resin','Paper','Embroidered'];
     const products = [];
-    const TOTAL_ITEMS = 72;
+    const TOTAL_ITEMS = 34; // adjust how many demo items you want
     function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-
     function buildDemoProducts(){
       products.length = 0;
       for(let i=1;i<=TOTAL_ITEMS;i++){
         const cat = categories[i % categories.length];
         const mat = materials[i % materials.length];
-        // make merch prices realistic
-        let price;
-        if(mat === 'Paper') price = rand(8,35);
-        else if(cat === 'aL vaLe') price = rand(18,120);
-        else price = rand(12,90);
-        const sold = rand(0,2000);
-        const featured = i % 7 === 0;
-        const date = new Date(Date.now() - rand(0,365)*24*3600*1000).toISOString();
-
-        const pool = subtypesMap[cat] || ['Misc'];
-        const subtype = pool[rand(0, pool.length-1)];
-        const technique = techniqueFromSubtype(subtype) || (Math.random() < 0.1 ? 'Limited' : '');
-
+        const pool = subtypesMap[cat] || ['General'];
+        const subtype = pool[rand(0,pool.length-1)];
+        const price = Math.round((Math.random()*180)+10);
+        const featured = (i % 7 === 0);
         products.push({
-          id:i,
-          title:`${subtype} ${i}`,
-          description:`${mat} · ${cat} · ${subtype}`,
-          image:`/images/placeholder-${(i%10)+1}.jpg`,
+          id: i,
+          title: `${subtype} ${cat} ${i}`,
+          description: `${mat} · ${cat}`,
+          image: `/images/placeholder-${(i%6)+1}.jpg`,
           price,
-          category:cat,
-          material:mat,
+          category: cat,
           subtype,
-          technique,
-          soldCount:sold,
-          featured,
-          date
+          featured
         });
       }
     }
 
-    // State
+    // Pagination & state
+    let pageSize = 10; // user said page numbers for >10 items
     let currentPage = 1;
-    const pageSize = 24;
-    let currentFilters = { categories:[], materials:[], price:'all', subtypes:[], techniques:[] };
-    let currentSort = 'featured';
+    let currentCategory = 'Errthing'; // 'Errthing' shows all
+    let filteredProducts = [];
 
     // favorites
-    function readFavorites(){ try{ return new Set(JSON.parse(localStorage.getItem('sb_favorites')||'[]')); }catch(e){ return new Set(); } }
-    function writeFavorites(set){ const arr = Array.from(set); localStorage.setItem('sb_favorites', JSON.stringify(arr)); }
-    function toggleFavorite(id){ const s = readFavorites(); if(s.has(id)) s.delete(id); else s.add(id); writeFavorites(s); renderProducts(); }
+    function readFavorites(){ try { return new Set(JSON.parse(localStorage.getItem('vale_favs')||'[]')); } catch(e){ return new Set(); } }
+    function writeFavorites(set){ localStorage.setItem('vale_favs', JSON.stringify(Array.from(set))); }
 
-    function priceMatch(price, filterKey){
-      if(!filterKey||filterKey==='all') return true;
-      if(filterKey==='under25') return price < 25;
-      if(filterKey==='25-50') return price >=25 && price <=50;
-      if(filterKey==='50-150') return price >50 && price <=150;
-      if(filterKey==='over150') return price >150;
-      return true;
+    // Build initial content
+    buildDemoProducts();
+
+    // Merch types for header left bottom
+    const merchTypesList = ['Errthing','Merch','Veerwear','Nail Jewelry','Grillz','Earrings','aL vaLe'];
+
+    const merchTypesWrap = document.getElementById('merchTypes');
+    merchTypesList.forEach(name=>{
+      const btn = document.createElement('button');
+      btn.textContent = name;
+      btn.className = name === 'Errthing' ? 'active' : '';
+      btn.addEventListener('click', ()=> {
+        document.querySelectorAll('#merchTypes button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = name;
+        currentPage = 1;
+        renderProducts();
+        updateHeaderPages();
+      });
+      merchTypesWrap.appendChild(btn);
+    });
+
+    // Build header page buttons and footer page buttons dynamically
+    function updateHeaderPages(){
+      const pagesWrap = document.getElementById('headerPages');
+      const footerWrap = document.getElementById('footerPages');
+      pagesWrap.innerHTML = '';
+      footerWrap.innerHTML = '';
+
+      const total = filteredProducts.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+      function makeBtn(p){
+        const b = document.createElement('button');
+        b.className = 'page-num';
+        b.textContent = p;
+        if(p === currentPage) b.style.fontWeight = '900';
+        b.addEventListener('click', ()=>{
+          currentPage = p;
+          renderProducts();
+          updateHeaderPages();
+          scrollIntoGrid();
+        });
+        return b;
+      }
+
+      // show pages only if >1 (i.e., more than pageSize items)
+      if(totalPages <= 1) return;
+
+      // header pages (right side)
+      const maxToShow = Math.min(totalPages, 7);
+      for(let p=1;p<=maxToShow;p++){
+        pagesWrap.appendChild(makeBtn(p));
+      }
+
+      // footer pages (mirror)
+      for(let p=1;p<=totalPages;p++){
+        footerWrap.appendChild(makeBtn(p));
+      }
     }
 
-    function applyFiltersAndSort(){
-      let out = products.slice();
-
-      if(currentFilters.categories.length) out = out.filter(p => currentFilters.categories.includes(p.category));
-      if(currentFilters.materials.length) out = out.filter(p => currentFilters.materials.includes(p.material));
-      if(currentFilters.subtypes.length) out = out.filter(p => currentFilters.subtypes.includes(p.subtype));
-      if(currentFilters.techniques.length) out = out.filter(p => currentFilters.techniques.includes(p.technique));
-      if(currentFilters.price && currentFilters.price !== 'all') out = out.filter(p => priceMatch(p.price, currentFilters.price));
-
-      if(currentSort==='price-asc') out.sort((a,b)=>a.price-b.price);
-      else if(currentSort==='price-desc') out.sort((a,b)=>b.price-a.price);
-      else if(currentSort==='newest') out.sort((a,b)=>new Date(b.date)-new Date(a.date));
-      else if(currentSort==='best-selling') out.sort((a,b)=>b.soldCount-a.soldCount);
-      else out.sort((a,b)=> (b.featured?1:0) - (a.featured?1:0));
-
-      return out;
-    }
-
+    // Render products based on currentCategory and page
     function renderProducts(){
-      const grid = document.getElementById('productGrid');
+      const grid = document.getElementById('productsGrid');
       grid.innerHTML = '';
-      const filtered = applyFiltersAndSort();
-      const total = filtered.length;
-      const start = (currentPage-1)*pageSize;
-      const pageItems = filtered.slice(start, start + pageSize);
-      document.getElementById('showingText').textContent = `Showing ${pageItems.length} of ${total} products`;
+      // filter
+      if(currentCategory === 'Errthing'){
+        filteredProducts = products.slice();
+      } else {
+        filteredProducts = products.filter(p => p.category === currentCategory);
+      }
+
+      // current page slicing
+      const total = filteredProducts.length;
+      const start = (currentPage - 1) * pageSize;
+      const pageItems = filteredProducts.slice(start, start + pageSize);
+
       const favSet = readFavorites();
 
-      for(const p of pageItems){
-        let fontClass = 'plunct';
-        const heartActive = favSet.has(p.id);
-
-        const card = document.createElement('div');
-        card.className = 'product-card rounded-lg overflow-hidden';
+      pageItems.forEach(p => {
+        const card = document.createElement('article');
+        card.className = 'product-card';
         card.innerHTML = `
-          <div class="relative overflow-hidden h-64">
-            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-            ${p.featured ? `<div class="absolute top-3 left-3 badge-gold">BESTSELLER</div>` : ''}
-            <button class="absolute top-3 right-3 heart-btn ${heartActive ? 'heart-active' : ''}" data-id="${p.id}" title="Save to favorites">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="${heartActive ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <div class="product-media">
+            <img src="${p.image}" alt="${escapeHtml(p.title)}" loading="lazy">
+            <button class="heart-btn ${favSet.has(p.id) ? 'heart-active' : ''}" data-id="${p.id}" title="Save to favorites">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${favSet.has(p.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67 10.94 4.61a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
           </div>
-          <div class="p-4">
-            <h3 class="font-medium mb-1 ${fontClass}" style="color:var(--black);">${p.title}</h3>
-            <p class="${fontClass} text-gray-600 text-sm mb-2" style="color:var(--black);">${p.description}</p>
-            <div class="flex justify-between items-center">
-              <span class="${fontClass} font-bold" style="color:var(--black);">$${p.price.toLocaleString()}</span>
-
-              <button class="snipcart-add-item inline-flex items-center px-3 py-2 rounded text-sm border border-transparent bg-amber-600 hover:bg-amber-700"
+          <div class="product-info">
+            <div class="product-title">${escapeHtml(p.title)}</div>
+            <div class="product-desc">${escapeHtml(p.description)}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <div class="product-price">$${p.price.toFixed(2)}</div>
+              <button class="snipcart-add-item" 
                 data-item-id="${p.id}"
-                data-item-name="${p.title}"
+                data-item-name="${escapeHtml(p.title)}"
                 data-item-price="${p.price}"
                 data-item-url="/SHOP/"
-                data-item-description="${p.description}"
-                data-item-image="${p.image}">
+                data-item-description="${escapeHtml(p.description)}"
+                data-item-image="${p.image}"
+                style="background:var(--yellow);border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:700;">
                 Add to cart
               </button>
             </div>
           </div>
         `;
         grid.appendChild(card);
-      }
+      });
 
-      // bind heart toggles
+      // wire heart buttons
       document.querySelectorAll('.heart-btn').forEach(btn=>{
         btn.addEventListener('click', (e)=>{
           const id = Number(btn.getAttribute('data-id'));
-          toggleFavorite(id);
+          const s = readFavorites();
+          if(s.has(id)) s.delete(id); else s.add(id);
+          writeFavorites(s);
+          renderProducts(); // re-render to update UI
         });
       });
 
-      feather.replace();
-      renderPagination(filtered.length);
+      // update header page numbers
+      updateHeaderPages();
+
+      // update cart count bubble using Snipcart if available (optional)
+      updateCartBubble();
     }
 
-    function renderPagination(totalFiltered){
-      const pagination = document.getElementById('pagination'); pagination.innerHTML='';
-      const totalPages = Math.max(1, Math.ceil(totalFiltered / pageSize));
-
-      function makeNavButton(iconName, onClick, disabled=false){
-        const b = document.createElement('button');
-        b.className = 'nav-btn';
-        if(disabled) b.setAttribute('disabled','true');
-        b.innerHTML = `<i data-feather="${iconName}" class="w-4 h-4"></i>`;
-        b.addEventListener('click', (e)=>{ if(disabled) return; b.classList.add('clicked'); setTimeout(()=>b.classList.remove('clicked'),140); onClick(e); });
-        pagination.appendChild(b);
-        return b;
-      }
-
-      makeNavButton('chevron-left', ()=>{
-        if(currentPage > 1){ currentPage--; renderProducts(); }
-      }, currentPage === 1);
-
-      function pageBtn(page){
-        const b = document.createElement('button');
-        b.className = 'page-btn';
-        b.textContent = String(page);
-        if(page === currentPage) b.classList.add('page-active');
-        b.addEventListener('click', ()=>{
-          if(page === currentPage) {
-            b.classList.add('clicked');
-            setTimeout(()=>b.classList.remove('clicked'),120);
-            return;
-          }
-          b.classList.add('clicked');
-          setTimeout(()=>b.classList.remove('clicked'),120);
-          currentPage = page;
-          renderProducts();
-        });
-        pagination.appendChild(b);
-      }
-
-      if(totalPages <= 8){
-        for(let p=1;p<=totalPages;p++) pageBtn(p);
+    function updateCartBubble(){
+      // If Snipcart available, try to read items count; fallback to 0
+      const cartBtn = document.getElementById('headerCartToggle');
+      const bubble = cartBtn.querySelector('span');
+      if(window.Snipcart && window.Snipcart.api && typeof window.Snipcart.api.cart !== 'undefined'){
+        const items = (window.Snipcart.api.cart.get()).items || [];
+        const count = items.reduce((s,i) => s + (i.quantity||0), 0);
+        bubble.textContent = count;
       } else {
-        pageBtn(1);
-        pageBtn(2);
-        const start = Math.max(3, Math.min(currentPage-1, totalPages-4));
-        const end = Math.min(totalPages-2, start + 2);
-        if(currentPage > 4){
-          const dots = document.createElement('span'); dots.className='px-2'; dots.textContent='...'; pagination.appendChild(dots);
-        }
-        for(let p=start;p<=end;p++) pageBtn(p);
-        if(end < totalPages-2){
-          const dots2 = document.createElement('span'); dots2.className='px-2'; dots2.textContent='...'; pagination.appendChild(dots2);
-        }
-        pageBtn(totalPages-1);
-        pageBtn(totalPages);
+        // leave demo value 0
       }
-
-      makeNavButton('chevron-right', ()=>{
-        if(currentPage < Math.ceil(totalFiltered / pageSize)){ currentPage++; renderProducts(); }
-      }, currentPage === Math.ceil(totalFiltered / pageSize));
-
-      feather.replace();
     }
 
-    // Read filters from UI into state
-    function readFiltersFromUI(){
-      currentFilters.categories = Array.from(document.querySelectorAll('.filter-cat:checked')).map(i=>i.value);
-      currentFilters.materials = Array.from(document.querySelectorAll('.filter-material:checked')).map(i=>i.value);
-      currentFilters.subtypes = Array.from(document.querySelectorAll('.filter-subtype:checked')).map(i=>i.value);
-      currentFilters.techniques = Array.from(document.querySelectorAll('.filter-tech:checked')).map(i=>i.value);
-      const priceRadio = document.querySelector('.filter-price:checked');
-      currentFilters.price = priceRadio ? priceRadio.value : 'all';
-      updateAppliedFiltersPill();
-    }
+    // Helper to escape
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-    document.getElementById('applyFiltersBtn').addEventListener('click', ()=>{ readFiltersFromUI(); currentPage = 1; renderProducts(); });
-    document.getElementById('sortSelect').addEventListener('change', e => { currentSort = e.target.value; currentPage = 1; renderProducts(); });
-
-    /* --------------------------
-       Cart behaviour using Snipcart API (toggle)
-    -------------------------- */
-    const headerCartToggle = document.getElementById('headerCartToggle');
-    let cartOpen = false;
-    document.addEventListener('snipcart.ready', ()=>{ cartOpen = false; });
-    document.addEventListener('snipcart.opened', ()=>{ cartOpen = true; });
-    document.addEventListener('snipcart.closed', ()=>{ cartOpen = false; });
-
-    headerCartToggle?.addEventListener('click', (e)=>{
-      e.preventDefault();
-      headerCartToggle.classList.add('clicked');
-      setTimeout(()=> headerCartToggle.classList.remove('clicked'), 140);
-
-      if(window.Snipcart && window.Snipcart.api && window.Snipcart.api.modal){
-        if(cartOpen) window.Snipcart.api.modal.close();
-        else window.Snipcart.api.modal.open();
+    // scroll behavior: header-bottom will swipe away after some scroll
+    const header = document.getElementById('siteHeader');
+    const headerBottom = document.getElementById('headerBottom');
+    let lastScroll = 0;
+    window.addEventListener('scroll', ()=> {
+      const y = window.scrollY || window.pageYOffset;
+      // If scrolled some distance, add scrolled state
+      if(y > 40){
+        header.classList.add('scrolled');
       } else {
-        const anchor = document.querySelector('a.snipcart-checkout');
-        if(anchor){ anchor.click(); } else { console.warn('Snipcart not initialized yet.'); }
+        header.classList.remove('scrolled');
       }
+      lastScroll = y;
+    }, { passive:true });
+
+    // hamburger menu open/close
+    const mobileMenu = document.getElementById('mobileMenu');
+    document.getElementById('hamburgerBtn').addEventListener('click', ()=> {
+      mobileMenu.style.display = 'block';
+      mobileMenu.setAttribute('aria-hidden','false');
     });
+    document.getElementById('mobileClose').addEventListener('click', ()=> {
+      mobileMenu.style.display = 'none';
+      mobileMenu.setAttribute('aria-hidden','true');
+    });
+    mobileMenu.addEventListener('click', (ev) => { if(ev.target === mobileMenu) { mobileMenu.style.display='none'; mobileMenu.setAttribute('aria-hidden','true'); } });
 
-    /* --------------------------
-       SEARCH UX (desktop & mobile)
-    -------------------------- */
-    function initHeaderSearch(){
-      const wrap = document.getElementById('desktopSearchWrap');
-      const form = document.getElementById('headerSearchForm');
-      const input = document.getElementById('headerSearchInput');
-      const btn = document.getElementById('headerSearchBtn');
-
-      if(!wrap || !form || !input || !btn) return;
-
-      function isMobile() { return window.matchMedia('(max-width:767px)').matches; }
-
-      btn.addEventListener('click', (ev) => {
-        if (isMobile()) {
-          openMobileSearchAndFocus();
-          ev.preventDefault();
-          return;
-        }
-        const isOpen = wrap.classList.contains('open');
-        if(!isOpen) {
-          ev.preventDefault();
-          wrap.classList.add('open');
-          setTimeout(()=> input.focus(), 80);
-          return;
-        }
-      });
-
-      form.addEventListener('submit', (ev) => {
+    // search expand behavior (desktop)
+    const searchWrap = document.getElementById('desktopSearchWrap');
+    const headerSearchBtn = document.getElementById('headerSearchBtn');
+    const headerSearchInput = document.getElementById('headerSearchInput');
+    headerSearchBtn.addEventListener('click', (ev)=>{
+      const isMobile = window.matchMedia('(max-width:767px)').matches;
+      if(isMobile) {
+        // on mobile open mobile menu and focus mobile search (we do not have mobile search here)
         ev.preventDefault();
-        const q = (input.value || '').trim();
-        if(!q) {
-          wrap.classList.remove('open');
-          input.value = '';
-          return;
-        }
-        wrap.classList.remove('open');
-        input.value = '';
-        // For demo, we just filter local items by title/description
-        applySearchLocal(q);
-      });
-
-      document.addEventListener('click', (ev) => {
-        if(!wrap.contains(ev.target)) {
-          wrap.classList.remove('open');
-          input.value = '';
-        }
-      });
-
-      document.addEventListener('keydown', (ev) => {
-        if(ev.key === 'Escape') {
-          wrap.classList.remove('open');
-          input.value = '';
-        }
-      });
-    }
-
-    function applySearchLocal(q){
-      const term = String(q||'').trim().toLowerCase();
-      if(!term) return;
-      // simple search: filter products by title/description, then render
-      const matched = products.filter(p => (p.title + ' ' + p.description).toLowerCase().includes(term));
-      // temporarily show the matched set (paging disabled for simplicity)
-      const grid = document.getElementById('productGrid'); grid.innerHTML = '';
-      document.getElementById('showingText').textContent = `Search results: ${matched.length} items`;
-      const favSet = readFavorites();
-      matched.slice(0, pageSize).forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product-card rounded-lg overflow-hidden';
-        card.innerHTML = `<div class="relative overflow-hidden h-64">
-            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-          </div>
-          <div class="p-4">
-            <h3 class="font-medium mb-1 plunct" style="color:var(--black);">${p.title}</h3>
-            <p class="plunct text-gray-600 text-sm mb-2" style="color:var(--black);">${p.description}</p>
-            <div class="flex justify-between items-center">
-              <span class="plunct font-bold" style="color:var(--black);">$${p.price.toLocaleString()}</span>
-              <button class="snipcart-add-item inline-flex items-center px-3 py-2 rounded text-sm border border-transparent bg-amber-600 hover:bg-amber-700"
-                data-item-id="${p.id}"
-                data-item-name="${p.title}"
-                data-item-price="${p.price}"
-                data-item-url="/SHOP/"
-                data-item-description="${p.description}"
-                data-item-image="${p.image}">
-                Add to cart
-              </button>
-            </div>
-          </div>` ;
-        grid.appendChild(card);
-      });
-      feather.replace();
-      renderPagination(matched.length);
-    }
-
-    function initMobileSearch(){
-      const mobileForm = document.getElementById('mobileSearchForm');
-      const mobileInput = document.getElementById('mobileSearchInput');
-
-      if(mobileForm){
-        mobileForm.addEventListener('submit', (ev)=>{
-          ev.preventDefault();
-          const q = (mobileInput.value || '').trim();
-          if(!q) return;
-          mobileNav.style.display = 'none';
-          document.body.classList.remove('mobile-search-open');
-          mobileInput.value = '';
-          setTimeout(()=> { applySearchLocal(q); }, 60);
-        });
+        document.getElementById('mobileMenu').style.display = 'block';
+        return;
       }
-    }
-
-    function openMobileSearchAndFocus(){
-      const mobileSearchBar = document.getElementById('mobileSearchBar');
-      const mobileInput = document.getElementById('mobileSearchInput');
-      if(mobileNav.style.display === 'none' || mobileNav.style.display === '') {
-        mobileNav.style.display = 'block';
+      // toggle expand input
+      const open = searchWrap.classList.contains('open');
+      if(!open){
+        ev.preventDefault();
+        searchWrap.classList.add('open');
+        headerSearchInput.style.width = '260px';
+        headerSearchInput.style.opacity = '1';
+        setTimeout(()=> headerSearchInput.focus(), 80);
       }
-      document.body.classList.add('mobile-search-open');
-      setTimeout(()=> { if(mobileInput) mobileInput.focus(); }, 60);
-    }
-
-    /* --------------------------
-       URL-driven filters (reads ?category=...&style=...)
-    -------------------------- */
-    window._urlAppliedFilters = { category: null, subtypes: [] };
-
-    function applyUrlDrivenFiltersFromUrl(){
-      const params = new URLSearchParams(window.location.search);
-      const catParam = params.get('category');
-      const styleParam = params.get('style'); // may be slug(s)
-
-      if(catParam){
-        const catNorm = catParam.trim().toLowerCase();
-        const catInputs = Array.from(document.querySelectorAll('.filter-cat'));
-        const matched = catInputs.find(i => i.value && i.value.toLowerCase() === catNorm);
-        if(matched){ matched.checked = true; window._urlAppliedFilters.category = matched.value; openFilterSection('category-body'); }
-      }
-
-      if(styleParam){
-        const styleParts = styleParam.split(',').map(s => s.trim()).filter(Boolean);
-        for(const raw of styleParts){
-          const label = slugToLabel(raw);
-          if(label){
-            const subInputs = Array.from(document.querySelectorAll('.filter-subtype'));
-            const match = subInputs.find(i => i.value === label);
-            if(match){ match.checked = true; window._urlAppliedFilters.subtypes.push(label); openFilterSection('subtype-body'); const tech = techniqueFromSubtype(label); if(tech){ const techInput = Array.from(document.querySelectorAll('.filter-tech')).find(i => i.value === tech); if(techInput){ techInput.checked = true; openFilterSection('feature-body'); }}}
-            else {
-              const decoded = decodeURIComponent(raw).replace(/[-_]+/g,' ').trim();
-              const match2 = subInputs.find(i => i.value.toLowerCase() === decoded.toLowerCase());
-              if(match2){ match2.checked = true; window._urlAppliedFilters.subtypes.push(match2.value); openFilterSection('subtype-body'); }
-            }
-          }
-        }
-      }
-
-      if(window._urlAppliedFilters.category || (window._urlAppliedFilters.subtypes && window._urlAppliedFilters.subtypes.length)){
-        readFiltersFromUI();
-      }
-    }
-
-    function openFilterSection(sectionId){
-      const el = document.getElementById(sectionId);
-      if(!el) return;
-      el.style.display = 'block';
-      const btn = document.querySelector(`.filter-toggle[data-target="${sectionId}"]`);
-      if(btn){ btn.querySelector('.chev')?.classList.add('open'); }
-    }
-
-    function updateAppliedFiltersPill(){
-      const wrap = document.getElementById('appliedFiltersWrap');
-      if(!wrap) return;
-      const cat = window._urlAppliedFilters.category;
-      const subs = window._urlAppliedFilters.subtypes || [];
-      if(!cat && (!subs || subs.length === 0)){ wrap.innerHTML = ''; return; }
-      const parts = [];
-      if(cat) parts.push(cat);
-      if(subs.length) parts.push(subs.join(' • '));
-      const pillText = parts.join(' › ');
-      wrap.innerHTML = `<span class="applied-pill" role="status" aria-live="polite">
-        Filters applied: ${escapeHtml(pillText)}
-        <button class="pill-close" title="Clear URL filters" aria-label="Clear filters">&times;</button>
-      </span>`;
-      const btn = wrap.querySelector('.pill-close');
-      if(btn) btn.addEventListener('click', ()=> clearUrlDrivenFilters());
-    }
-
-    function clearUrlDrivenFilters(){
-      if(window._urlAppliedFilters.category){
-        const catInput = Array.from(document.querySelectorAll('.filter-cat')).find(i => i.value === window._urlAppliedFilters.category);
-        if(catInput) catInput.checked = false;
-      }
-      (window._urlAppliedFilters.subtypes || []).forEach(lbl => {
-        const inpt = Array.from(document.querySelectorAll('.filter-subtype')).find(i => i.value === lbl);
-        if(inpt) inpt.checked = false;
-      });
-      const allTechInputs = Array.from(document.querySelectorAll('.filter-tech'));
-      allTechInputs.forEach(i => { i.checked = false; });
-      window._urlAppliedFilters = { category:null, subtypes:[] };
-      readFiltersFromUI();
-      currentPage = 1;
-      renderProducts();
-      const url = new URL(window.location.href);
-      url.searchParams.delete('category');
-      url.searchParams.delete('style');
-      history.replaceState(null, '', url.toString());
-    }
-
-    // small helper
-    function escapeHtml(s) {
-      if(!s) return '';
-      return String(s).replace(/[&<>"']/g, function (m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
-    }
-
-    // Initialization on DOM ready
-    document.addEventListener('DOMContentLoaded', ()=>{
-      feather.replace();
-      buildDemoProducts();
-      applyUrlDrivenFiltersFromUrl();
-      readFiltersFromUI();
-      currentSort = document.getElementById('sortSelect').value || 'featured';
-      renderProducts();
-      initHeaderSearch();
-      initMobileSearch();
     });
+
+    // header favorites - mimic a link to /favorites/
+    document.getElementById('favoritesBtn').addEventListener('click', ()=> {
+      window.location.href = '/favorites.html';
+    });
+
+    // header cart toggle
+    document.getElementById('headerCartToggle').addEventListener('click',(e)=>{
+      e.preventDefault();
+      // toggle Snipcart if available
+      if(window.Snipcart && window.Snipcart.api && window.Snipcart.api.modal){
+        window.Snipcart.api.modal.open();
+      } else {
+        // fallback: open /cart page or click anchor
+        alert('Cart open (demo). Replace with Snipcart API key to enable modal.');
+      }
+    });
+
+    // on load: render initial products
+    document.addEventListener('DOMContentLoaded', ()=>{
+      renderProducts();
+      feather.replace();
+    });
+
+    // For accessibility: scroll to grid top
+    function scrollIntoGrid(){
+      const el = document.getElementById('productsGrid');
+      if(!el) return;
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 160, behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>
