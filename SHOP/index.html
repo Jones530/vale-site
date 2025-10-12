@@ -15,7 +15,6 @@
   <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>
 
   <style>
-    /* fonts (adjust paths if needed) */
     @font-face {
       font-family: 'Plunct';
       src: url('/fonts/Plunct.woff2') format('woff2');
@@ -32,97 +31,154 @@
       --amber-600: #d4a017;
       --black: #000;
       --white: #fff;
-      /* header height used for spacing the centered logo */
-      --header-height: 110px;
+
+      /* Header is now 2.5 inches tall as requested */
+      --header-height: 2.5in;
+      /* Brand text target height in header (vaLe) - kept 1in */
+      --brand-text-height: 1in;
     }
 
     html,body { height:100%; margin:0; font-family: "Plunct", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:var(--black); background:#fff; }
-    /* Header pinned to the very top now (no gap) */
+
+    /* Header pinned to top; visually large (2.5in) */
     header.site-header {
       position: fixed;
       left: 0;
       right: 0;
-      top: 0; /* <<-- fixed to top per your request */
+      top: 0;
       z-index: 90;
       display:block;
-      transition: background 280ms ease, backdrop-filter 240ms ease;
+      transition: background 280ms ease, backdrop-filter 240ms ease, transform 280ms ease;
       background: rgba(255,255,255,1);
       box-shadow: 0 6px 18px rgba(0,0,0,0.06);
       border-bottom: 1px solid rgba(0,0,0,0.04);
       height: var(--header-height);
+      box-sizing: border-box;
+      overflow: visible;
     }
 
-    /* Top row (remains visible on scroll) */
+    /* Top row: stays visible on scroll */
     .header-top {
       display:flex;
-      align-items:flex-start; /* top aligned */
+      align-items:flex-start; /* top aligned (vaLe top-aligned) */
       justify-content:space-between;
       gap:12px;
-      padding: 8px 24px 6px 24px; /* small bottom padding to separate bottom band */
-      height: calc(var(--header-height) * 0.55);
+      padding: 8px 24px 6px 24px;
+      height: calc(var(--header-height) * 0.45); /* upper portion */
       box-sizing: border-box;
     }
 
+    /* vaLe brand: 1 inch tall text, top aligned with a bit of padding from top */
     .header-top .brand {
       font-family: "Monument Extended","Plunct",sans-serif;
       font-weight:900;
       color:var(--black);
-      /* make vaLe text ~1in tall; keep accessible scaling */
-      font-size: 1in; /* roughly 96px; requested 1 inch */
+      font-size: var(--brand-text-height); /* requested 1in */
       line-height: 1;
-      height: 1in;
+      height: var(--brand-text-height);
       display:flex;
       align-items:flex-start; /* top aligned */
-      padding-top: 2px; /* slight border space from top */
+      padding-top: 6px; /* small border space from the top */
       cursor:default;
       user-select: none;
+      position: relative;
+      z-index: 92; /* sit above the hamburger for slight overlap */
+      margin-left: -10px; /* slight horizontal overlap as requested */
     }
 
+    /* header left & right row containers */
     .header-left, .header-right { display:flex; align-items:center; gap:12px; }
-    .hamburger-btn { border: none; background: transparent; padding:6px; cursor:pointer; width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; }
-    .icon-btn { width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; border-radius:6px; border:1px solid rgba(0,0,0,0.06); background:#fff; cursor:pointer; }
 
-    /* Bottom band (swipe-away on scroll) */
+    /* Make hamburger same vertical length as the vaLe text (1in) */
+    .hamburger-btn {
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor:pointer;
+      width: auto;
+      height: var(--brand-text-height); /* match the vaLe text height */
+      display:inline-flex;
+      align-items:flex-start; /* top-aligned inside the 1in height */
+      justify-content:center;
+      box-sizing: content-box;
+      margin-right: 6px;
+      z-index: 90;
+    }
+    /* Size the SVG inside to line up with top */
+    .hamburger-btn svg { margin-top:6px; }
+
+    /* icon buttons (search, heart, cart) - remove visible borders per request */
+    .icon-btn {
+      width:44px;
+      height:44px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:6px;
+      border: none; /* removed border */
+      background: transparent; /* remove visible border/box */
+      cursor:pointer;
+      box-shadow: none;
+    }
+
+    /* Search input (hidden until expanded) - no border */
+    .search-input {
+      border: none !important;
+      outline: none;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    /* Bottom band (swipe-away on scroll): bottom aligned items */
     .header-bottom {
       display:flex;
-      align-items:flex-end; /* bottom-aligned items */
+      align-items:flex-end;
       justify-content:space-between;
       gap:12px;
       padding:10px 24px 12px 24px;
       transition: transform 320ms cubic-bezier(.2,.9,.3,1), opacity 240ms ease;
       transform: translateY(0);
       opacity: 1;
-      height: calc(var(--header-height) * 0.45);
+      height: calc(var(--header-height) * 0.55);
       box-sizing: border-box;
+      background: transparent;
     }
 
-    /* When header has .scrolled, make header translucent and hide bottom band */
-    header.site-header.scrolled {
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(6px);
-      border-bottom-color: rgba(0,0,0,0.03);
-      box-shadow: none;
-      transition: background 260ms ease, backdrop-filter 260ms ease;
-    }
-
+    /* Hide bottom band when scrolled */
     header.site-header.scrolled .header-bottom {
       transform: translateY(-120%);
       opacity: 0;
       pointer-events: none;
     }
 
-    /* Merch type buttons (left in bottom band) */
+    /* Merch type buttons - left bottom */
     .merch-types { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .merch-types button { background:transparent; border:none; padding:6px 8px; font-family:inherit; font-size:13px; cursor:pointer; color:rgba(0,0,0,0.85); }
+    .merch-types button {
+      background:transparent;
+      border:none; /* remove border */
+      padding:6px 8px;
+      font-family:inherit;
+      font-size:13px;
+      cursor:pointer;
+      color:rgba(0,0,0,0.85);
+    }
     .merch-types button.active { border-bottom:2px solid var(--black); font-weight:700; }
 
-    /* Page number buttons to the right (bottom band) */
+    /* Page number buttons (header bottom & footer) — no borders, transparent */
     .header-pages { display:flex; gap:8px; align-items:center; }
-    .page-num { padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,0.08); background:#fff; cursor:pointer; font-weight:700; }
+    .page-num {
+      padding:6px 10px;
+      border-radius:6px;
+      border:none; /* removed */
+      background:transparent; /* no visible box */
+      cursor:pointer;
+      font-weight:700;
+      color:rgba(0,0,0,0.9);
+    }
+    .page-num.active { text-decoration: underline; font-weight:900; }
 
-    /* Body top-centered logo (positioned below header) */
+    /* Body top-centered logo (centered in body, sits below header) */
     .page-top-logo {
-      /* ensure it's visually below header (use header height + gap) */
       margin-top: calc(var(--header-height) + 18px);
       display:flex;
       justify-content:center;
@@ -131,7 +187,7 @@
     }
     .page-top-logo img { width: clamp(140px, 18vw, 220px); height:auto; display:block; }
 
-    /* Product grid - Zara-like: tall, airy, 3 columns desktop */
+    /* Product grid - Zara-like tall images */
     main { max-width: 1200px; margin: 0 auto; padding: 18px; }
     .products-grid {
       display: grid;
@@ -142,55 +198,55 @@
     @media (max-width:1024px){ .products-grid { grid-template-columns: repeat(2,1fr); gap:24px; } }
     @media (max-width:640px){ .products-grid { grid-template-columns: 1fr; gap:18px; } }
 
-    .product-card { background: #fff; border-radius:4px; overflow:hidden; border:1px solid rgba(0,0,0,0.03); box-shadow: none; }
+    .product-card { background: #fff; border-radius:4px; overflow:hidden; border:1px solid rgba(0,0,0,0.03); }
     .product-media { height: 520px; position:relative; overflow:hidden; }
     @media (max-width:1024px){ .product-media { height:420px; } }
     @media (max-width:640px){ .product-media { height:360px; } }
 
     .product-media img { width:100%; height:100%; object-fit:cover; display:block; }
-
     .product-info { padding:12px 6px; font-size:13px; color:rgba(0,0,0,0.9); }
     .product-title { text-transform:uppercase; font-weight:600; letter-spacing:0.6px; margin-bottom:6px; }
     .product-price { font-weight:800; }
 
-    /* Small wishlist heart button */
-    .heart-btn { position:absolute; top:10px; right:10px; width:44px; height:44px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.9); border:1px solid rgba(0,0,0,0.06); cursor:pointer; }
-    .heart-active { background: var(--yellow); color: #000; border-color: rgba(0,0,0,0.06); }
+    /* wishlist heart button */
+    .heart-btn { position:absolute; top:10px; right:10px; width:44px; height:44px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.9); border:none; cursor:pointer; }
+    .heart-active { background: var(--yellow); color: #000; }
 
     /* Footer */
     footer { padding:30px 12px; text-align:center; color:rgba(0,0,0,0.7); font-size:14px; }
 
-    /* Mobile nav overlay */
+    /* Mobile menu overlay */
     #mobileMenu { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; z-index:120; }
     #mobileMenu .menu-inner { background:#fff; width:280px; height:100%; padding:18px; }
-    /* small util classes */
+
+    /* utility */
     .hidden { display:none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Snipcart root (insert your key) -->
+  <!-- Snipcart root -->
   <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_API_KEY"></div>
 
-  <!-- Header (now pinned to top: top:0) -->
+  <!-- Header (visually large — 2.5in) -->
   <header class="site-header" id="siteHeader" aria-label="Site header">
     <div class="header-top">
       <div class="header-left" style="align-items:flex-start;">
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
         </button>
-        <!-- brand sits left-center; large 1in height, top aligned -->
+
+        <!-- brand sits left-top; overlaps slightly horizontally -->
         <div class="brand" id="brandText">vaLe</div>
       </div>
 
       <div style="flex:1"></div>
 
       <div class="header-right" style="align-items:flex-start;">
-        <!-- search (desktop expands on click) -->
         <div class="search-wrap" id="desktopSearchWrap" style="position:relative;">
           <form id="headerSearchForm" class="search-form" role="search" action="/search.html" method="get">
             <input id="headerSearchInput" name="q" type="search" class="search-input" placeholder="Search products..." aria-label="Search products"
-                   style="position:absolute; right:56px; width:0; opacity:0; transition: width .22s ease, opacity .18s ease; border:1px solid rgba(0,0,0,0.06); padding:8px 10px; border-radius:8px; background:#fff;">
+                   style="position:absolute; right:56px; width:0; opacity:0; transition: width .22s ease, opacity .18s ease; padding:8px 10px; border-radius:8px;">
             <button id="headerSearchBtn" type="submit" class="icon-btn" aria-label="Search">
               <i data-feather="search"></i>
             </button>
@@ -209,13 +265,8 @@
     </div>
 
     <div class="header-bottom" id="headerBottom">
-      <div class="merch-types" id="merchTypes">
-        <!-- buttons injected by JS -->
-      </div>
-
-      <div class="header-pages" id="headerPages">
-        <!-- page number buttons injected by JS -->
-      </div>
+      <div class="merch-types" id="merchTypes"></div>
+      <div class="header-pages" id="headerPages"></div>
     </div>
   </header>
 
@@ -242,7 +293,7 @@
     </div>
   </div>
 
-  <!-- Page top logo (centered in body, not in header) -->
+  <!-- Page top logo (centered below header) -->
   <div class="page-top-logo" role="banner">
     <img src="/images/vale-logo-removebg-preview.png" alt="vaLe" id="pageLogo">
   </div>
@@ -254,7 +305,7 @@
         <div class="products-grid" id="productsGrid"></div>
       </div>
 
-      <!-- bottom pagination (mirror of header pages for accessibility) -->
+      <!-- bottom pagination (mirror of header pages) -->
       <div style="display:flex;justify-content:center;margin-top:28px;">
         <nav id="footerPages" class="flex gap-3" aria-label="Pagination"></nav>
       </div>
@@ -268,9 +319,8 @@
   <script>
     feather.replace();
 
-    // Demo product data generator (similar to previous logic)
+    // Demo data & utilities
     const categories = ['Merch','Veerwear','Nail Jewelry','Grillz','Earrings','aL vaLe'];
-    const materials = ['Cotton','Poly Blend','Resin','Gold','Silver'];
     const subtypesMap = {
       'Nail Jewelry': ['Full-Cover Press-Ons','Accent Tips','Resin-Embedded Nails'],
       'Merch': ['Shirts','Hoodies','Posters'],
@@ -281,10 +331,11 @@
     };
 
     const products = [];
-    const TOTAL_ITEMS = 34; // adjust how many demo items you want
+    const TOTAL_ITEMS = 34;
     function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
     function buildDemoProducts(){
       products.length = 0;
+      const materials = ['Cotton','Poly Blend','Resin','Gold','Silver'];
       for(let i=1;i<=TOTAL_ITEMS;i++){
         const cat = categories[i % categories.length];
         const mat = materials[i % materials.length];
@@ -305,22 +356,21 @@
       }
     }
 
-    // Pagination & state
-    let pageSize = 10; // user said page numbers for >10 items
+    // state
+    let pageSize = 10;
     let currentPage = 1;
-    let currentCategory = 'Errthing'; // 'Errthing' shows all
+    let currentCategory = 'Errthing';
     let filteredProducts = [];
 
-    // favorites
+    // favorites helpers
     function readFavorites(){ try { return new Set(JSON.parse(localStorage.getItem('vale_favs')||'[]')); } catch(e){ return new Set(); } }
     function writeFavorites(set){ localStorage.setItem('vale_favs', JSON.stringify(Array.from(set))); }
 
-    // Build initial content
+    // initial build
     buildDemoProducts();
 
-    // Merch types for header left bottom
+    // merch types buttons (Errthing + categories)
     const merchTypesList = ['Errthing','Merch','Veerwear','Nail Jewelry','Grillz','Earrings','aL vaLe'];
-
     const merchTypesWrap = document.getElementById('merchTypes');
     merchTypesList.forEach(name=>{
       const btn = document.createElement('button');
@@ -333,11 +383,12 @@
         currentPage = 1;
         renderProducts();
         updateHeaderPages();
+        // smooth scroll top to show header/logo
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
       merchTypesWrap.appendChild(btn);
     });
 
-    // Build header page buttons and footer page buttons dynamically
     function updateHeaderPages(){
       const pagesWrap = document.getElementById('headerPages');
       const footerWrap = document.getElementById('footerPages');
@@ -347,51 +398,38 @@
       const total = filteredProducts.length;
       const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
-      function makeBtn(p){
-        const b = document.createElement('button');
-        b.className = 'page-num';
-        b.textContent = p;
-        if(p === currentPage) b.style.fontWeight = '900';
-        b.addEventListener('click', ()=>{
-          currentPage = p;
-          renderProducts();
-          updateHeaderPages();
-          scrollIntoGrid();
-        });
-        return b;
-      }
-
-      // show pages only if >1 (i.e., more than pageSize items)
       if(totalPages <= 1) return;
 
-      // header pages (right side)
       const maxToShow = Math.min(totalPages, 7);
       for(let p=1;p<=maxToShow;p++){
-        pagesWrap.appendChild(makeBtn(p));
+        const hb = document.createElement('button');
+        hb.className = 'page-num' + (p === currentPage ? ' active' : '');
+        hb.textContent = p;
+        hb.addEventListener('click', ()=> { currentPage = p; renderProducts(); updateHeaderPages(); scrollIntoGrid(); });
+        pagesWrap.appendChild(hb);
       }
 
-      // footer pages (mirror)
+      // footer full pages (no borders)
       for(let p=1;p<=totalPages;p++){
-        footerWrap.appendChild(makeBtn(p));
+        const fb = document.createElement('button');
+        fb.className = 'page-num' + (p === currentPage ? ' active' : '');
+        fb.textContent = p;
+        fb.addEventListener('click', ()=> { currentPage = p; renderProducts(); updateHeaderPages(); scrollIntoGrid(); });
+        footerWrap.appendChild(fb);
       }
     }
 
-    // Render products based on currentCategory and page
     function renderProducts(){
       const grid = document.getElementById('productsGrid');
       grid.innerHTML = '';
-      // filter
       if(currentCategory === 'Errthing'){
         filteredProducts = products.slice();
       } else {
         filteredProducts = products.filter(p => p.category === currentCategory);
       }
 
-      // current page slicing
-      const total = filteredProducts.length;
       const start = (currentPage - 1) * pageSize;
       const pageItems = filteredProducts.slice(start, start + pageSize);
-
       const favSet = readFavorites();
 
       pageItems.forEach(p => {
@@ -425,56 +463,40 @@
         grid.appendChild(card);
       });
 
-      // wire heart buttons
+      // wire hearts
       document.querySelectorAll('.heart-btn').forEach(btn=>{
         btn.addEventListener('click', (e)=>{
           const id = Number(btn.getAttribute('data-id'));
           const s = readFavorites();
           if(s.has(id)) s.delete(id); else s.add(id);
           writeFavorites(s);
-          renderProducts(); // re-render to update UI
+          renderProducts();
         });
       });
 
-      // update header page numbers
       updateHeaderPages();
-
-      // update cart count bubble using Snipcart if available (optional)
       updateCartBubble();
+      feather.replace();
     }
 
     function updateCartBubble(){
-      // If Snipcart available, try to read items count; fallback to 0
       const cartBtn = document.getElementById('headerCartToggle');
       const bubble = cartBtn.querySelector('span');
       if(window.Snipcart && window.Snipcart.api && typeof window.Snipcart.api.cart !== 'undefined'){
         const items = (window.Snipcart.api.cart.get()).items || [];
         const count = items.reduce((s,i) => s + (i.quantity||0), 0);
         bubble.textContent = count;
-      } else {
-        // leave demo value 0
       }
     }
 
-    // Helper to escape
-    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-    // scroll behavior: header-bottom will swipe away after some scroll
+    // scroll handling: hide bottom band after some scroll
     const header = document.getElementById('siteHeader');
-    const headerBottom = document.getElementById('headerBottom');
-    let lastScroll = 0;
     window.addEventListener('scroll', ()=> {
       const y = window.scrollY || window.pageYOffset;
-      // If scrolled some distance, add scrolled state
-      if(y > 40){
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-      lastScroll = y;
+      if(y > 40) header.classList.add('scrolled'); else header.classList.remove('scrolled');
     }, { passive:true });
 
-    // hamburger menu open/close
+    // hamburger menu
     const mobileMenu = document.getElementById('mobileMenu');
     document.getElementById('hamburgerBtn').addEventListener('click', ()=> {
       mobileMenu.style.display = 'block';
@@ -494,47 +516,52 @@
       const isMobile = window.matchMedia('(max-width:767px)').matches;
       if(isMobile) {
         ev.preventDefault();
-        document.getElementById('mobileMenu').style.display = 'block';
+        mobileMenu.style.display = 'block';
         return;
       }
-      // toggle expand input
       const open = searchWrap.classList.contains('open');
       if(!open){
         ev.preventDefault();
         searchWrap.classList.add('open');
         headerSearchInput.style.width = '260px';
         headerSearchInput.style.opacity = '1';
+        headerSearchInput.style.background = '#fff';
+        headerSearchInput.style.border = 'none';
         setTimeout(()=> headerSearchInput.focus(), 80);
       }
     });
 
-    // header favorites - mimic a link to /favorites/
+    // favorites button (go to favorites view)
     document.getElementById('favoritesBtn').addEventListener('click', ()=> {
       window.location.href = '/favorites.html';
     });
 
-    // header cart toggle
+    // cart toggle
     document.getElementById('headerCartToggle').addEventListener('click',(e)=>{
       e.preventDefault();
       if(window.Snipcart && window.Snipcart.api && window.Snipcart.api.modal){
         window.Snipcart.api.modal.open();
       } else {
-        alert('Cart open (demo). Replace with Snipcart API key to enable modal.');
+        alert('Cart open (demo). Add your Snipcart API key to enable modal.');
       }
     });
 
-    // on load: render initial products
+    // helper
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    // scroll to grid top with offset for header
+    function scrollIntoGrid(){
+      const el = document.getElementById('productsGrid');
+      if(!el) return;
+      const headerHeightPx = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (headerHeightPx + 12), behavior: 'smooth' });
+    }
+
+    // init
     document.addEventListener('DOMContentLoaded', ()=>{
       renderProducts();
       feather.replace();
     });
-
-    // For accessibility: scroll to grid top
-    function scrollIntoGrid(){
-      const el = document.getElementById('productsGrid');
-      if(!el) return;
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height') || 110) + 12), behavior: 'smooth' });
-    }
   </script>
 </body>
 </html>
