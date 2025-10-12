@@ -32,21 +32,24 @@
       --amber-600: #d4a017;
       --black: #000;
       --white: #fff;
+      /* header height used for spacing the centered logo */
+      --header-height: 110px;
     }
 
     html,body { height:100%; margin:0; font-family: "Plunct", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:var(--black); background:#fff; }
-    /* Header placed 2 inches down from the top */
+    /* Header pinned to the very top now (no gap) */
     header.site-header {
       position: fixed;
       left: 0;
       right: 0;
-      top: 2in; /* user requested 2 inches from top */
+      top: 0; /* <<-- fixed to top per your request */
       z-index: 90;
       display:block;
       transition: background 280ms ease, backdrop-filter 240ms ease;
       background: rgba(255,255,255,1);
       box-shadow: 0 6px 18px rgba(0,0,0,0.06);
       border-bottom: 1px solid rgba(0,0,0,0.04);
+      height: var(--header-height);
     }
 
     /* Top row (remains visible on scroll) */
@@ -55,7 +58,9 @@
       align-items:flex-start; /* top aligned */
       justify-content:space-between;
       gap:12px;
-      padding: 10px 24px 6px 24px; /* small bottom padding to separate bottom band */
+      padding: 8px 24px 6px 24px; /* small bottom padding to separate bottom band */
+      height: calc(var(--header-height) * 0.55);
+      box-sizing: border-box;
     }
 
     .header-top .brand {
@@ -63,7 +68,7 @@
       font-weight:900;
       color:var(--black);
       /* make vaLe text ~1in tall; keep accessible scaling */
-      font-size: 1in; /* roughly 96px; user requested 1 inch */
+      font-size: 1in; /* roughly 96px; requested 1 inch */
       line-height: 1;
       height: 1in;
       display:flex;
@@ -83,10 +88,12 @@
       align-items:flex-end; /* bottom-aligned items */
       justify-content:space-between;
       gap:12px;
-      padding:10px 24px 14px 24px;
+      padding:10px 24px 12px 24px;
       transition: transform 320ms cubic-bezier(.2,.9,.3,1), opacity 240ms ease;
       transform: translateY(0);
       opacity: 1;
+      height: calc(var(--header-height) * 0.45);
+      box-sizing: border-box;
     }
 
     /* When header has .scrolled, make header translucent and hide bottom band */
@@ -113,9 +120,10 @@
     .header-pages { display:flex; gap:8px; align-items:center; }
     .page-num { padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,0.08); background:#fff; cursor:pointer; font-weight:700; }
 
-    /* Body top-centered logo */
+    /* Body top-centered logo (positioned below header) */
     .page-top-logo {
-      margin-top: calc(2in + 24px); /* ensure it's visually under header (header top at 2in) */
+      /* ensure it's visually below header (use header height + gap) */
+      margin-top: calc(var(--header-height) + 18px);
       display:flex;
       justify-content:center;
       align-items:center;
@@ -164,7 +172,7 @@
   <!-- Snipcart root (insert your key) -->
   <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_API_KEY"></div>
 
-  <!-- Header (2in from top) -->
+  <!-- Header (now pinned to top: top:0) -->
   <header class="site-header" id="siteHeader" aria-label="Site header">
     <div class="header-top">
       <div class="header-left" style="align-items:flex-start;">
@@ -485,7 +493,6 @@
     headerSearchBtn.addEventListener('click', (ev)=>{
       const isMobile = window.matchMedia('(max-width:767px)').matches;
       if(isMobile) {
-        // on mobile open mobile menu and focus mobile search (we do not have mobile search here)
         ev.preventDefault();
         document.getElementById('mobileMenu').style.display = 'block';
         return;
@@ -509,11 +516,9 @@
     // header cart toggle
     document.getElementById('headerCartToggle').addEventListener('click',(e)=>{
       e.preventDefault();
-      // toggle Snipcart if available
       if(window.Snipcart && window.Snipcart.api && window.Snipcart.api.modal){
         window.Snipcart.api.modal.open();
       } else {
-        // fallback: open /cart page or click anchor
         alert('Cart open (demo). Replace with Snipcart API key to enable modal.');
       }
     });
@@ -528,7 +533,7 @@
     function scrollIntoGrid(){
       const el = document.getElementById('productsGrid');
       if(!el) return;
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 160, behavior: 'smooth' });
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height') || 110) + 12), behavior: 'smooth' });
     }
   </script>
 </body>
