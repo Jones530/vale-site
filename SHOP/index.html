@@ -32,10 +32,12 @@
       --black: #000;
       --white: #fff;
 
-      /* Header is now 2.5 inches tall as requested */
+      /* Header is 2.5 inches tall */
       --header-height: 2.5in;
-      /* Brand text target height in header (vaLe) - kept 1in */
-      --brand-text-height: 1in;
+      /* Base brand text height (1in) - we'll add 3pt visually to font-size */
+      --brand-base-height: 1in;
+      --brand-font: calc(var(--brand-base-height) + 3pt); /* +3 points as requested */
+      --brand-height: calc(var(--brand-base-height) + 3pt); /* use same for element height so hamburger matches */
     }
 
     html,body { height:100%; margin:0; font-family: "Plunct", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color:var(--black); background:#fff; }
@@ -55,6 +57,15 @@
       height: var(--header-height);
       box-sizing: border-box;
       overflow: visible;
+      pointer-events: auto;
+    }
+
+    /* When scrolled: header becomes transparent with no borders/shadow */
+    header.site-header.scrolled {
+      background: transparent !important;
+      box-shadow: none !important;
+      border-bottom: none !important;
+      backdrop-filter: none !important;
     }
 
     /* Top row: stays visible on scroll */
@@ -66,16 +77,17 @@
       padding: 8px 24px 6px 24px;
       height: calc(var(--header-height) * 0.45); /* upper portion */
       box-sizing: border-box;
+      pointer-events: auto;
     }
 
-    /* vaLe brand: 1 inch tall text, top aligned with a bit of padding from top */
+    /* vaLe brand: font-size is 3pt larger than 1in; top aligned with padding */
     .header-top .brand {
       font-family: "Monument Extended","Plunct",sans-serif;
       font-weight:900;
       color:var(--black);
-      font-size: var(--brand-text-height); /* requested 1in */
+      font-size: var(--brand-font); /* requested +3pt */
       line-height: 1;
-      height: var(--brand-text-height);
+      height: var(--brand-height);
       display:flex;
       align-items:flex-start; /* top aligned */
       padding-top: 6px; /* small border space from the top */
@@ -89,25 +101,24 @@
     /* header left & right row containers */
     .header-left, .header-right { display:flex; align-items:center; gap:12px; }
 
-    /* Make hamburger same vertical length as the vaLe text (1in) */
+    /* Make hamburger same vertical length as the vaLe text (match new brand height) */
     .hamburger-btn {
       border: none;
       background: transparent;
       padding: 0;
       cursor:pointer;
       width: auto;
-      height: var(--brand-text-height); /* match the vaLe text height */
+      height: var(--brand-height); /* match vaLe height */
       display:inline-flex;
-      align-items:flex-start; /* top-aligned inside the 1in height */
+      align-items:flex-start; /* top-aligned inside the 1in+3pt height */
       justify-content:center;
       box-sizing: content-box;
       margin-right: 6px;
-      z-index: 90;
+      z-index: 91;
     }
-    /* Size the SVG inside to line up with top */
-    .hamburger-btn svg { margin-top:6px; }
+    .hamburger-btn svg { display:block; height: calc(var(--brand-height) - 6px); width: auto; margin-top:6px; }
 
-    /* icon buttons (search, heart, cart) - remove visible borders per request */
+    /* icon buttons (search, heart, cart) - no visible borders */
     .icon-btn {
       width:44px;
       height:44px;
@@ -115,8 +126,8 @@
       align-items:center;
       justify-content:center;
       border-radius:6px;
-      border: none; /* removed border */
-      background: transparent; /* remove visible border/box */
+      border: none;
+      background: transparent;
       cursor:pointer;
       box-shadow: none;
     }
@@ -129,7 +140,7 @@
       box-shadow: none;
     }
 
-    /* Bottom band (swipe-away on scroll): bottom aligned items */
+    /* Bottom band: bottom aligned items (merch types left, pages right) */
     .header-bottom {
       display:flex;
       align-items:flex-end;
@@ -142,9 +153,10 @@
       height: calc(var(--header-height) * 0.55);
       box-sizing: border-box;
       background: transparent;
+      pointer-events: auto;
     }
 
-    /* Hide bottom band when scrolled */
+    /* Hide bottom band when scrolled (swipe away) */
     header.site-header.scrolled .header-bottom {
       transform: translateY(-120%);
       opacity: 0;
@@ -155,7 +167,7 @@
     .merch-types { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
     .merch-types button {
       background:transparent;
-      border:none; /* remove border */
+      border:none;
       padding:6px 8px;
       font-family:inherit;
       font-size:13px;
@@ -164,20 +176,20 @@
     }
     .merch-types button.active { border-bottom:2px solid var(--black); font-weight:700; }
 
-    /* Page number buttons (header bottom & footer) — no borders, transparent */
-    .header-pages { display:flex; gap:8px; align-items:center; }
+    /* Page number buttons: bottom-right in header */
+    .header-pages { display:flex; gap:8px; align-items:center; margin-left:auto; justify-content:flex-end; }
     .page-num {
       padding:6px 10px;
       border-radius:6px;
-      border:none; /* removed */
-      background:transparent; /* no visible box */
+      border:none;
+      background:transparent;
       cursor:pointer;
       font-weight:700;
       color:rgba(0,0,0,0.9);
     }
     .page-num.active { text-decoration: underline; font-weight:900; }
 
-    /* Body top-centered logo (centered in body, sits below header) */
+    /* Body top-centered logo (centered below header) */
     .page-top-logo {
       margin-top: calc(var(--header-height) + 18px);
       display:flex;
@@ -233,7 +245,8 @@
     <div class="header-top">
       <div class="header-left" style="align-items:flex-start;">
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
+          <!-- svg scales to match brand height -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" preserveAspectRatio="xMidYMid meet"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
         </button>
 
         <!-- brand sits left-top; overlaps slightly horizontally -->
@@ -259,14 +272,15 @@
 
         <button id="headerCartToggle" class="icon-btn snipcart-checkout" aria-label="Cart">
           <i data-feather="shopping-bag"></i>
-          <span style="position:absolute; right:-6px; top:-6px; background:var(--yellow); width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-weight:800; border-radius:9999px; font-size:12px;">0</span>
+          <!-- removed cart count bubble per request -->
         </button>
       </div>
     </div>
 
     <div class="header-bottom" id="headerBottom">
       <div class="merch-types" id="merchTypes"></div>
-      <div class="header-pages" id="headerPages"></div>
+      <!-- pages are bottom-right inside header -->
+      <div class="header-pages" id="headerPages" aria-hidden="false"></div>
     </div>
   </header>
 
@@ -303,11 +317,6 @@
     <section aria-label="Products">
       <div id="productsGridWrap">
         <div class="products-grid" id="productsGrid"></div>
-      </div>
-
-      <!-- bottom pagination (mirror of header pages) -->
-      <div style="display:flex;justify-content:center;margin-top:28px;">
-        <nav id="footerPages" class="flex gap-3" aria-label="Pagination"></nav>
       </div>
     </section>
   </main>
@@ -391,9 +400,7 @@
 
     function updateHeaderPages(){
       const pagesWrap = document.getElementById('headerPages');
-      const footerWrap = document.getElementById('footerPages');
       pagesWrap.innerHTML = '';
-      footerWrap.innerHTML = '';
 
       const total = filteredProducts.length;
       const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -407,15 +414,6 @@
         hb.textContent = p;
         hb.addEventListener('click', ()=> { currentPage = p; renderProducts(); updateHeaderPages(); scrollIntoGrid(); });
         pagesWrap.appendChild(hb);
-      }
-
-      // footer full pages (no borders)
-      for(let p=1;p<=totalPages;p++){
-        const fb = document.createElement('button');
-        fb.className = 'page-num' + (p === currentPage ? ' active' : '');
-        fb.textContent = p;
-        fb.addEventListener('click', ()=> { currentPage = p; renderProducts(); updateHeaderPages(); scrollIntoGrid(); });
-        footerWrap.appendChild(fb);
       }
     }
 
@@ -475,28 +473,17 @@
       });
 
       updateHeaderPages();
-      updateCartBubble();
       feather.replace();
     }
 
-    function updateCartBubble(){
-      const cartBtn = document.getElementById('headerCartToggle');
-      const bubble = cartBtn.querySelector('span');
-      if(window.Snipcart && window.Snipcart.api && typeof window.Snipcart.api.cart !== 'undefined'){
-        const items = (window.Snipcart.api.cart.get()).items || [];
-        const count = items.reduce((s,i) => s + (i.quantity||0), 0);
-        bubble.textContent = count;
-      }
-    }
-
-    // scroll handling: hide bottom band after some scroll
+    // scroll handling: hide bottom band after some scroll and make header transparent
     const header = document.getElementById('siteHeader');
     window.addEventListener('scroll', ()=> {
       const y = window.scrollY || window.pageYOffset;
       if(y > 40) header.classList.add('scrolled'); else header.classList.remove('scrolled');
     }, { passive:true });
 
-    // hamburger menu
+    // hamburger menu interactions
     const mobileMenu = document.getElementById('mobileMenu');
     document.getElementById('hamburgerBtn').addEventListener('click', ()=> {
       mobileMenu.style.display = 'block';
