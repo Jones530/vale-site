@@ -15,7 +15,7 @@
   <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>
 
   <style>
-    /* fonts */
+    /* ---------- config & fonts ---------- */
     @font-face {
       font-family: 'Plunct';
       src: url('/fonts/Plunct.woff2') format('woff2');
@@ -32,13 +32,17 @@
       --black: #000;
       --white: #fff;
 
+      /* overlay opacity: tweak between 0.25 (lighter) and 0.65 (darker) */
+      --overlay-opacity: 0.45;
+
       --header-height: 2.5in;
       --brand-base-height: 1in;
       --brand-font: calc(var(--brand-base-height) + 3pt);
       --brand-height: calc(var(--brand-base-height) + 3pt);
     }
 
-    /* GIF background for entire page */
+    /* ---------- layout + background GIF ---------- */
+
     html,body{
       height:100%;
       margin:0;
@@ -50,24 +54,41 @@
       background-size: auto;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+
+      /* create stacking context for overlay & content z-indexing */
+      position: relative;
+      background-blend-mode: multiply;
+      /* subtle tint to the GIF so overlay blends more predictably */
+      background-color: rgba(0,0,0,0.03);
     }
 
-    /* Header */
+    /* dark translucent overlay placed over the GIF but under page content */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;             /* allows clicks through to the page */
+      background: rgba(0, 0, 0, var(--overlay-opacity));  /* tweak opacity via --overlay-opacity */
+      z-index: 40;                      /* must be lower than header (90) and mobile menu (120) */
+      -webkit-backdrop-filter: blur(2px); /* optional slight blur of the gif */
+      backdrop-filter: blur(2px);
+    }
+
+    /* ---------- header (kept as before; z-index preserved) ---------- */
     header.site-header {
       position: fixed;
       left: 0; right: 0; top: 0;
-      z-index: 90;
+      z-index: 90; /* must sit above overlay */
       height: var(--header-height);
       box-sizing: border-box;
       overflow: visible;
-      background: transparent; /* transparent so GIF shows through */
+      background: transparent;
       border-bottom: none;
       box-shadow: none;
       transition: transform 280ms ease;
       pointer-events: auto;
     }
 
-    /* Top row */
     .header-top {
       display:flex;
       align-items:flex-start;
@@ -78,11 +99,10 @@
       box-sizing: border-box;
     }
 
-    /* Brand */
     .header-top .brand {
       font-family: "Monument Extended","Plunct",sans-serif;
       font-weight:900;
-      color: #fff; /* white text */
+      color: #fff;
       font-size: var(--brand-font);
       line-height: 1;
       height: var(--brand-height);
@@ -92,13 +112,13 @@
       cursor:default;
       user-select: none;
       position: relative;
-      z-index: 92;
+      z-index: 92; /* above overlay */
       margin-left: -10px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.65);
     }
 
     .header-left, .header-right { display:flex; align-items:center; gap:12px; }
 
-    /* Hamburger matches vaLe height and uses Plunct */
     .hamburger-btn {
       border: none;
       background: transparent;
@@ -112,29 +132,29 @@
       box-sizing: content-box;
       margin-right: 6px;
       z-index: 91;
-      font-family: 'Plunct', sans-serif; /* plunct font */
+      font-family: 'Plunct', sans-serif;
       color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     }
     .hamburger-btn svg { display:block; height: calc(var(--brand-height) - 6px); width:auto; margin-top:6px; stroke:currentColor; color:#fff; }
 
-    /* Icon buttons use Plunct and white icons */
     .icon-btn {
       width:44px; height:44px;
       display:inline-flex; align-items:center; justify-content:center;
       border-radius:6px; border:none; background:transparent; cursor:pointer;
       box-shadow:none;
-      font-family: 'Plunct', sans-serif; /* plunct */
-      color: #fff; /* ensure icon color is white */
+      font-family: 'Plunct', sans-serif;
+      color: #fff;
+      z-index: 92;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
     }
     .icon-btn svg { stroke: currentColor; color: #fff; }
 
-    /* Search input (hidden until expanded) */
     .search-input {
       border: none !important; outline: none; background: rgba(255,255,255,0.04);
       box-shadow: none; color: #fff;
     }
 
-    /* Bottom row that swipes away */
     .header-bottom {
       display:flex; align-items:flex-end; justify-content:space-between;
       gap:12px; padding:10px 24px 12px 24px;
@@ -143,37 +163,39 @@
       height: calc(var(--header-height) * 0.55); box-sizing:border-box;
       background: transparent;
       pointer-events: auto;
+      z-index: 92;
     }
     header.site-header.scrolled .header-bottom { transform: translateY(-120%); opacity:0; pointer-events:none; }
 
-    /* Merch types: white text, Plunct font */
     .merch-types { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
     .merch-types button {
       background:transparent; border:none; padding:6px 8px; font-family:'Plunct',sans-serif;
       font-size:13px; cursor:pointer; color:#fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 92;
     }
     .merch-types button.active { text-decoration:underline; font-weight:700; }
 
-    /* Page numbers: white, no borders */
     .header-pages { display:flex; gap:8px; align-items:center; margin-left:auto; justify-content:flex-end; }
     .page-num { padding:6px 10px; border-radius:6px; border:none; background:transparent; cursor:pointer; font-weight:700; color:#fff; font-family:'Plunct',sans-serif; }
     .page-num.active { text-decoration: underline; font-weight:900; }
 
-    /* Page-top logo half the size */
     .page-top-logo {
       margin-top: calc(var(--header-height) + 18px);
       display:flex; justify-content:center; align-items:center; padding: 28px 0 12px 0;
+      position: relative;
+      z-index: 50; /* above overlay but below header */
     }
-    /* Reduced to ~half the previous clamp values */
-    .page-top-logo img { width: clamp(70px, 9vw, 110px); height:auto; display:block; }
+    .page-top-logo img { width: clamp(70px, 9vw, 110px); height:auto; display:block; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35)); }
 
-    /* Product grid adjustments - transparent cards so background GIF shows */
-    main { max-width: 1200px; margin: 0 auto; padding: 18px; }
+    /* ---------- main content & cards ---------- */
+    main { max-width: 1200px; margin: 0 auto; padding: 18px; position: relative; z-index: 50; }
     .products-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:38px; align-items:start; }
     @media (max-width:1024px){ .products-grid{ grid-template-columns: repeat(2,1fr); gap:24px; } }
     @media (max-width:640px){ .products-grid{ grid-template-columns:1fr; gap:18px; } }
 
-    .product-card { background: transparent; border-radius:4px; overflow:hidden; border:none; color:#fff; }
+    .product-card { background: transparent; border-radius:4px; overflow:hidden; border:none; color:#fff; position: relative; z-index: 51; }
     .product-media { height:520px; position:relative; overflow:hidden; }
     @media (max-width:1024px){ .product-media{ height:420px; } }
     @media (max-width:640px){ .product-media{ height:360px; } }
@@ -183,29 +205,33 @@
     .product-media::after {
       content: "";
       position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.0) 30%, rgba(0,0,0,0.45) 80%); pointer-events:none;
+      z-index: 52;
     }
 
-    .product-info { padding:12px 6px; font-size:13px; color:#fff; background: transparent; }
-    .product-title { text-transform:uppercase; font-weight:600; letter-spacing:0.6px; margin-bottom:6px; color:#fff; }
-    .product-desc { color: rgba(255,255,255,0.85); }
-    .product-price { font-weight:800; color:#fff; }
+    .product-info { padding:12px 6px; font-size:13px; color:#fff; background: transparent; position: relative; z-index: 51; }
+    .product-title { text-transform:uppercase; font-weight:600; letter-spacing:0.6px; margin-bottom:6px; color:#fff; text-shadow: 0 1px 3px rgba(0,0,0,0.65); }
+    .product-desc { color: rgba(255,255,255,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.55); }
+    .product-price { font-weight:800; color:#fff; text-shadow: 0 1px 3px rgba(0,0,0,0.65); }
 
-    /* wishlist heart */
-    .heart-btn { position:absolute; top:10px; right:10px; width:44px; height:44px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.5); border:none; cursor:pointer; color:#fff; }
+    .heart-btn { position:absolute; top:10px; right:10px; width:44px; height:44px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.5); border:none; cursor:pointer; color:#fff; z-index: 93; }
     .heart-active { background: var(--yellow); color: #000; }
 
-    /* Add-to-cart button keeps yellow for contrast */
-    .snipcart-add-item { background: var(--yellow); color: #000; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:700; }
+    .snipcart-add-item { background: var(--yellow); color: #000; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:700; box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
 
-    /* Footer - text white too */
-    footer { padding:30px 12px; text-align:center; color:#fff; font-size:14px; }
+    footer { padding:30px 12px; text-align:center; color:#fff; font-size:14px; position: relative; z-index: 50; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
-    /* Mobile menu overlay retains GIF behind */
+    /* mobile menu overlay must remain above overlay */
     #mobileMenu { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; z-index:120; }
     #mobileMenu .menu-inner { background:rgba(0,0,0,0.65); width:280px; height:100%; padding:18px; color:#fff; }
 
-    /* utility */
+    /* ---------- small helpers ---------- */
     .hidden { display:none !important; }
+
+    /* ensure interactive elements are above the overlay */
+    a, button, input, select, textarea {
+      position: relative;
+      z-index: 92;
+    }
   </style>
 </head>
 <body>
