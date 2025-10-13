@@ -43,7 +43,7 @@
 
     /* make the base font 3pt larger across the page */
     /* 1rem will now be (browser default + 3pt). This increases most inherited text sizes. */
-    html { font-size: calc(100% + 3pt); }
+    html { font-size: calc(100% + 6pt); }
 
     /* ---------- layout + background GIF ---------- */
     html,body{
@@ -174,7 +174,7 @@
     /* bump merch-types font-size by 3pt as well */
     .merch-types button {
       background:transparent; border:none; padding:6px 8px; font-family:'Plunct',sans-serif;
-      font-size: calc(13px + 3pt); /* increased by 3pt */
+      font-size: calc(13px + 6pt); /* increased by 3pt */
       cursor:pointer; color:#fff;
       text-shadow: 0 1px 3px rgba(0,0,0,0.6);
       position: relative;
@@ -218,6 +218,9 @@
     .product-title { text-transform:uppercase; font-weight:600; letter-spacing:0.6px; margin-bottom:6px; color:#fff; text-shadow: 0 1px 3px rgba(0,0,0,0.65); }
     .product-desc { color: rgba(255,255,255,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.55); }
     .product-price { font-weight:800; color:#fff; text-shadow: 0 1px 3px rgba(0,0,0,0.65); }
+      font-size: calc(1rem + 3pt);
+      line-height: 1.35;
+      }
 
     .heart-btn { position:absolute; top:10px; right:10px; width:44px; height:44px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.5); border:none; cursor:pointer; color:#fff; z-index: 93; }
     .heart-active { background: var(--yellow); color: #000; }
